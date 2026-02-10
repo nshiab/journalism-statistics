@@ -22,7 +22,7 @@
   },
   "nodeModulesDir": "auto",
   "imports": {
-    "@nshiab/journalism-format": "jsr:@nshiab/journalism-format@^1.0.2",
+    "@nshiab/journalism-format": "jsr:@nshiab/journalism-format@^1.0.3",
     "jstat": "npm:jstat@^1.9.6"
   },
   "compilerOptions": {
