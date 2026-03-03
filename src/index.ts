@@ -35,16 +35,16 @@ import performTwoSampleTTest from "./statistics/performTwoSampleTTest.ts";
 import performChiSquaredIndependenceTest from "./statistics/performChiSquaredIndependenceTest.ts";
 import performChiSquaredGoodnessOfFitTest from "./statistics/performChiSquaredGoodnessOfFitTest.ts";
 import getGbmParameters from "./statistics/getGbmParameters.ts";
-import getGmbPath from "./statistics/getGbmPath.ts";
+import generateGbmPath from "./statistics/getGbmPath.ts";
 
 export {
   addClusters,
   addMahalanobisDistance,
   addZScore,
   euclidianDistance,
+  generateGbmPath,
   getCovarianceMatrix,
   getGbmParameters,
-  getGmbPath,
   getMahalanobisDistance,
   getSampleSizeMean,
   getSampleSizeProportion,

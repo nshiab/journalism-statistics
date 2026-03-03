@@ -29,11 +29,11 @@
  *
  * // Generate a simulated path for the next year
  * const startValue = historicalValues[historicalValues.length - 1];
- * const path = generateGBMPath(startValue, mu, sigma, 1, periodsPerYear);
+ * const path = generateGbmPath(startValue, mu, sigma, 1, periodsPerYear);
  * console.log(`Simulated path: ${path.map(v => v.toFixed(2)).join(', ')}`);
  * ```
  */
-export default function generateGBMPath(
+export default function generateGbmPath(
   startValue: number,
   mu: number,
   sigma: number,
