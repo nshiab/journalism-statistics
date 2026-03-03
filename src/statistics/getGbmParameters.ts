@@ -25,7 +25,7 @@
 export default function getGbmParameters(
   values: number[],
   periodsPerYear: number,
-) {
+): { mu: number; sigma: number } {
   if (values.length < 3) throw new Error("Need at least three data points.");
   if (values.some((v) => v <= 0)) {
     throw new Error("All values must be positive.");

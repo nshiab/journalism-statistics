@@ -512,6 +512,119 @@ console.log(invertedMatrix4x4); // Expected output (approximately): // [ //
 [-0.9196015969508056, -0.583230998661561, 1886.7655549874191, 3.078393760864504]
 // ]
 
+## getGbmParameters
+
+Calculates the parameters (drift `mu` and volatility `sigma`) for a Geometric
+Brownian Motion (GBM) model based on historical data.
+
+Geometric Brownian Motion is a continuous-time stochastic process often used to
+model stock prices and other financial assets. This function estimates the drift
+and volatility from a series of observed values, assuming the returns follow a
+log-normal distribution.
+
+**When to use this function:**
+
+- To estimate parameters for simulating future asset paths using GBM
+- When you have a sequence of historical prices or values and need to determine
+  their annualized growth rate (drift) and risk (volatility)
+- To model potential future scenarios for a stock, index, or commodity based on
+  historical trends
+
+### Signature
+
+```typescript
+function getGbmParameters(
+  values: number[],
+  periodsPerYear: number,
+): { mu: number; sigma: number };
+```
+
+### Parameters
+
+- **`values`**: - An array of numerical values (e.g., historical prices)
+- **`periodsPerYear`**: - The number of data points per year (e.g., 252 for
+  daily trading days, 12 for monthly data, 52 for weekly)
+
+### Returns
+
+An object containing the annualized drift (`mu`) and annualized volatility
+(`sigma`)
+
+### Examples
+
+```ts
+const prices = [100, 102, 101, 105, 107, 110];
+const periodsPerYear = 252; // Daily data
+
+const { mu, sigma } = calculateGbmParameters(prices, periodsPerYear);
+console.log(`Annualized Drift (mu): ${mu.toFixed(4)}`);
+console.log(`Annualized Volatility (sigma): ${sigma.toFixed(4)}`);
+```
+
+## getGmbPath
+
+Generates a simulated path for an asset using the Geometric Brownian Motion
+(GBM) model.
+
+Geometric Brownian Motion is a continuous-time stochastic process in which the
+logarithm of the randomly varying quantity follows a Brownian motion with drift.
+It is widely used in mathematical finance to model stock prices, as it ensures
+that values remain positive and accounts for compounded returns.
+
+**When to use this function:**
+
+- To simulate future value paths for a stock, index, or other financial asset
+- For risk management and stress testing by generating multiple potential
+  scenarios
+- To visualize the impact of volatility and drift on an investment over time
+
+**Note:** You can use `getGbmParameters` to estimate the `mu` and `sigma`
+parameters from historical data before generating a path.
+
+### Signature
+
+```typescript
+function getGmbPath(
+  startValue: number,
+  mu: number,
+  sigma: number,
+  years: number,
+  periodsPerYear: number,
+): number[];
+```
+
+### Parameters
+
+- **`startValue`**: - The initial value of the asset at the beginning of the
+  simulation
+- **`mu`**: - The expected annualized drift (average growth rate) of the asset
+- **`sigma`**: - The annualized volatility (degree of variation) of the asset
+- **`years`**: - The total duration of the simulation in years
+- **`periodsPerYear`**: - The number of simulation steps per year (e.g., 252 for
+  daily trading days, 12 for monthly data, 52 for weekly)
+
+### Returns
+
+An array of numerical values representing the simulated path, including the
+`startValue`
+
+### Examples
+
+```ts
+import getGbmParameters from "./getGbmParameters";
+
+const historicalValues = [100, 102, 101, 105, 107, 110];
+const periodsPerYear = 252; // Daily data
+
+// Estimate parameters from historical data
+const { mu, sigma } = getGbmParameters(historicalValues, periodsPerYear);
+
+// Generate a simulated path for the next year
+const startValue = historicalValues[historicalValues.length - 1];
+const path = generateGBMPath(startValue, mu, sigma, 1, periodsPerYear);
+console.log(`Simulated path: ${path.map((v) => v.toFixed(2)).join(", ")}`);
+```
+
 ## getMahalanobisDistance
 
 Computes the Mahalanobis distance between two data points (`x1` and `x2`) given
