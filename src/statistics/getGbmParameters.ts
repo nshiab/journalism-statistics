@@ -22,7 +22,7 @@
  * console.log(`Annualized Volatility (sigma): ${sigma.toFixed(4)}`);
  * ```
  */
-export default function calculateGbmParameters(
+export default function getGbmParameters(
   values: number[],
   periodsPerYear: number,
 ) {
