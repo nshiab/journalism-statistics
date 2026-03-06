@@ -5,7 +5,7 @@ import {
   assertNotEquals,
   assertThrows,
 } from "jsr:@std/assert";
-import generateGBMPath from "../../src/statistics/getGbmPath.ts";
+import generateGBMPath from "../../src/statistics/generateGbmPath.ts";
 
 Deno.test("generateGBMPath should throw error for invalid input", () => {
   // startValue <= 0

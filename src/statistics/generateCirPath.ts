@@ -27,10 +27,10 @@
  *
  * // Then, generate a future path
  * const initialRate = rates[rates.length - 1];
- * const path = getCirPath(initialRate, a, b, sigma, 1, 12);
+ * const path = generateCirPath(initialRate, a, b, sigma, 1, 12);
  * ```
  */
-export default function getCirPath(
+export default function generateCirPath(
   startValue: number,
   a: number,
   b: number,

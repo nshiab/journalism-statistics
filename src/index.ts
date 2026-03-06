@@ -35,18 +35,18 @@ import performTwoSampleTTest from "./statistics/performTwoSampleTTest.ts";
 import performChiSquaredIndependenceTest from "./statistics/performChiSquaredIndependenceTest.ts";
 import performChiSquaredGoodnessOfFitTest from "./statistics/performChiSquaredGoodnessOfFitTest.ts";
 import getCirParameters from "./statistics/getCirParameters.ts";
-import getCirPath from "./statistics/getCirPath.ts";
+import generateCirPath from "./statistics/generateCirPath.ts";
 import getGbmParameters from "./statistics/getGbmParameters.ts";
-import generateGbmPath from "./statistics/getGbmPath.ts";
+import generateGbmPath from "./statistics/generateGbmPath.ts";
 
 export {
   addClusters,
   addMahalanobisDistance,
   addZScore,
   euclidianDistance,
+  generateCirPath,
   generateGbmPath,
   getCirParameters,
-  getCirPath,
   getCovarianceMatrix,
   getGbmParameters,
   getMahalanobisDistance,
