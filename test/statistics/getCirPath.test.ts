@@ -19,14 +19,6 @@ Deno.test("generateCirPath should throw error for invalid parameters", () => {
   );
 });
 
-Deno.test("generateCirPath should return a path of the correct length with default periodsPerYear", () => {
-  const years = 1;
-  const path = generateCirPath(0.05, 0.1, 0.05, 0.02, years);
-
-  // Initial value (0.05) plus 1 year's worth of steps (12 defaults)
-  assertEquals(path.length, 13);
-});
-
 Deno.test("generateCirPath should return a path of the correct length", () => {
   const years = 1;
   const periodsPerYear = 12; // 1 month per step

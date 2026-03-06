@@ -13,7 +13,7 @@
  * @param b - The long-term mean to which the process reverts.
  * @param sigma - The volatility of the process.
  * @param years - The number of years to simulate.
- * @param periodsPerYear - The number of simulation steps per year (e.g., 12 for monthly). Defaults to 12.
+ * @param periodsPerYear - The number of simulation steps per year (e.g., 12 for monthly).
  * @returns An array representing the simulated path of values.
  * @throws {Error} If parameters are invalid (e.g. negative values where prohibited or zero simulation length).
  *
@@ -36,7 +36,7 @@ export default function generateCirPath(
   b: number,
   sigma: number,
   years: number,
-  periodsPerYear: number = 12,
+  periodsPerYear: number,
 ): number[] {
   if (startValue < 0) throw new Error("Start value must be non-negative.");
   if (a < 0 || b < 0 || sigma < 0) {
