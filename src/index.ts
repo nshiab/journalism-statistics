@@ -34,6 +34,8 @@ import performPairedTTest from "./statistics/performPairedTTest.ts";
 import performTwoSampleTTest from "./statistics/performTwoSampleTTest.ts";
 import performChiSquaredIndependenceTest from "./statistics/performChiSquaredIndependenceTest.ts";
 import performChiSquaredGoodnessOfFitTest from "./statistics/performChiSquaredGoodnessOfFitTest.ts";
+import getCirParameters from "./statistics/getCirParameters.ts";
+import getCirPath from "./statistics/getCirPath.ts";
 import getGbmParameters from "./statistics/getGbmParameters.ts";
 import generateGbmPath from "./statistics/getGbmPath.ts";
 
@@ -43,6 +45,8 @@ export {
   addZScore,
   euclidianDistance,
   generateGbmPath,
+  getCirParameters,
+  getCirPath,
   getCovarianceMatrix,
   getGbmParameters,
   getMahalanobisDistance,
