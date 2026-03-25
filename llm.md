@@ -49,16 +49,7 @@ point:
 ### Signature
 
 ```typescript
-function addClusters<T extends Record<string, unknown>>(
-  data: T[],
-  minDistance: number,
-  minNeighbours: number,
-  distance: (a: T, b: T) => number,
-  options?: { reset?: boolean },
-): asserts data is (T & {
-  clusterId: string | null;
-  clusterType: "core" | "border" | "noise";
-})[];
+function addClusters<T extends Record<string, unknown>>(data: T[], minDistance: number, minNeighbours: number, distance: (a: T, b: T) => number, options?: { reset?: boolean }): asserts data is ;
 ```
 
 ### Parameters
@@ -149,18 +140,18 @@ function addMahalanobisDistance<T extends Record<string, unknown>>(
 
 ### Parameters
 
-- **`origin`**: - An object defining the reference point for the distance
+- **`origin`**: An object defining the reference point for the distance
   calculation. The keys of this object represent the variables (dimensions) to
   be used, and the values are their corresponding coordinates.
-- **`data`**: - An array of objects to be analyzed. Each object should contain
-  the same keys as the `origin` object, and their values for these keys should
-  be numbers.
-- **`options`**: - Optional parameters to customize the function's behavior.
-- **`options.similarity`**: - If `true`, a `similarity` property will be added
-  to each object in the `data` array. The similarity is calculated as
+- **`data`**: An array of objects to be analyzed. Each object should contain the
+  same keys as the `origin` object, and their values for these keys should be
+  numbers.
+- **`options`**: Optional parameters to customize the function's behavior.
+- **`options.similarity`**: If `true`, a `similarity` property will be added to
+  each object in the `data` array. The similarity is calculated as
   `1 - (mahaDist / maxMahaDist)`, providing an intuitive measure of closeness to
   the origin.
-- **`options.matrix`**: - A pre-computed inverted covariance matrix. Providing
+- **`options.matrix`**: A pre-computed inverted covariance matrix. Providing
   this can significantly speed up calculations, as it avoids re-computing the
   matrix for each call. This matrix should be obtained from
   `getCovarianceMatrix` with `invert: true`.
@@ -237,10 +228,10 @@ function addMahalanobisDistance<T extends Record<string, unknown>>(
 
 ### Parameters
 
-- **`origin`**: - An object defining the reference point for the distance
+- **`origin`**: An object defining the reference point for the distance
   calculation.
-- **`data`**: - An array of objects to be analyzed.
-- **`options`**: - Optional parameters (similarity defaults to false).
+- **`data`**: An array of objects to be analyzed.
+- **`options`**: Optional parameters (similarity defaults to false).
 
 ### Returns
 
@@ -269,12 +260,12 @@ function addZScore<T extends Record<string, unknown>, K extends string>(
 
 ### Parameters
 
-- **`data`**: - An array of objects. Each object should contain the variable for
+- **`data`**: An array of objects. Each object should contain the variable for
   which the Z-score is to be calculated.
-- **`variable`**: - The key (as a string) of the numeric variable for which the
+- **`variable`**: The key (as a string) of the numeric variable for which the
   Z-score will be computed.
-- **`options`**: - Optional settings for the Z-score calculation.
-- **`options.newKey`**: - The name of the new key to be added to each object,
+- **`options`**: Optional settings for the Z-score calculation.
+- **`options.newKey`**: The name of the new key to be added to each object,
   representing the Z-score. If not provided, it defaults to `'zScore'`.
 
 ### Returns
@@ -345,11 +336,11 @@ function addZScore<T extends Record<string, unknown>>(
 
 ### Parameters
 
-- **`data`**: - An array of objects. Each object should contain the variable for
+- **`data`**: An array of objects. Each object should contain the variable for
   which the Z-score is to be calculated.
-- **`variable`**: - The key (as a string) of the numeric variable for which the
+- **`variable`**: The key (as a string) of the numeric variable for which the
   Z-score will be computed.
-- **`options`**: - Optional settings (newKey defaults to undefined, using
+- **`options`**: Optional settings (newKey defaults to undefined, using
   'zScore').
 
 ### Returns
@@ -436,13 +427,13 @@ function generateCirPath(
 
 ### Parameters
 
-- **`startValue`**: - The initial value of the process (e.g., current interest
+- **`startValue`**: The initial value of the process (e.g., current interest
   rate).
-- **`a`**: - The speed of mean reversion.
-- **`b`**: - The long-term mean to which the process reverts.
-- **`sigma`**: - The volatility of the process.
-- **`years`**: - The number of years to simulate.
-- **`periodsPerYear`**: - The number of simulation steps per year (e.g., 12 for
+- **`a`**: The speed of mean reversion.
+- **`b`**: The long-term mean to which the process reverts.
+- **`sigma`**: The volatility of the process.
+- **`years`**: The number of years to simulate.
+- **`periodsPerYear`**: The number of simulation steps per year (e.g., 12 for
   monthly).
 
 ### Returns
@@ -502,12 +493,12 @@ function generateGbmPath(
 
 ### Parameters
 
-- **`startValue`**: - The initial value of the asset at the beginning of the
+- **`startValue`**: The initial value of the asset at the beginning of the
   simulation
-- **`mu`**: - The expected annualized drift (average growth rate) of the asset
-- **`sigma`**: - The annualized volatility (degree of variation) of the asset
-- **`years`**: - The total duration of the simulation in years
-- **`periodsPerYear`**: - The number of simulation steps per year (e.g., 252 for
+- **`mu`**: The expected annualized drift (average growth rate) of the asset
+- **`sigma`**: The annualized volatility (degree of variation) of the asset
+- **`years`**: The total duration of the simulation in years
+- **`periodsPerYear`**: The number of simulation steps per year (e.g., 252 for
   daily trading days, 12 for monthly data, 52 for weekly)
 
 ### Returns
@@ -562,10 +553,10 @@ function getCirParameters(
 
 ### Parameters
 
-- **`values`**: - An array of numerical data points (e.g., historical interest
+- **`values`**: An array of numerical data points (e.g., historical interest
   rates).
-- **`periodsPerYear`**: - The number of data points per year (e.g., 252 for
-  daily, 12 for monthly).
+- **`periodsPerYear`**: The number of data points per year (e.g., 252 for daily,
+  12 for monthly).
 
 ### Returns
 
@@ -614,10 +605,10 @@ function getCovarianceMatrix(
 
 ### Parameters
 
-- **`data`**: - A 2D array of numbers representing the dataset. Each inner array
+- **`data`**: A 2D array of numbers representing the dataset. Each inner array
   is a data point, and each element is a variable.
-- **`options`**: - Optional settings for the covariance matrix computation.
-- **`options.invert`**: - If `true`, the function will return the inverse of the
+- **`options`**: Optional settings for the covariance matrix computation.
+- **`options.invert`**: If `true`, the function will return the inverse of the
   computed covariance matrix. Defaults to `false`.
 
 ### Returns
@@ -723,9 +714,9 @@ function getGbmParameters(
 
 ### Parameters
 
-- **`values`**: - An array of numerical values (e.g., historical prices)
-- **`periodsPerYear`**: - The number of data points per year (e.g., 252 for
-  daily trading days, 12 for monthly data, 52 for weekly)
+- **`values`**: An array of numerical values (e.g., historical prices)
+- **`periodsPerYear`**: The number of data points per year (e.g., 252 for daily
+  trading days, 12 for monthly data, 52 for weekly)
 
 ### Returns
 
@@ -767,10 +758,10 @@ function getMahalanobisDistance(
 
 ### Parameters
 
-- **`x1`**: - The first data point (an array of numbers).
-- **`x2`**: - The second data point (an array of numbers).
-- **`invCovMatrix`**: - The inverted covariance matrix of the dataset (a 2D
-  array of numbers).
+- **`x1`**: The first data point (an array of numbers).
+- **`x2`**: The second data point (an array of numbers).
+- **`invCovMatrix`**: The inverted covariance matrix of the dataset (a 2D array
+  of numbers).
 
 ### Returns
 
@@ -866,18 +857,18 @@ function getSampleSizeMean<T extends Record<string, unknown>>(
 
 ### Parameters
 
-- **`data`**: - An array of objects used to calculate the sample standard
+- **`data`**: An array of objects used to calculate the sample standard
   deviation. Each object must contain the specified key with numeric values.
-- **`key`**: - The key in each data object that contains the numeric values to
+- **`key`**: The key in each data object that contains the numeric values to
   analyze for calculating the sample size.
-- **`confidenceLevel`**: - The desired confidence level for the sample. Must be
+- **`confidenceLevel`**: The desired confidence level for the sample. Must be
   90, 95, or 99. The higher the confidence level, the larger the returned sample
   size.
-- **`marginOfError`**: - The acceptable margin of error in the same units as the
+- **`marginOfError`**: The acceptable margin of error in the same units as the
   data values. The smaller the margin of error, the larger the returned sample
   size.
-- **`options`**: - Optional configuration object.
-- **`options.populationSize`**: - The total size of the population. If not
+- **`options`**: Optional configuration object.
+- **`options.populationSize`**: The total size of the population. If not
   provided, the function assumes the provided data represents the entire
   population and uses data.length as the population size.
 
@@ -977,13 +968,13 @@ function getSampleSizeProportion(
 
 ### Parameters
 
-- **`populationSize`**: - The size of the population from which the sample will
-  be drawn. Used in the finite population correction formula for more accurate
+- **`populationSize`**: The size of the population from which the sample will be
+  drawn. Used in the finite population correction formula for more accurate
   sample size calculations.
-- **`confidenceLevel`**: - The desired confidence level for the sample. Must be
+- **`confidenceLevel`**: The desired confidence level for the sample. Must be
   90, 95, or 99. The higher the confidence level, the larger the returned sample
   size.
-- **`marginOfError`**: - The acceptable margin of error as a percentage (1-100).
+- **`marginOfError`**: The acceptable margin of error as a percentage (1-100).
   The smaller the margin of error, the larger the returned sample size.
 
 ### Returns
@@ -1026,7 +1017,7 @@ function invertMatrix(matrix: number[][]): number[][];
 
 ### Parameters
 
-- **`matrix`**: - The square matrix to be inverted. It must be a 2D array where
+- **`matrix`**: The square matrix to be inverted. It must be a 2D array where
   the number of rows equals the number of columns.
 
 ### Returns
@@ -1119,12 +1110,12 @@ function performChiSquaredGoodnessOfFitTest<T extends Record<string, unknown>>(
 
 ### Parameters
 
-- **`data`**: - An array of objects containing the categorical data and
-  frequency counts.
-- **`categoryKey`**: - The key for the categorical variable.
-- **`observedKey`**: - The key containing the observed frequency count for each
+- **`data`**: An array of objects containing the categorical data and frequency
+  counts.
+- **`categoryKey`**: The key for the categorical variable.
+- **`observedKey`**: The key containing the observed frequency count for each
   category.
-- **`expectedKey`**: - The key containing the expected frequency count for each
+- **`expectedKey`**: The key containing the expected frequency count for each
   category.
 
 ### Returns
@@ -1248,11 +1239,11 @@ function performChiSquaredIndependenceTest<T extends Record<string, unknown>>(
 
 ### Parameters
 
-- **`data`**: - An array of objects containing the categorical data and
-  frequency counts.
-- **`firstVariableKey`**: - The key for the first categorical variable.
-- **`secondVariableKey`**: - The key for the second categorical variable.
-- **`countKey`**: - The key containing the frequency count for each combination.
+- **`data`**: An array of objects containing the categorical data and frequency
+  counts.
+- **`firstVariableKey`**: The key for the first categorical variable.
+- **`secondVariableKey`**: The key for the second categorical variable.
+- **`countKey`**: The key containing the frequency count for each combination.
 
 ### Returns
 
@@ -1377,14 +1368,14 @@ function performPairedTTest<T extends Record<string, unknown>>(
 
 ### Parameters
 
-- **`pairedData`**: - An array of objects containing paired observations. Each
+- **`pairedData`**: An array of objects containing paired observations. Each
   object must contain both specified keys with numeric values.
-- **`firstVariableKey`**: - The key for the first measurement in each pair
-  (e.g., "before_event", "baseline", "pre_policy").
-- **`secondVariableKey`**: - The key for the second measurement in each pair
+- **`firstVariableKey`**: The key for the first measurement in each pair (e.g.,
+  "before_event", "baseline", "pre_policy").
+- **`secondVariableKey`**: The key for the second measurement in each pair
   (e.g., "after_event", "follow_up", "post_policy").
-- **`options`**: - Optional configuration object.
-- **`options.tail`**: - The type of test to perform: "two-tailed" (default),
+- **`options`**: Optional configuration object.
+- **`options.tail`**: The type of test to perform: "two-tailed" (default),
   "left-tailed", or "right-tailed".
 
 ### Returns
@@ -1509,14 +1500,14 @@ function performTTest<T extends Record<string, unknown>>(
 
 ### Parameters
 
-- **`sampleData`**: - An array of objects representing the sample data. Each
+- **`sampleData`**: An array of objects representing the sample data. Each
   object must contain the specified key with numeric values.
-- **`variableKey`**: - The key in each data object that contains the numeric
+- **`variableKey`**: The key in each data object that contains the numeric
   values to analyze for the statistical test.
-- **`hypothesizedMean`**: - The hypothesized population mean to test against
-  (null hypothesis value).
-- **`options`**: - Optional configuration object.
-- **`options.tail`**: - The type of test to perform: "two-tailed" (default),
+- **`hypothesizedMean`**: The hypothesized population mean to test against (null
+  hypothesis value).
+- **`options`**: Optional configuration object.
+- **`options.tail`**: The type of test to perform: "two-tailed" (default),
   "left-tailed", or "right-tailed".
 
 ### Returns
@@ -1648,14 +1639,14 @@ function performTwoSampleTTest<
 
 ### Parameters
 
-- **`group1Data`**: - An array of objects containing observations for the first
+- **`group1Data`**: An array of objects containing observations for the first
   group. Each object must contain the specified key with a numeric value.
-- **`group2Data`**: - An array of objects containing observations for the second
+- **`group2Data`**: An array of objects containing observations for the second
   group. Each object must contain the specified key with a numeric value.
-- **`variableKey`**: - The key for the measurement in both group objects (e.g.,
+- **`variableKey`**: The key for the measurement in both group objects (e.g.,
   "income", "score", "price").
-- **`options`**: - Optional configuration object.
-- **`options.tail`**: - The type of test to perform: "two-tailed" (default),
+- **`options`**: Optional configuration object.
+- **`options.tail`**: The type of test to perform: "two-tailed" (default),
   "left-tailed", or "right-tailed".
 
 ### Returns
@@ -1786,16 +1777,15 @@ function performZTest<T extends Record<string, unknown>>(
 
 ### Parameters
 
-- **`populationData`**: - An array of objects representing the complete
-  population data. Each object must contain the specified key with numeric
-  values.
-- **`sampleData`**: - An array of objects representing the sample data to test
+- **`populationData`**: An array of objects representing the complete population
+  data. Each object must contain the specified key with numeric values.
+- **`sampleData`**: An array of objects representing the sample data to test
   against the population. Each object must contain the specified key with
   numeric values.
-- **`variableKey`**: - The key in each data object that contains the numeric
+- **`variableKey`**: The key in each data object that contains the numeric
   values to analyze for the statistical test.
-- **`options`**: - Optional configuration object.
-- **`options.tail`**: - The type of test to perform: "two-tailed" (default),
+- **`options`**: Optional configuration object.
+- **`options.tail`**: The type of test to perform: "two-tailed" (default),
   "left-tailed", or "right-tailed".
 
 ### Returns
