@@ -49,7 +49,16 @@ point:
 ### Signature
 
 ```typescript
-function addClusters<T extends Record<string, unknown>>(data: T[], minDistance: number, minNeighbours: number, distance: (a: T, b: T) => number, options?: { reset?: boolean }): asserts data is ;
+function addClusters<T extends Record<string, unknown>>(
+  data: T[],
+  minDistance: number,
+  minNeighbours: number,
+  distance: (a: T, b: T) => number,
+  options?: { reset?: boolean },
+): asserts data is (T & {
+  clusterId: string | null;
+  clusterType: "core" | "border" | "noise";
+})[];
 ```
 
 ### Parameters
