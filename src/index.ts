@@ -20,6 +20,7 @@
  */
 
 import getCovarianceMatrix from "./statistics/getCovarianceMatrix.ts";
+import getCorrelationMatrix from "./statistics/getCorrelationMatrix.ts";
 import invertMatrix from "./statistics/invertMatrix.ts";
 import getMahalanobisDistance from "./statistics/getMahalanobisDistance.ts";
 import addMahalanobisDistance from "./statistics/addMahalanobisDistance.ts";
@@ -53,6 +54,7 @@ export {
   getCholeskyMatrix,
   getCirParameters,
   getCorrelatedShocks,
+  getCorrelationMatrix,
   getCovarianceMatrix,
   getGbmParameters,
   getMahalanobisDistance,
