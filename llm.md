@@ -540,12 +540,14 @@ matrix.
 ### Signature
 
 ```typescript
-function getCholeskyMatrix(matrix: number[][]): number[][];
+function getCholeskyMatrix(matrix: number[][], jitter?: number): number[][];
 ```
 
 ### Parameters
 
 - **`matrix`**: A square, symmetric, positive-definite covariance matrix.
+- **`jitter`**: A tiny positive value (e.g., 1e-9) added to the diagonal to
+  force positive-definiteness.
 
 ### Returns
 
