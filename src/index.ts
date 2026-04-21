@@ -38,6 +38,10 @@ import getCirParameters from "./statistics/getCirParameters.ts";
 import generateCirPath from "./statistics/generateCirPath.ts";
 import getGbmParameters from "./statistics/getGbmParameters.ts";
 import generateGbmPath from "./statistics/generateGbmPath.ts";
+import getCholeskyMatrix from "./statistics/getCholeskyMatrix.ts";
+import getCorrelatedShocks from "./statistics/getCorrelatedShocks.ts";
+import stepGbm from "./statistics/stepGbm.ts";
+import stepCir from "./statistics/stepCir.ts";
 
 export {
   addClusters,
@@ -46,7 +50,9 @@ export {
   euclidianDistance,
   generateCirPath,
   generateGbmPath,
+  getCholeskyMatrix,
   getCirParameters,
+  getCorrelatedShocks,
   getCovarianceMatrix,
   getGbmParameters,
   getMahalanobisDistance,
@@ -59,4 +65,6 @@ export {
   performTTest,
   performTwoSampleTTest,
   performZTest,
+  stepCir,
+  stepGbm,
 };
