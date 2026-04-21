@@ -532,6 +532,25 @@ const path = generateGbmPath(startValue, mu, sigma, 1, periodsPerYear);
 console.log(`Simulated path: ${path.map((v) => v.toFixed(2)).join(", ")}`);
 ```
 
+## getCholeskyMatrix
+
+Performs Cholesky Decomposition on a symmetric, positive-definite covariance
+matrix.
+
+### Signature
+
+```typescript
+function getCholeskyMatrix(matrix: number[][]): number[][];
+```
+
+### Parameters
+
+- **`matrix`**: A square, symmetric, positive-definite covariance matrix.
+
+### Returns
+
+A lower triangular matrix L.
+
 ## getCirParameters
 
 Estimates the parameters of the Cox-Ingersoll-Ross (CIR) model based on
@@ -587,6 +606,26 @@ const periodsPerYear = 12; // Monthly data
 
 const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
 ```
+
+## getCorrelatedShocks
+
+Multiplies a lower triangular Cholesky matrix (L) by a vector of independent
+standard normal random variables (Z).
+
+### Signature
+
+```typescript
+function getCorrelatedShocks(L: number[][], Z: number[]): number[];
+```
+
+### Parameters
+
+- **`L`**: The lower triangular matrix.
+- **`Z`**: An array of independent standard normal random variables.
+
+### Returns
+
+An array of correlated random variables.
 
 ## getCovarianceMatrix
 
@@ -1870,3 +1909,61 @@ if (testResult.pValue < 0.05) {
   console.log("Corporate donors don't give significantly more than average");
 }
 ```
+
+## stepCir
+
+Calculates the next value in a Cox-Ingersoll-Ross (CIR) process.
+
+### Signature
+
+```typescript
+function stepCir(
+  currentValue: number,
+  a: number,
+  b: number,
+  sigma: number,
+  dt: number,
+  shock: number,
+): number;
+```
+
+### Parameters
+
+- **`currentValue`**: The current value of the process.
+- **`a`**: The speed of mean reversion.
+- **`b`**: The long-term mean level.
+- **`sigma`**: The volatility coefficient.
+- **`dt`**: The time step.
+- **`shock`**: A standard normal random variable (Z).
+
+### Returns
+
+The next value in the process.
+
+## stepGbm
+
+Calculates the next value in a Geometric Brownian Motion (GBM) process.
+
+### Signature
+
+```typescript
+function stepGbm(
+  currentValue: number,
+  mu: number,
+  sigma: number,
+  dt: number,
+  shock: number,
+): number;
+```
+
+### Parameters
+
+- **`currentValue`**: The current value of the process.
+- **`mu`**: The drift coefficient.
+- **`sigma`**: The volatility coefficient.
+- **`dt`**: The time step.
+- **`shock`**: A standard normal random variable (Z).
+
+### Returns
+
+The next value in the process.
