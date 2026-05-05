@@ -220,32 +220,6 @@ console.log(wines);
 // ]
 ```
 
-## addMahalanobisDistance
-
-Calculates the Mahalanobis distance for each object in an array relative to a
-specified origin point (without similarity scores).
-
-### Signature
-
-```typescript
-function addMahalanobisDistance<T extends Record<string, unknown>>(
-  origin: Record<string, number>,
-  data: T[],
-  options?: { similarity?: false; matrix?: number[][] },
-): (T & { mahaDist: number })[];
-```
-
-### Parameters
-
-- **`origin`**: An object defining the reference point for the distance
-  calculation.
-- **`data`**: An array of objects to be analyzed.
-- **`options`**: Optional parameters (similarity defaults to false).
-
-### Returns
-
-The input data array with mahaDist properties added to each object.
-
 ## addZScore
 
 Calculates the Z-score for a specific numeric variable within an array of
@@ -327,34 +301,6 @@ console.log(studentData);
 //   { student: 'Eve', grade: 62, gradeZScore: -1.83 }
 // ]
 ```
-
-## addZScore
-
-Calculates the Z-score for a specific numeric variable within an array of
-objects using the default 'zScore' key name.
-
-### Signature
-
-```typescript
-function addZScore<T extends Record<string, unknown>>(
-  data: T[],
-  variable: string,
-  options?: { newKey?: undefined },
-): (T & { zScore: number })[];
-```
-
-### Parameters
-
-- **`data`**: An array of objects. Each object should contain the variable for
-  which the Z-score is to be calculated.
-- **`variable`**: The key (as a string) of the numeric variable for which the
-  Z-score will be computed.
-- **`options`**: Optional settings (newKey defaults to undefined, using
-  'zScore').
-
-### Returns
-
-The input data array with zScore properties added to each object.
 
 ## euclidianDistance
 
