@@ -1,6 +1,6 @@
 {
   "name": "@nshiab/journalism-statistics",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Useful TypeScript functions for journalism projects. This library focuses on statistical calculations.",
   "repository": "https://github.com/nshiab/journalism-statistics",
   "license": "MIT",
