@@ -1,4 +1,4 @@
-# The Journalism library
+# The Journalism library (statistics functions)
 
 To install the library with Deno, use:
 
