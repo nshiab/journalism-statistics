@@ -1,5 +1,10 @@
 import { assertEquals } from "jsr:@std/assert";
 import performTTest from "../../src/statistics/performTTest.ts";
+import {
+  assertProbability,
+  sampleWithTStatistic,
+  type Tail,
+} from "../helpers/distributionCharacterization.ts";
 
 // Tested with
 // https://www.socscistatistics.com/tests/tsinglesample/default2.aspx
@@ -26,7 +31,7 @@ Deno.test("should perform one-sample t-test with basketball data (two-tailed, de
     hypothesizedMean: 10,
     degreesOfFreedom: 5,
     tStatistic: 5.2915026221291805,
-    pValue: 0.0032144034085095363,
+    pValue: 0.0032144034085102033,
   });
 });
 
@@ -43,7 +48,7 @@ Deno.test("should perform one-sample t-test with basketball data (right-tailed)"
     hypothesizedMean: 10,
     degreesOfFreedom: 5,
     tStatistic: 5.2915026221291805,
-    pValue: 0.0016072017042547682,
+    pValue: 0.0016072017042551017,
   });
 });
 
@@ -60,7 +65,7 @@ Deno.test("should perform one-sample t-test with basketball data (left-tailed)",
     hypothesizedMean: 10,
     degreesOfFreedom: 5,
     tStatistic: 5.2915026221291805,
-    pValue: 0.9983927982957452,
+    pValue: 0.9983927982957449,
   });
 });
 
@@ -129,4 +134,76 @@ Deno.test("should handle zero standard deviation when sample mean is less than h
     tStatistic: -Infinity,
     pValue: 0,
   });
+});
+
+// These characterization fixtures were recorded before removing jStat.
+// Historical jStat values guard compatibility; SciPy 1.16.3 provides an
+// independent reference and identifies intentional precision improvements.
+Deno.test("matches Student's t references across centers and tails", () => {
+  const fixtures: Array<{
+    degreesOfFreedom: number;
+    tStatistic: number;
+    tail: Tail;
+    scipyPValue: number;
+    jstatPValue: number;
+  }> = [
+    {
+      degreesOfFreedom: 1,
+      tStatistic: -3,
+      tail: "left-tailed",
+      scipyPValue: 0.10241638234956672,
+      jstatPValue: 0.10241638234954625,
+    },
+    {
+      degreesOfFreedom: 5,
+      tStatistic: 0,
+      tail: "two-tailed",
+      scipyPValue: 1,
+      jstatPValue: 0.9999999943794333,
+    },
+    {
+      degreesOfFreedom: 30,
+      tStatistic: 2,
+      tail: "right-tailed",
+      scipyPValue: 0.027312522481491554,
+      jstatPValue: 0.027312522452310528,
+    },
+    {
+      degreesOfFreedom: 200,
+      tStatistic: 8,
+      tail: "two-tailed",
+      scipyPValue: 9.879200909330671e-14,
+      jstatPValue: 9.880984919163893e-14,
+    },
+    {
+      degreesOfFreedom: 30,
+      tStatistic: 50,
+      tail: "right-tailed",
+      scipyPValue: 9.357708829611422e-31,
+      jstatPValue: 0,
+    },
+  ];
+
+  for (const fixture of fixtures) {
+    const result = performTTest(
+      sampleWithTStatistic(fixture.degreesOfFreedom, fixture.tStatistic),
+      "value",
+      0,
+      { tail: fixture.tail },
+    );
+
+    assertProbability(result.pValue, fixture.scipyPValue, {
+      absolute: fixture.scipyPValue < 1e-12 ? 0 : 2e-14,
+      relative: 1e-10,
+    });
+
+    // jStat returned zero in the deepest tail, so only the independent
+    // SciPy value is asserted for that intentional numerical improvement.
+    if (fixture.jstatPValue > 0) {
+      assertProbability(result.pValue, fixture.jstatPValue, {
+        absolute: 6e-8,
+        relative: 3e-3,
+      });
+    }
+  }
 });

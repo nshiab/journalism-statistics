@@ -1,5 +1,9 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert";
 import performChiSquaredIndependenceTest from "../../src/statistics/performChiSquaredIndependenceTest.ts";
+import {
+  assertProbability,
+  independenceData,
+} from "../helpers/distributionCharacterization.ts";
 
 // Tested with
 // https://www.socscistatistics.com/tests/chisquare2/default2.aspx
@@ -36,7 +40,7 @@ Deno.test("should perform chi-squared independence test for votingData", () => {
   assertEquals(result, {
     chiSquared: 13.028571428571428,
     degreesOfFreedom: 2,
-    pValue: 0.001482114174450766,
+    pValue: 0.0014821141744508063,
     warnings: [],
   });
 });
@@ -50,7 +54,7 @@ Deno.test("should perform chi-squared independence test for educationData", () =
   assertEquals(result, {
     chiSquared: 145.59976422045386,
     degreesOfFreedom: 4,
-    pValue: 5e-324,
+    pValue: 1.7843029125544165e-30,
     warnings: [],
   });
 });
@@ -209,4 +213,59 @@ Deno.test("should not generate warnings for adequate expected frequencies", () =
 
   // Should have no warnings
   assertEquals(result.warnings.length, 0);
+});
+
+// These characterization fixtures were recorded before removing jStat.
+// Historical jStat values guard compatibility; SciPy 1.16.3 independently
+// verifies central and upper-tail chi-square probabilities.
+Deno.test("matches chi-square references across centers and tails", () => {
+  const fixtures = [
+    {
+      degreesOfFreedom: 1,
+      chiSquared: 0.01,
+      scipyPValue: 0.920344325445942,
+      jstatPValue: 0.9203443254459436,
+    },
+    {
+      degreesOfFreedom: 5,
+      chiSquared: 12,
+      scipyPValue: 0.03478778050624185,
+      jstatPValue: 0.03478778050624165,
+    },
+    {
+      degreesOfFreedom: 30,
+      chiSquared: 50,
+      scipyPValue: 0.012402060718900541,
+      jstatPValue: 0.012402060718853414,
+    },
+    {
+      degreesOfFreedom: 10,
+      chiSquared: 1000,
+      scipyPValue: 1.870290720915977e-208,
+      jstatPValue: Number.MIN_VALUE,
+    },
+  ];
+
+  for (const fixture of fixtures) {
+    const result = performChiSquaredIndependenceTest(
+      independenceData(fixture.degreesOfFreedom, fixture.chiSquared),
+      "row",
+      "column",
+      "count",
+    );
+
+    assertProbability(result.pValue, fixture.scipyPValue, {
+      absolute: fixture.scipyPValue < 1e-100 ? 0 : 2e-14,
+      relative: 3e-12,
+    });
+
+    // Number.MIN_VALUE was jStat's underflow fallback, so the independently
+    // verified non-zero SciPy result is authoritative for that fixture.
+    if (fixture.jstatPValue > Number.MIN_VALUE) {
+      assertProbability(result.pValue, fixture.jstatPValue, {
+        absolute: 6e-11,
+        relative: 1e-8,
+      });
+    }
+  }
 });

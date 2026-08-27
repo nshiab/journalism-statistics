@@ -25,11 +25,6 @@
       "npm"
     ]
   },
-  "nodeModulesDir": "auto",
-  "imports": {
-    "@nshiab/journalism-format": "jsr:@nshiab/journalism-format@^1.1.9",
-    "jstat": "npm:jstat@^1.9.6"
-  },
   "compilerOptions": {
     "lib": [
       "dom",

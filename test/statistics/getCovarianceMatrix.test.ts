@@ -1,9 +1,9 @@
 import { assertEquals } from "jsr:@std/assert";
 import getCovarianceMatrix from "../../src/statistics/getCovarianceMatrix.ts";
 import wineQuality from "../data/wine-quality.json" with { type: "json" };
-import { arraysToData } from "@nshiab/journalism-format";
+import columnsToRows from "../helpers/columnsToRows.ts";
 
-const data = arraysToData(wineQuality) as Record<string, number>[];
+const data = columnsToRows(wineQuality);
 
 Deno.test("should return a 2x2 covariance matrix", () => {
   const twoVariables = data.map((d) => [d["fixed acidity"], d.alcohol]);

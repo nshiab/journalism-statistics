@@ -1,7 +1,4 @@
-import jstat from "jstat";
-
-// Extract just the t-distribution functions we need
-const { studentt } = jstat;
+import { studentTCdf, studentTSurvival } from "./distributions.ts";
 
 /**
  * Performs a paired t-test for dependent means to determine if there is a significant difference between two related samples.
@@ -216,18 +213,16 @@ export default function performPairedTTest<T extends Record<string, unknown>>(
   const tStatistic = meanDifference / standardError;
   const degreesOfFreedom = sampleSize - 1;
 
-  // --- 8. Calculate P-Value using jStat's t-distribution ---
+  // --- 8. Calculate P-Value using the Student's t-distribution ---
   let pValue: number;
   if (tail === "two-tailed") {
     // Two-tailed: P(|T| > |t|) = 2 * P(T > |t|)
     const absT = Math.abs(tStatistic);
-    pValue = 2 * (1 - studentt.cdf(absT, degreesOfFreedom));
+    pValue = 2 * studentTSurvival(absT, degreesOfFreedom);
   } else if (tail === "right-tailed") {
-    // Right-tailed: P(T > t) = 1 - P(T ≤ t)
-    pValue = 1 - studentt.cdf(tStatistic, degreesOfFreedom);
+    pValue = studentTSurvival(tStatistic, degreesOfFreedom);
   } else if (tail === "left-tailed") {
-    // Left-tailed: P(T < t) = P(T ≤ t)
-    pValue = studentt.cdf(tStatistic, degreesOfFreedom);
+    pValue = studentTCdf(tStatistic, degreesOfFreedom);
   } else {
     throw new Error(
       `Invalid tail option: ${tail}. Use "two-tailed", "left-tailed", or "right-tailed".`,

@@ -1,10 +1,10 @@
 import { assertEquals } from "jsr:@std/assert";
 import addMahalanobisDistance from "../../src/statistics/addMahalanobisDistance.ts";
 import wineQuality from "../data/wine-quality.json" with { type: "json" };
-import { arraysToData } from "@nshiab/journalism-format";
+import columnsToRows from "../helpers/columnsToRows.ts";
 import getCovarianceMatrix from "../../src/statistics/getCovarianceMatrix.ts";
 
-const wines = arraysToData(wineQuality) as Record<string, number>[];
+const wines = columnsToRows(wineQuality);
 
 Deno.test("should add the Mahalanobis distance with two variables (example from doc)", () => {
   const data = [

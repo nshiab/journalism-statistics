@@ -1,5 +1,10 @@
 import { assertEquals } from "jsr:@std/assert";
 import performPairedTTest from "../../src/statistics/performPairedTTest.ts";
+import {
+  assertProbability,
+  sampleWithTStatistic,
+  type Tail,
+} from "../helpers/distributionCharacterization.ts";
 
 // Tested against
 // https://www.graphpad.com/quickcalcs/ttest2/
@@ -31,7 +36,7 @@ Deno.test("should perform paired t-test with parking fines data (two-tailed, def
     differenceVariance: 38.26666666666665,
     degreesOfFreedom: 5,
     tStatistic: -6.203573208844343,
-    pValue: 0.0015892640323764695,
+    pValue: 0.0015892640323764383,
   });
 });
 
@@ -77,7 +82,7 @@ Deno.test("should perform paired t-test with parking fines data (left-tailed)", 
     differenceVariance: 38.26666666666665,
     degreesOfFreedom: 5,
     tStatistic: -6.203573208844343,
-    pValue: 0.0007946320161881899,
+    pValue: 0.0007946320161882191,
   });
 });
 
@@ -102,7 +107,7 @@ Deno.test("should perform paired t-test with campaign data (two-tailed)", () => 
     differenceVariance: 2.6269999999999953,
     degreesOfFreedom: 4,
     tStatistic: -6.3737781246913645,
-    pValue: 0.0031078158169572934,
+    pValue: 0.0031078158169572183,
   });
 });
 
@@ -149,7 +154,7 @@ Deno.test("should perform paired t-test with weight loss data (positive differen
     differenceVariance: 3.6999999999999993,
     degreesOfFreedom: 4,
     tStatistic: 4.882400827240411,
-    pValue: 0.008146502916276832,
+    pValue: 0.008146502916276843,
   });
 });
 
@@ -247,7 +252,7 @@ Deno.test("should handle minimum sample size of 2", () => {
     differenceVariance: 0.5,
     degreesOfFreedom: 1,
     tStatistic: -5,
-    pValue: 0.12566591637137225,
+    pValue: 0.12566591637800245,
   });
 });
 
@@ -335,5 +340,59 @@ Deno.test("should throw error for invalid tail option", () => {
       (error as Error).message,
       'Invalid tail option: invalid. Use "two-tailed", "left-tailed", or "right-tailed".',
     );
+  }
+});
+
+// These characterization fixtures were recorded before removing jStat.
+// Historical jStat values guard compatibility, while SciPy 1.16.3 supplies
+// independent references across small, medium, and large degrees of freedom.
+Deno.test("matches Student's t references across degrees of freedom", () => {
+  const fixtures: Array<{
+    degreesOfFreedom: number;
+    tStatistic: number;
+    tail: Tail;
+    scipyPValue: number;
+    jstatPValue: number;
+  }> = [
+    {
+      degreesOfFreedom: 2,
+      tStatistic: -10,
+      tail: "left-tailed",
+      scipyPValue: 0.004926228511662846,
+      jstatPValue: 0.004926228511662922,
+    },
+    {
+      degreesOfFreedom: 20,
+      tStatistic: 0.125,
+      tail: "two-tailed",
+      scipyPValue: 0.9017714574678424,
+      jstatPValue: 0.9017714658619389,
+    },
+    {
+      degreesOfFreedom: 100,
+      tStatistic: 5,
+      tail: "right-tailed",
+      scipyPValue: 1.225086706751899e-6,
+      jstatPValue: 1.2250867098551055e-6,
+    },
+  ];
+
+  for (const fixture of fixtures) {
+    const pairedData = sampleWithTStatistic(
+      fixture.degreesOfFreedom,
+      fixture.tStatistic,
+    ).map(({ value }) => ({ first: value, second: 0 }));
+    const result = performPairedTTest(
+      pairedData,
+      "first",
+      "second",
+      { tail: fixture.tail },
+    );
+
+    assertProbability(result.pValue, fixture.scipyPValue);
+    assertProbability(result.pValue, fixture.jstatPValue, {
+      absolute: 1e-8,
+      relative: 3e-8,
+    });
   }
 });

@@ -1,5 +1,9 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert";
 import performChiSquaredGoodnessOfFitTest from "../../src/statistics/performChiSquaredGoodnessOfFitTest.ts";
+import {
+  assertProbability,
+  goodnessOfFitData,
+} from "../helpers/distributionCharacterization.ts";
 
 // Tested with
 // https://www.graphpad.com/quickcalcs/chisquared2/
@@ -33,7 +37,7 @@ Deno.test("should perform the chi-squared goodness of fit with crimeData", () =>
   assertEquals(result, {
     chiSquared: 6.027777777777778,
     degreesOfFreedom: 3,
-    pValue: 0.11026656902388288,
+    pValue: 0.11026656902387481,
     warnings: [],
   });
 });
@@ -47,7 +51,7 @@ Deno.test("should perform the chi-squared goodness of fit with diceData", () => 
   assertEquals(result, {
     chiSquared: 17.8,
     degreesOfFreedom: 5,
-    pValue: 0.0032077920346053057,
+    pValue: 0.0032077920346052684,
     warnings: [],
   });
 });
@@ -296,4 +300,65 @@ Deno.test("should not generate warnings for adequate expected frequencies", () =
 
   // Should have no warnings
   assertEquals(result.warnings.length, 0);
+});
+
+// These characterization fixtures were recorded before removing jStat.
+// Historical jStat values guard compatibility; SciPy 1.16.3 independently
+// verifies central and upper-tail chi-square probabilities.
+Deno.test("matches chi-square references across centers and tails", () => {
+  const fixtures = [
+    {
+      degreesOfFreedom: 1,
+      chiSquared: 0.001,
+      scipyPValue: 0.9747728793699604,
+      jstatPValue: 0.9747728793699613,
+    },
+    {
+      degreesOfFreedom: 5,
+      chiSquared: 17.8,
+      scipyPValue: 0.0032077920346052793,
+      jstatPValue: 0.0032077920346053057,
+    },
+    {
+      degreesOfFreedom: 30,
+      chiSquared: 50,
+      scipyPValue: 0.012402060718900541,
+      jstatPValue: 0.012402060718853303,
+    },
+    {
+      degreesOfFreedom: 100,
+      chiSquared: 100,
+      scipyPValue: 0.48119168452795674,
+      jstatPValue: 0.48119168455787675,
+    },
+    {
+      degreesOfFreedom: 10,
+      chiSquared: 1000,
+      scipyPValue: 1.870290720915977e-208,
+      jstatPValue: Number.MIN_VALUE,
+    },
+  ];
+
+  for (const fixture of fixtures) {
+    const result = performChiSquaredGoodnessOfFitTest(
+      goodnessOfFitData(fixture.degreesOfFreedom, fixture.chiSquared),
+      "category",
+      "observed",
+      "expected",
+    );
+
+    assertProbability(result.pValue, fixture.scipyPValue, {
+      absolute: fixture.scipyPValue < 1e-100 ? 0 : 2e-14,
+      relative: 3e-12,
+    });
+
+    // Number.MIN_VALUE was jStat's underflow fallback, so the independently
+    // verified non-zero SciPy result is authoritative for that fixture.
+    if (fixture.jstatPValue > Number.MIN_VALUE) {
+      assertProbability(result.pValue, fixture.jstatPValue, {
+        absolute: 6e-11,
+        relative: 1e-8,
+      });
+    }
+  }
 });

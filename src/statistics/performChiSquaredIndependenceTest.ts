@@ -1,7 +1,4 @@
-import jstat from "jstat";
-
-// Extract just the chi-square distribution functions we need
-const { chisquare } = jstat;
+import { chiSquaredSurvival } from "./distributions.ts";
 
 /**
  * Performs a Chi-Squared independence test to determine if two categorical variables are statistically independent or associated.
@@ -266,7 +263,7 @@ export default function performChiSquaredIndependenceTest<
 }
 
 /**
- * Calculate the p-value for a chi-squared statistic using jStat's chi-squared distribution.
+ * Calculate the upper-tail probability for a chi-squared statistic.
  */
 function calculateChiSquaredPValue(
   chiSquared: number,
@@ -283,10 +280,5 @@ function calculateChiSquaredPValue(
   // For very small chi-squared values, return 1 (no significance)
   if (chiSquared === 0) return 1;
 
-  // Use jStat's chi-square distribution CDF for accurate p-value calculation
-  // P-value = P(X >= chiSquared) = 1 - P(X <= chiSquared) = 1 - CDF(chiSquared)
-  const pValue = 1 - chisquare.cdf(chiSquared, degreesOfFreedom);
-
-  // Handle numerical issues: ensure p-value is within valid range [0, 1]
-  return Math.max(Number.MIN_VALUE, Math.min(1, pValue));
+  return chiSquaredSurvival(chiSquared, degreesOfFreedom);
 }

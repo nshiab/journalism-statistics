@@ -1,5 +1,9 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert";
 import performTwoSampleTTest from "../../src/statistics/performTwoSampleTTest.ts";
+import {
+  assertProbability,
+  type Tail,
+} from "../helpers/distributionCharacterization.ts";
 
 // Tested with
 // https://www.graphpad.com/quickcalcs/ttest2/
@@ -35,7 +39,7 @@ Deno.test("performTwoSampleTTest - basic two-tailed test", () => {
     meanDifference: -10,
     degreesOfFreedom: 8,
     tStatistic: -5,
-    pValue: 0.0010528257934054874,
+    pValue: 0.0010528257933665392,
   });
 });
 
@@ -75,7 +79,7 @@ Deno.test("performTwoSampleTTest - right-tailed test", () => {
     meanDifference: 9.200000000000003,
     degreesOfFreedom: 7.313793871039548,
     tStatistic: 4.366126780461497,
-    pValue: 0.001481704382465976,
+    pValue: 0.0014817043823860264,
   });
 });
 
@@ -114,7 +118,7 @@ Deno.test("performTwoSampleTTest - left-tailed test", () => {
     meanDifference: -9.7,
     degreesOfFreedom: 6.295249249586221,
     tStatistic: -7.183543044794596,
-    pValue: 0.00014783740286633591,
+    pValue: 0.00014783740286633217,
   });
 });
 
@@ -154,7 +158,7 @@ Deno.test("performTwoSampleTTest - Welch's test (unequal variances)", () => {
     meanDifference: -12.833333333333329,
     degreesOfFreedom: 5.510735970410618,
     tStatistic: -4.019367282483479,
-    pValue: 0.008297784874405911,
+    pValue: 0.008297784874449671,
   });
 });
 
@@ -384,4 +388,63 @@ Deno.test("performTwoSampleTTest - statistical properties", () => {
 
   // Degrees of freedom should be positive
   assertEquals(result.degreesOfFreedom > 0, true);
+});
+
+// These characterization fixtures were recorded before removing jStat.
+// Historical jStat values guard compatibility, while SciPy 1.16.3 supplies
+// independent references for equal-variance-equivalent and Welch cases.
+Deno.test("characterizes equal-variance and Welch cases", () => {
+  const fixtures: Array<{
+    group1: number[];
+    group2: number[];
+    tail: Tail;
+    scipyPValue: number;
+    jstatPValue: number;
+  }> = [
+    {
+      // Equal sample variances: Welch and the pooled test both have df = 8.
+      group1: [10, 12, 14, 16, 18],
+      group2: [20, 22, 24, 26, 28],
+      tail: "two-tailed",
+      scipyPValue: 0.001052825793366539,
+      jstatPValue: 0.0010528257934054874,
+    },
+    {
+      // Unequal variances exercise fractional Welch-Satterthwaite df.
+      group1: [100, 102, 101, 99, 103],
+      group2: [110, 120, 105, 115, 125, 108],
+      tail: "two-tailed",
+      scipyPValue: 0.00829778487444965,
+      jstatPValue: 0.008297784874405911,
+    },
+    {
+      group1: [85, 90, 95, 88, 92],
+      group2: [78, 82, 80, 85, 79],
+      tail: "right-tailed",
+      scipyPValue: 0.0014817043823860232,
+      jstatPValue: 0.001481704382465976,
+    },
+    {
+      group1: [15, 18, 20, 17],
+      group2: [25, 28, 30, 27, 26],
+      tail: "left-tailed",
+      scipyPValue: 0.000147837402866332,
+      jstatPValue: 0.00014783740286633591,
+    },
+  ];
+
+  for (const fixture of fixtures) {
+    const result = performTwoSampleTTest(
+      fixture.group1.map((value) => ({ value })),
+      fixture.group2.map((value) => ({ value })),
+      "value",
+      { tail: fixture.tail },
+    );
+
+    assertProbability(result.pValue, fixture.scipyPValue);
+    assertProbability(result.pValue, fixture.jstatPValue, {
+      absolute: 1e-12,
+      relative: 1e-8,
+    });
+  }
 });

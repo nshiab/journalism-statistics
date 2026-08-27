@@ -1,7 +1,4 @@
-import jstat from "jstat";
-
-// Extract just the t-distribution functions we need
-const { studentt } = jstat;
+import { studentTCdf, studentTSurvival } from "./distributions.ts";
 
 /**
  * Performs a two-sample t-test for independent means to determine if there is a significant difference between two independent groups.
@@ -233,15 +230,15 @@ export default function performTwoSampleTTest<
     Math.pow(group2Variance / group2SampleSize, 2) / (group2SampleSize - 1);
   const degreesOfFreedom = numerator / denominator;
 
-  // --- 8. Calculate P-Value using jStat's t-distribution ---
+  // --- 8. Calculate P-Value using the Student's t-distribution ---
   let pValue: number;
   if (tail === "two-tailed") {
     const absT = Math.abs(tStatistic);
-    pValue = 2 * (1 - studentt.cdf(absT, degreesOfFreedom));
+    pValue = 2 * studentTSurvival(absT, degreesOfFreedom);
   } else if (tail === "right-tailed") {
-    pValue = 1 - studentt.cdf(tStatistic, degreesOfFreedom);
+    pValue = studentTSurvival(tStatistic, degreesOfFreedom);
   } else if (tail === "left-tailed") {
-    pValue = studentt.cdf(tStatistic, degreesOfFreedom);
+    pValue = studentTCdf(tStatistic, degreesOfFreedom);
   } else {
     throw new Error(
       `Invalid tail option: ${tail}. Use "two-tailed", "left-tailed", or "right-tailed".`,
