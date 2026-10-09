@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert";
+import { expect, test } from "vitest";
 import performZTest from "../../src/statistics/performZTest.ts";
 
 // Tested with
@@ -29,14 +29,6 @@ const sampleDataSame = [
   { id: 15, value: 118 },
 ];
 
-const sampleDataDifferent = [
-  { id: 16, value: 150 },
-  { id: 17, value: 155 },
-  { id: 18, value: 145 },
-  { id: 19, value: 160 },
-  { id: 20, value: 140 },
-];
-
 const campaignData = [
   { candidate: "A", party: "Democratic", donation: 4500 },
   { candidate: "B", party: "Republican", donation: 3200 },
@@ -54,9 +46,9 @@ const democraticCandidates = [
   { candidate: "F", party: "Democratic", donation: 4200 },
 ];
 
-Deno.test("should perform Z-test with dataset 1 (two-tailed, default)", () => {
+test("should perform Z-test with dataset 1 (two-tailed, default)", () => {
   const result = performZTest(populationData, sampleDataSame, "value");
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     populationSize: 10,
     sampleSize: 5,
     populationMean: 102.5,
@@ -68,11 +60,11 @@ Deno.test("should perform Z-test with dataset 1 (two-tailed, default)", () => {
     pValue: 0.8182608687291939,
   });
 });
-Deno.test("should perform Z-test with dataset 1 (right-tailed)", () => {
+test("should perform Z-test with dataset 1 (right-tailed)", () => {
   const result = performZTest(populationData, sampleDataSame, "value", {
     tail: "right-tailed",
   });
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     populationSize: 10,
     sampleSize: 5,
     populationMean: 102.5,
@@ -84,11 +76,11 @@ Deno.test("should perform Z-test with dataset 1 (right-tailed)", () => {
     pValue: 0.40913043436459695,
   });
 });
-Deno.test("should perform Z-test with dataset 1 (left-tailed)", () => {
+test("should perform Z-test with dataset 1 (left-tailed)", () => {
   const result = performZTest(populationData, sampleDataSame, "value", {
     tail: "left-tailed",
   });
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     populationSize: 10,
     sampleSize: 5,
     populationMean: 102.5,
@@ -100,9 +92,9 @@ Deno.test("should perform Z-test with dataset 1 (left-tailed)", () => {
     pValue: 0.590869565635403,
   });
 });
-Deno.test("should perform Z-test with dataset 2", () => {
+test("should perform Z-test with dataset 2", () => {
   const result = performZTest(campaignData, democraticCandidates, "donation");
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     populationSize: 8,
     sampleSize: 3,
     populationMean: 3562.5,
@@ -114,11 +106,11 @@ Deno.test("should perform Z-test with dataset 2", () => {
     pValue: 0.04880816798161458,
   });
 });
-Deno.test("should perform Z-test with dataset 2", () => {
+test("should perform Z-test with dataset 2", () => {
   const result = performZTest(campaignData, democraticCandidates, "donation", {
     tail: "right-tailed",
   });
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     populationSize: 8,
     sampleSize: 3,
     populationMean: 3562.5,
@@ -130,11 +122,11 @@ Deno.test("should perform Z-test with dataset 2", () => {
     pValue: 0.02440408399080729,
   });
 });
-Deno.test("should perform Z-test with dataset 2", () => {
+test("should perform Z-test with dataset 2", () => {
   const result = performZTest(campaignData, democraticCandidates, "donation", {
     tail: "left-tailed",
   });
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     populationSize: 8,
     sampleSize: 3,
     populationMean: 3562.5,

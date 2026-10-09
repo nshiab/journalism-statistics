@@ -1,7 +1,8 @@
-import { assertAlmostEquals, assertThrows } from "jsr:@std/assert";
+import { expect, test } from "vitest";
+import captureError from "../helpers/captureError.ts";
 import getCholeskyMatrix from "../../src/statistics/getCholeskyMatrix.ts";
 
-Deno.test("getCholeskyMatrix: correctly decomposes a symmetric positive-definite matrix", () => {
+test("getCholeskyMatrix: correctly decomposes a symmetric positive-definite matrix", () => {
   // A known positive-definite matrix
   const covarianceMatrix = [
     [4, 12, -16],
@@ -20,36 +21,34 @@ Deno.test("getCholeskyMatrix: correctly decomposes a symmetric positive-definite
 
   for (let i = 0; i < L.length; i++) {
     for (let j = 0; j < L[i].length; j++) {
-      assertAlmostEquals(L[i][j], expectedL[i][j], 1e-6);
+      expect(Math.abs(L[i][j] - expectedL[i][j])).toBeLessThanOrEqual(1e-6);
     }
   }
 });
 
-Deno.test("getCholeskyMatrix: throws if matrix is not square", () => {
+test("getCholeskyMatrix: throws if matrix is not square", () => {
   const invalidMatrix = [
     [1, 2, 3],
     [4, 5, 6],
   ];
-  assertThrows(
-    () => getCholeskyMatrix(invalidMatrix),
-    Error,
-    "Matrix must be square.",
-  );
+  const error = captureError(() => getCholeskyMatrix(invalidMatrix));
+  expect(error).toBeInstanceOf(Error);
+  expect((error as Error).message).toContain("Matrix must be square.");
 });
 
-Deno.test("getCholeskyMatrix: throws if matrix is not positive-definite", () => {
+test("getCholeskyMatrix: throws if matrix is not positive-definite", () => {
   const nonPDMatrix = [
     [1, 2],
     [2, 1],
   ];
-  assertThrows(
-    () => getCholeskyMatrix(nonPDMatrix),
-    Error,
+  const error = captureError(() => getCholeskyMatrix(nonPDMatrix));
+  expect(error).toBeInstanceOf(Error);
+  expect((error as Error).message).toContain(
     "Matrix is not positive-definite. Try increasing the jitter (current: 0).",
   );
 });
 
-Deno.test("getCholeskyMatrix: correctly handles jitter to force positive-definiteness", () => {
+test("getCholeskyMatrix: correctly handles jitter to force positive-definiteness", () => {
   // This matrix is NOT positive-definite
   const nonPDMatrix = [
     [1, 2],
@@ -66,46 +65,50 @@ Deno.test("getCholeskyMatrix: correctly handles jitter to force positive-definit
     [L[1][0] * L[0][0], L[1][0] ** 2 + L[1][1] ** 2],
   ];
 
-  assertAlmostEquals(reconstructed[0][0], 1 + jitter, 1e-6);
-  assertAlmostEquals(reconstructed[0][1], 2, 1e-6);
-  assertAlmostEquals(reconstructed[1][0], 2, 1e-6);
-  assertAlmostEquals(reconstructed[1][1], 1 + jitter, 1e-6);
+  expect(Math.abs(reconstructed[0][0] - (1 + jitter))).toBeLessThanOrEqual(
+    1e-6,
+  );
+  expect(Math.abs(reconstructed[0][1] - 2)).toBeLessThanOrEqual(1e-6);
+  expect(Math.abs(reconstructed[1][0] - 2)).toBeLessThanOrEqual(1e-6);
+  expect(Math.abs(reconstructed[1][1] - (1 + jitter))).toBeLessThanOrEqual(
+    1e-6,
+  );
 });
 
-Deno.test("getCholeskyMatrix: throws with custom jitter message if still not positive-definite", () => {
+test("getCholeskyMatrix: throws with custom jitter message if still not positive-definite", () => {
   const nonPDMatrix = [
     [1, 2],
     [2, 1],
   ];
   const jitter = 0.5;
-  assertThrows(
-    () => getCholeskyMatrix(nonPDMatrix, jitter),
-    Error,
+  const error = captureError(() => getCholeskyMatrix(nonPDMatrix, jitter));
+  expect(error).toBeInstanceOf(Error);
+  expect((error as Error).message).toContain(
     "Matrix is not positive-definite. Try increasing the jitter (current: 0.5).",
   );
 });
 
-Deno.test("getCholeskyMatrix: works for 1x1 matrix", () => {
+test("getCholeskyMatrix: works for 1x1 matrix", () => {
   const matrix = [[4]];
   const L = getCholeskyMatrix(matrix);
-  assertAlmostEquals(L[0][0], 2, 1e-6);
+  expect(Math.abs(L[0][0] - 2)).toBeLessThanOrEqual(1e-6);
 });
 
-Deno.test("getCholeskyMatrix: works for 1x1 matrix with jitter", () => {
+test("getCholeskyMatrix: works for 1x1 matrix with jitter", () => {
   const matrix = [[3]];
   const jitter = 1;
   const L = getCholeskyMatrix(matrix, jitter);
-  assertAlmostEquals(L[0][0], 2, 1e-6);
+  expect(Math.abs(L[0][0] - 2)).toBeLessThanOrEqual(1e-6);
 });
 
-Deno.test("getCholeskyMatrix: works for zero matrix with jitter", () => {
+test("getCholeskyMatrix: works for zero matrix with jitter", () => {
   const matrix = [
     [0, 0],
     [0, 0],
   ];
   const jitter = 1e-9;
   const L = getCholeskyMatrix(matrix, jitter);
-  assertAlmostEquals(L[0][0], Math.sqrt(jitter), 1e-12);
-  assertAlmostEquals(L[1][1], Math.sqrt(jitter), 1e-12);
-  assertAlmostEquals(L[1][0], 0, 1e-12);
+  expect(Math.abs(L[0][0] - Math.sqrt(jitter))).toBeLessThanOrEqual(1e-12);
+  expect(Math.abs(L[1][1] - Math.sqrt(jitter))).toBeLessThanOrEqual(1e-12);
+  expect(Math.abs(L[1][0] - 0)).toBeLessThanOrEqual(1e-12);
 });

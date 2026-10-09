@@ -1,7 +1,7 @@
-import { assertAlmostEquals } from "jsr:@std/assert";
+import { expect, test } from "vitest";
 import stepGbm from "../../src/statistics/stepGbm.ts";
 
-Deno.test("stepGbm: calculates next step correctly", () => {
+test("stepGbm: calculates next step correctly", () => {
   const current = 100;
   const mu = 0.05;
   const sigma = 0.2;
@@ -12,5 +12,7 @@ Deno.test("stepGbm: calculates next step correctly", () => {
   const diffusion = sigma * Math.sqrt(dt) * shock;
   const expected = current * Math.exp(drift + diffusion);
 
-  assertAlmostEquals(stepGbm(current, mu, sigma, dt, shock), expected, 1e-6);
+  expect(
+    Math.abs(stepGbm(current, mu, sigma, dt, shock) - expected),
+  ).toBeLessThanOrEqual(1e-6);
 });

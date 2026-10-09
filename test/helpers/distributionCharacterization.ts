@@ -1,4 +1,4 @@
-import { assert } from "jsr:@std/assert";
+import { expect } from "vitest";
 
 export type Tail = "two-tailed" | "left-tailed" | "right-tailed";
 
@@ -22,10 +22,10 @@ export function assertProbability(
   { absolute = 2e-14, relative = 2e-12 } = {},
 ): void {
   const tolerance = Math.max(absolute, relative * Math.abs(expected));
-  assert(
-    Math.abs(actual - expected) <= tolerance,
+  expect(
+    Math.abs(actual - expected),
     `Expected ${actual} to be within ${tolerance} of ${expected}`,
-  );
+  ).toBeLessThanOrEqual(tolerance);
 }
 
 export function goodnessOfFitData(
@@ -34,11 +34,11 @@ export function goodnessOfFitData(
 ): Array<{ category: number; observed: number; expected: number }> {
   const categoryCount = degreesOfFreedom + 1;
   const expected = Math.max(1000, chiSquared);
-  const deviation = Math.sqrt(chiSquared * expected / 2);
+  const deviation = Math.sqrt((chiSquared * expected) / 2);
   return Array.from({ length: categoryCount }, (_, category) => ({
     category,
-    observed: expected +
-      (category === 0 ? deviation : category === 1 ? -deviation : 0),
+    observed:
+      expected + (category === 0 ? deviation : category === 1 ? -deviation : 0),
     expected,
   }));
 }
@@ -49,16 +49,21 @@ export function independenceData(
 ): Array<{ row: number; column: number; count: number }> {
   const columnCount = degreesOfFreedom + 1;
   const expected = Math.max(1000, chiSquared);
-  const deviation = Math.sqrt(chiSquared * expected / 4);
+  const deviation = Math.sqrt((chiSquared * expected) / 4);
   const data: Array<{ row: number; column: number; count: number }> = [];
 
   for (let row = 0; row < 2; row++) {
     for (let column = 0; column < columnCount; column++) {
-      const direction = column === 0
-        ? (row === 0 ? 1 : -1)
-        : column === 1
-        ? (row === 0 ? -1 : 1)
-        : 0;
+      const direction =
+        column === 0
+          ? row === 0
+            ? 1
+            : -1
+          : column === 1
+            ? row === 0
+              ? -1
+              : 1
+            : 0;
       data.push({ row, column, count: expected + direction * deviation });
     }
   }

@@ -66,9 +66,10 @@ export default function getCorrelationMatrix(
       if (i === j) {
         corrMatrix[i][j] = 1;
       } else if (i < j) {
-        const correlation = stdDevs[i] === 0 || stdDevs[j] === 0
-          ? 0
-          : covMatrix[i][j] / (stdDevs[i] * stdDevs[j]);
+        const correlation =
+          stdDevs[i] === 0 || stdDevs[j] === 0
+            ? 0
+            : covMatrix[i][j] / (stdDevs[i] * stdDevs[j]);
 
         // Clamp to [-1, 1] to handle floating point errors
         const clampedCorrelation = Math.max(-1, Math.min(1, correlation));

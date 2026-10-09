@@ -108,20 +108,19 @@ export default function addMahalanobisDistance<
   const invertedCovarianceMatrix = Array.isArray(options.matrix)
     ? options.matrix
     : getCovarianceMatrix(
-      dataArray as number[][], // getCovarianceMatrix will check the types
-      {
-        invert: true,
-      },
-    );
+        dataArray as number[][], // getCovarianceMatrix will check the types
+        {
+          invert: true,
+        },
+      );
 
   data.forEach(
-    (
-      d,
-    ) => ((d as T & { mahaDist: number }).mahaDist = getMahalanobisDistance(
-      originArray,
-      variables.map((v) => d[v] as number), // types checked in getCovarianceMatrix
-      invertedCovarianceMatrix,
-    )),
+    (d) =>
+      ((d as T & { mahaDist: number }).mahaDist = getMahalanobisDistance(
+        originArray,
+        variables.map((v) => d[v] as number), // types checked in getCovarianceMatrix
+        invertedCovarianceMatrix,
+      )),
   );
 
   if (options.similarity) {
@@ -129,10 +128,9 @@ export default function addMahalanobisDistance<
       ...data.map((d) => (d as T & { mahaDist: number }).mahaDist),
     );
     data.forEach(
-      (
-        d,
-      ) => ((d as T & { mahaDist: number; similarity: number }).similarity = 1 -
-        (d as T & { mahaDist: number }).mahaDist / maxDist),
+      (d) =>
+        ((d as T & { mahaDist: number; similarity: number }).similarity =
+          1 - (d as T & { mahaDist: number }).mahaDist / maxDist),
     );
   }
 

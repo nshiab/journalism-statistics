@@ -1,94 +1,561 @@
-# The Journalism library (statistics functions)
+**Journalism Statistics v1.5.7**
 
-To install the library with Deno, use:
+***
 
-```bash
-deno add jsr:@nshiab/journalism-statistics
+# The Journalism Library (statistics)
+
+Useful TypeScript functions for statistical calculations in journalism projects.
+Part of the [journalism library](https://github.com/nshiab/journalism).
+
+The library is maintained by [Nael Shiab](https://naelshiab.com/), computational
+journalist and senior data producer for [CBC News](https://www.cbc.ca/news).
+
+> [!TIP] To learn how to use this library and more, check out
+> [Code Like a Journalist](https://www.code-like-a-journalist.com/), a free and
+> open-source data analysis and data visualization course in TypeScript. You
+> might also find
+> [simple-data-analysis](https://github.com/nshiab/simple-data-analysis) useful.
+
+## Installation
+
+Requires **Node.js 24.21.0 or later**. Use `import`
+and set `"type": "module"` in your project's `package.json`.
+
+```sh
+npm install @nshiab/journalism-statistics
 ```
-
-To install the library with Node.js, use:
-
-```bash
-npx jsr add @nshiab/journalism-statistics
-```
-
-To import a function, use:
 
 ```ts
-import { functionName } from "@nshiab/journalism-statistics";
+import { getSampleSizeProportion } from "@nshiab/journalism-statistics";
+
+const sampleSize = getSampleSizeProportion(1000, 95, 5);
+console.log(sampleSize); // 278
 ```
 
-## addClusters
+To start a data project with folders, configuration and documentation for AI
+agents, run:
 
-Groups data points into clusters using the DBSCAN (Density-Based Spatial
-Clustering of Applications with Noise) algorithm. This method is particularly
-effective at identifying clusters of arbitrary shapes and handling noise in the
-data.
-
-The function operates based on two key parameters: `minDistance` (also known as
-epsilon or ε) and `minNeighbours`. It classifies each data point into one of
-three categories:
-
-- **Core point**: A point that has at least `minNeighbours` other points
-  (including itself) within a `minDistance` radius. These points are the
-  foundation of a cluster.
-- **Border point**: A point that is within the `minDistance` of a core point but
-  does not have enough neighbors to be a core point itself. Border points are on
-  the edge of a cluster.
-- **Noise point**: A point that is neither a core point nor a border point.
-  These are outliers that do not belong to any cluster.
-
-The function modifies the input `data` array by adding two properties to each
-point:
-
-- `clusterId`: A unique identifier for the cluster the point belongs to (e.g.,
-  'cluster1'). For noise points, this will be `null`.
-- `clusterType`: The classification of the point, which can be 'core', 'border',
-  or 'noise'.
-
-### Signature
-
-```typescript
-function addClusters<T extends Record<string, unknown>>(
-  data: T[],
-  minDistance: number,
-  minNeighbours: number,
-  distance: (a: T, b: T) => number,
-  options?: { reset?: boolean },
-): asserts data is (T & {
-  clusterId: string | null;
-  clusterType: "core" | "border" | "noise";
-})[];
+```sh
+npx @nshiab/setup-data-project
 ```
 
-### Parameters
+## Documentation
 
-- **`data`**: An array of data points. Each point is an object with any number
-  of properties.
-- **`minDistance`**: The maximum distance between two points for them to be
-  considered neighbors. This is a crucial parameter that defines the density of
-  the clusters.
-- **`minNeighbours`**: The minimum number of points required to form a dense
-  region (a core point). A larger value will result in more points being
-  classified as noise.
-- **`distance`**: A function that takes two points as input and returns the
-  distance between them. This allows for flexible distance metrics (e.g.,
-  Euclidean, Manhattan).
-- **`options`**: Optional settings for the clustering process.
-- **`options.reset`**: If `true`, the `clusterId` and `clusterType` properties
-  of all points will be cleared before the clustering process begins. This is
-  useful for re-running the clustering with different parameters.
+- [Documentation](https://nshiab.github.io/journalism-statistics/)
+- [llms.txt — Documentation index for AI agents](https://nshiab.github.io/journalism-statistics/llms.txt)
+- [llm.md — Complete Markdown reference](https://nshiab.github.io/journalism-statistics/llm.md),
+  for AI assistants or offline reading
+- [npm package](https://www.npmjs.com/package/@nshiab/journalism-statistics)
 
-### Examples
+See
+[CONTRIBUTING.md](https://github.com/nshiab/journalism-statistics/blob/main/CONTRIBUTING.md)
+for development commands.
+
+Statistical calculations for journalism projects.
+
+Install with `npm install @nshiab/journalism-statistics`.
+Requires Node.js 24.21.0 or later and ES modules.
+
+## Example
+
+```ts
+import { getSampleSizeProportion } from "@nshiab/journalism-statistics";
+
+const sampleSize = getSampleSizeProportion(1000, 95, 5);
+console.log(sampleSize); // 278
+```
+
+## Other
+
+### generateCirPath()
+
+> **generateCirPath**(`startValue`, `a`, `b`, `sigma`, `years`, `periodsPerYear`): `number`[]
+
+Generates a path of values following the Cox-Ingersoll-Ross (CIR) model.
+
+The CIR model is a mean-reverting stochastic process used to model variables that tend to return to a long-term average over time, such as interest rates or volatility.
+
+**When to use this function:**
+- To simulate future interest rate paths for financial modeling.
+- To test how a mean-reverting system might evolve over time.
+- When you have parameters (`a`, `b`, `sigma`) and wish to generate potential future scenarios.
+
+#### Parameters
+
+##### startValue
+
+`number`
+
+The initial value of the process (e.g., current interest rate).
+
+##### a
+
+`number`
+
+The speed of mean reversion.
+
+##### b
+
+`number`
+
+The long-term mean to which the process reverts.
+
+##### sigma
+
+`number`
+
+The volatility of the process.
+
+##### years
+
+`number`
+
+The number of years to simulate.
+
+##### periodsPerYear
+
+`number`
+
+The number of simulation steps per year (e.g., 12 for monthly).
+
+#### Returns
+
+`number`[]
+
+An array representing the simulated path of values.
+
+#### Throws
+
+If parameters are invalid (e.g. negative values where prohibited or zero simulation length).
+
+#### Example
+
+```ts
+const rates = [0.02, 0.021, 0.019, 0.022, 0.023];
+const periodsPerYear = 12;
+
+// First, estimate parameters from historical data
+const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
+
+// Then, generate a future path
+const initialRate = rates[rates.length - 1];
+const path = generateCirPath(initialRate, a, b, sigma, 1, 12);
+```
+
+***
+
+### generateGbmPath()
+
+> **generateGbmPath**(`startValue`, `mu`, `sigma`, `years`, `periodsPerYear`): `number`[]
+
+Generates a simulated path for an asset using the Geometric Brownian Motion (GBM) model.
+
+Geometric Brownian Motion is a continuous-time stochastic process in which the logarithm of the randomly varying quantity follows a Brownian motion with drift. It is widely used in mathematical finance to model stock prices, as it ensures that values remain positive and accounts for compounded returns.
+
+**When to use this function:**
+- To simulate future value paths for a stock, index, or other financial asset
+- For risk management and stress testing by generating multiple potential scenarios
+- To visualize the impact of volatility and drift on an investment over time
+
+**Note:** You can use `getGbmParameters` to estimate the `mu` and `sigma` parameters from historical data before generating a path.
+
+#### Parameters
+
+##### startValue
+
+`number`
+
+The initial value of the asset at the beginning of the simulation
+
+##### mu
+
+`number`
+
+The expected annualized drift (average growth rate) of the asset
+
+##### sigma
+
+`number`
+
+The annualized volatility (degree of variation) of the asset
+
+##### years
+
+`number`
+
+The total duration of the simulation in years
+
+##### periodsPerYear
+
+`number`
+
+The number of simulation steps per year (e.g., 252 for daily trading days, 12 for monthly data, 52 for weekly)
+
+#### Returns
+
+`number`[]
+
+An array of numerical values representing the simulated path, including the `startValue`
+
+#### Example
+
+```ts
+import getGbmParameters from "./getGbmParameters";
+
+const historicalValues = [100, 102, 101, 105, 107, 110];
+const periodsPerYear = 252; // Daily data
+
+// Estimate parameters from historical data
+const { mu, sigma } = getGbmParameters(historicalValues, periodsPerYear);
+
+// Generate a simulated path for the next year
+const startValue = historicalValues[historicalValues.length - 1];
+const path = generateGbmPath(startValue, mu, sigma, 1, periodsPerYear);
+console.log(`Simulated path: ${path.map(v => v.toFixed(2)).join(', ')}`);
+```
+
+***
+
+### getCholeskyMatrix()
+
+> **getCholeskyMatrix**(`matrix`, `jitter?`): `number`[][]
+
+Performs Cholesky Decomposition on a symmetric, positive-definite covariance matrix.
+
+#### Parameters
+
+##### matrix
+
+`number`[][]
+
+A square, symmetric, positive-definite covariance matrix.
+
+##### jitter?
+
+`number` = `0`
+
+A tiny positive value (e.g., 1e-9) added to the diagonal to force positive-definiteness.
+
+#### Returns
+
+`number`[][]
+
+A lower triangular matrix L.
+
+***
+
+### getCirParameters()
+
+> **getCirParameters**(`values`, `periodsPerYear`): `object`
+
+Estimates the parameters of the Cox-Ingersoll-Ross (CIR) model based on historical values using ordinary least squares on the discretized process.
+
+The CIR model is a mean-reverting stochastic process often used to model interest rates or other variables that tend to move toward a long-term average. This function returns the speed of mean reversion (`a`), the long-term mean (`b`), and the volatility (`sigma`).
+
+**When to use this function:**
+- To model interest rates, where rates are likely to revert to a mean but stay positive.
+- When you need to estimate the behavior of a mean-reverting process from historical data points.
+- To determine parameters for simulating potential future paths using `getCirPath`.
+
+#### Parameters
+
+##### values
+
+`number`[]
+
+An array of numerical data points (e.g., historical interest rates).
+
+##### periodsPerYear
+
+`number`
+
+The number of data points per year (e.g., 252 for daily, 12 for monthly).
+
+#### Returns
+
+`object`
+
+An object containing the estimated speed of mean reversion (`a`), long-term mean (`b`), and volatility (`sigma`). Note that `a` is silently clamped to a minimum of 0.001 and `b` to a minimum of 0.
+
+##### a
+
+> **a**: `number`
+
+##### b
+
+> **b**: `number`
+
+##### sigma
+
+> **sigma**: `number`
+
+#### Throws
+
+If `values` contains fewer than four data points, if `periodsPerYear` is not positive, if any value is negative, or if the data is degenerate (collinear).
+
+#### Example
+
+```ts
+const rates = [0.02, 0.021, 0.019, 0.022, 0.023];
+const periodsPerYear = 12; // Monthly data
+
+const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
+```
+
+***
+
+### getCorrelatedShocks()
+
+> **getCorrelatedShocks**(`L`, `Z`): `number`[]
+
+Multiplies a lower triangular Cholesky matrix (L) by a vector of independent standard normal random variables (Z).
+
+#### Parameters
+
+##### L
+
+`number`[][]
+
+The lower triangular matrix.
+
+##### Z
+
+`number`[]
+
+An array of independent standard normal random variables.
+
+#### Returns
+
+`number`[]
+
+An array of correlated random variables.
+
+***
+
+### getGbmParameters()
+
+> **getGbmParameters**(`values`, `periodsPerYear`): `object`
+
+Calculates the parameters (drift `mu` and volatility `sigma`) for a Geometric Brownian Motion (GBM) model based on historical data.
+
+Geometric Brownian Motion is a continuous-time stochastic process often used to model stock prices and other financial assets. This function estimates the drift and volatility from a series of observed values, assuming the returns follow a log-normal distribution.
+
+**When to use this function:**
+- To estimate parameters for simulating future asset paths using GBM
+- When you have a sequence of historical prices or values and need to determine their annualized growth rate (drift) and risk (volatility)
+- To model potential future scenarios for a stock, index, or commodity based on historical trends
+
+#### Parameters
+
+##### values
+
+`number`[]
+
+An array of numerical values (e.g., historical prices)
+
+##### periodsPerYear
+
+`number`
+
+The number of data points per year (e.g., 252 for daily trading days, 12 for monthly data, 52 for weekly)
+
+#### Returns
+
+`object`
+
+An object containing the annualized drift (`mu`) and annualized volatility (`sigma`)
+
+##### mu
+
+> **mu**: `number`
+
+##### sigma
+
+> **sigma**: `number`
+
+#### Example
+
+```ts
+const prices = [100, 102, 101, 105, 107, 110];
+const periodsPerYear = 252; // Daily data
+
+const { mu, sigma } = calculateGbmParameters(prices, periodsPerYear);
+console.log(`Annualized Drift (mu): ${mu.toFixed(4)}`);
+console.log(`Annualized Volatility (sigma): ${sigma.toFixed(4)}`);
+```
+
+***
+
+### stepCir()
+
+> **stepCir**(`currentValue`, `a`, `b`, `sigma`, `dt`, `shock`): `number`
+
+Calculates the next value in a Cox-Ingersoll-Ross (CIR) process.
+
+#### Parameters
+
+##### currentValue
+
+`number`
+
+The current value of the process.
+
+##### a
+
+`number`
+
+The speed of mean reversion.
+
+##### b
+
+`number`
+
+The long-term mean level.
+
+##### sigma
+
+`number`
+
+The volatility coefficient.
+
+##### dt
+
+`number`
+
+The time step.
+
+##### shock
+
+`number`
+
+A standard normal random variable (Z).
+
+#### Returns
+
+`number`
+
+The next value in the process.
+
+***
+
+### stepGbm()
+
+> **stepGbm**(`currentValue`, `mu`, `sigma`, `dt`, `shock`): `number`
+
+Calculates the next value in a Geometric Brownian Motion (GBM) process.
+
+#### Parameters
+
+##### currentValue
+
+`number`
+
+The current value of the process.
+
+##### mu
+
+`number`
+
+The drift coefficient.
+
+##### sigma
+
+`number`
+
+The volatility coefficient.
+
+##### dt
+
+`number`
+
+The time step.
+
+##### shock
+
+`number`
+
+A standard normal random variable (Z).
+
+#### Returns
+
+`number`
+
+The next value in the process.
+
+## Statistics
+
+### addClusters()
+
+> **addClusters**\<`T`\>(`data`, `minDistance`, `minNeighbours`, `distance`, `options?`): asserts data is (T & \{ clusterId: string \| null; clusterType: "core" \| "border" \| "noise" \})\[\]
+
+Groups data points into clusters using the DBSCAN (Density-Based Spatial Clustering of Applications with Noise) algorithm. This method is particularly effective at identifying clusters of arbitrary shapes and handling noise in the data.
+
+The function operates based on two key parameters: `minDistance` (also known as epsilon or ε) and `minNeighbours`. It classifies each data point into one of three categories:
+
+- **Core point**: A point that has at least `minNeighbours` other points (including itself) within a `minDistance` radius. These points are the foundation of a cluster.
+- **Border point**: A point that is within the `minDistance` of a core point but does not have enough neighbors to be a core point itself. Border points are on the edge of a cluster.
+- **Noise point**: A point that is neither a core point nor a border point. These are outliers that do not belong to any cluster.
+
+The function modifies the input `data` array by adding two properties to each point:
+- `clusterId`: A unique identifier for the cluster the point belongs to (e.g., 'cluster1'). For noise points, this will be `null`.
+- `clusterType`: The classification of the point, which can be 'core', 'border', or 'noise'.
+
+#### Type Parameters
+
+##### T
+
+`T` *extends* `Record`\<`string`, `unknown`\>
+
+#### Parameters
+
+##### data
+
+`T`[]
+
+An array of data points. Each point is an object with any number of properties.
+
+##### minDistance
+
+`number`
+
+The maximum distance between two points for them to be considered neighbors. This is a crucial parameter that defines the density of the clusters.
+
+##### minNeighbours
+
+`number`
+
+The minimum number of points required to form a dense region (a core point). A larger value will result in more points being classified as noise.
+
+##### distance
+
+(`a`, `b`) => `number`
+
+A function that takes two points as input and returns the distance between them. This allows for flexible distance metrics (e.g., Euclidean, Manhattan).
+
+##### options?
+
+Optional settings for the clustering process.
+
+###### reset?
+
+`boolean`
+
+If `true`, the `clusterId` and `clusterType` properties of all points will be cleared before the clustering process begins. This is useful for re-running the clustering with different parameters.
+
+#### Returns
+
+asserts data is (T & \{ clusterId: string \| null; clusterType: "core" \| "border" \| "noise" \})\[\]
+
+#### Examples
 
 ```ts
 // Basic usage with Euclidean distance
 const data = [
-  { id: "a", x: 1, y: 2 },
-  { id: "b", x: 2, y: 3 },
-  { id: "c", x: 10, y: 10 },
-  { id: "d", x: 11, y: 11 },
-  { id: "e", x: 50, y: 50 },
+  { id: 'a', x: 1, y: 2 },
+  { id: 'b', x: 2, y: 3 },
+  { id: 'c', x: 10, y: 10 },
+  { id: 'd', x: 11, y: 11 },
+  { id: 'e', x: 50, y: 50 }
 ];
 
 // Use the journalism library's euclideanDistance function to calculate the distance
@@ -122,73 +589,79 @@ console.log(data);
 // ]
 ```
 
-## addMahalanobisDistance
+***
 
-Calculates the Mahalanobis distance for each object in an array relative to a
-specified origin point.
+### addMahalanobisDistance()
 
-The function enriches the input `data` array by adding a `mahaDist` property to
-each object, representing its Mahalanobis distance from the `origin`. The
-dimensions for the calculation are determined by the keys in the `origin`
-object.
+#### Call Signature
 
-Optionally, you can also compute a `similarity` score, which is a normalized
-value between 0 and 1, where 1 indicates that the point is identical to the
-origin. To improve performance on large datasets, you can provide a pre-computed
-inverted covariance matrix.
+> **addMahalanobisDistance**\<`T`\>(`origin`, `data`, `options`): `T` & `object`[]
 
-### Signature
+Calculates the Mahalanobis distance for each object in an array relative to a specified origin point.
 
-```typescript
-function addMahalanobisDistance<T extends Record<string, unknown>>(
-  origin: Record<string, number>,
-  data: T[],
-  options: { similarity: true; matrix?: number[][] },
-): (T & { mahaDist: number; similarity: number })[];
-```
+The function enriches the input `data` array by adding a `mahaDist` property to each object, representing its Mahalanobis distance from the `origin`. The dimensions for the calculation are determined by the keys in the `origin` object.
 
-### Parameters
+Optionally, you can also compute a `similarity` score, which is a normalized value between 0 and 1, where 1 indicates that the point is identical to the origin. To improve performance on large datasets, you can provide a pre-computed inverted covariance matrix.
 
-- **`origin`**: An object defining the reference point for the distance
-  calculation. The keys of this object represent the variables (dimensions) to
-  be used, and the values are their corresponding coordinates.
-- **`data`**: An array of objects to be analyzed. Each object should contain the
-  same keys as the `origin` object, and their values for these keys should be
-  numbers.
-- **`options`**: Optional parameters to customize the function's behavior.
-- **`options.similarity`**: If `true`, a `similarity` property will be added to
-  each object in the `data` array. The similarity is calculated as
-  `1 - (mahaDist / maxMahaDist)`, providing an intuitive measure of closeness to
-  the origin.
-- **`options.matrix`**: A pre-computed inverted covariance matrix. Providing
-  this can significantly speed up calculations, as it avoids re-computing the
-  matrix for each call. This matrix should be obtained from
-  `getCovarianceMatrix` with `invert: true`.
+##### Type Parameters
 
-### Returns
+###### T
 
-The input `data` array, with `mahaDist` (and optionally `similarity`) properties
-added to each object.
+`T` *extends* `Record`\<`string`, `unknown`\>
 
-### Throws
+##### Parameters
 
-- **`Error`**: If the dimensions of the data points or the provided matrix do
-  not match, or if `getCovarianceMatrix` throws an error (e.g., due to
-  non-numeric data).
+###### origin
 
-### Examples
+`Record`\<`string`, `number`\>
+
+An object defining the reference point for the distance calculation. The keys of this object represent the variables (dimensions) to be used, and the values are their corresponding coordinates.
+
+###### data
+
+`T`[]
+
+An array of objects to be analyzed. Each object should contain the same keys as the `origin` object, and their values for these keys should be numbers.
+
+###### options
+
+Optional parameters to customize the function's behavior.
+
+###### matrix?
+
+`number`[][]
+
+A pre-computed inverted covariance matrix. Providing this can significantly speed up calculations, as it avoids re-computing the matrix for each call. This matrix should be obtained from `getCovarianceMatrix` with `invert: true`.
+
+###### similarity
+
+`true`
+
+If `true`, a `similarity` property will be added to each object in the `data` array. The similarity is calculated as `1 - (mahaDist / maxMahaDist)`, providing an intuitive measure of closeness to the origin.
+
+##### Returns
+
+`T` & `object`[]
+
+The input `data` array, with `mahaDist` (and optionally `similarity`) properties added to each object.
+
+##### Throws
+
+If the dimensions of the data points or the provided matrix do not match, or if `getCovarianceMatrix` throws an error (e.g., due to non-numeric data).
+
+##### Examples
 
 ```ts
 // Basic usage with a dataset of wines
 const wines = [
-  { "fixed acidity": 6.5, "alcohol": 11.0 },
-  { "fixed acidity": 7.1, "alcohol": 12.2 },
-  { "fixed acidity": 6.3, "alcohol": 10.5 },
-  { "fixed acidity": 7.2, "alcohol": 11.3 },
+  { 'fixed acidity': 6.5, 'alcohol': 11.0 },
+  { 'fixed acidity': 7.1, 'alcohol': 12.2 },
+  { 'fixed acidity': 6.3, 'alcohol': 10.5 },
+  { 'fixed acidity': 7.2, 'alcohol': 11.3 }
 ];
 
 // Define the ideal wine profile (our origin)
-const idealWine = { "fixed acidity": 7.2, "alcohol": 11.3 };
+const idealWine = { 'fixed acidity': 7.2, 'alcohol': 11.3 };
 
 // Calculate the Mahalanobis distance for each wine
 addMahalanobisDistance(idealWine, wines);
@@ -220,61 +693,120 @@ console.log(wines);
 // ]
 ```
 
-## addZScore
+#### Call Signature
 
-Calculates the Z-score for a specific numeric variable within an array of
-objects and adds it as a new property to each object. The Z-score is a
-statistical measure that indicates how many standard deviations a data point is
-from the mean of the dataset.
+> **addMahalanobisDistance**\<`T`\>(`origin`, `data`, `options?`): `T` & `object`[]
 
-The function modifies the input `data` array by adding a new key to each object,
-which by default is `zScore`. You can customize the name of this new key by
-using the `newKey` option.
+Calculates the Mahalanobis distance for each object in an array relative to a specified origin point (without similarity scores).
 
-### Signature
+##### Type Parameters
 
-```typescript
-function addZScore<T extends Record<string, unknown>, K extends string>(
-  data: T[],
-  variable: string,
-  options: { newKey: K },
-): (T & { [P in K]: number })[];
-```
+###### T
 
-### Parameters
+`T` *extends* `Record`\<`string`, `unknown`\>
 
-- **`data`**: An array of objects. Each object should contain the variable for
-  which the Z-score is to be calculated.
-- **`variable`**: The key (as a string) of the numeric variable for which the
-  Z-score will be computed.
-- **`options`**: Optional settings for the Z-score calculation.
-- **`options.newKey`**: The name of the new key to be added to each object,
-  representing the Z-score. If not provided, it defaults to `'zScore'`.
+##### Parameters
 
-### Returns
+###### origin
 
-The input `data` array, with the Z-score added to each object under the
-specified key.
+`Record`\<`string`, `number`\>
 
-### Throws
+An object defining the reference point for the distance calculation.
 
-- **`Error`**: If the specified `variable` is not found in an object or its
-  value is not a number.
+###### data
 
-### Examples
+`T`[]
+
+An array of objects to be analyzed.
+
+###### options?
+
+Optional parameters (similarity defaults to false).
+
+###### matrix?
+
+`number`[][]
+
+###### similarity?
+
+`false`
+
+##### Returns
+
+`T` & `object`[]
+
+The input data array with mahaDist properties added to each object.
+
+***
+
+### addZScore()
+
+#### Call Signature
+
+> **addZScore**\<`T`, `K`\>(`data`, `variable`, `options`): `T` & `{ [P in string]: number }`[]
+
+Calculates the Z-score for a specific numeric variable within an array of objects and adds it as a new property to each object. The Z-score is a statistical measure that indicates how many standard deviations a data point is from the mean of the dataset.
+
+The function modifies the input `data` array by adding a new key to each object, which by default is `zScore`. You can customize the name of this new key by using the `newKey` option.
+
+##### Type Parameters
+
+###### T
+
+`T` *extends* `Record`\<`string`, `unknown`\>
+
+###### K
+
+`K` *extends* `string`
+
+##### Parameters
+
+###### data
+
+`T`[]
+
+An array of objects. Each object should contain the variable for which the Z-score is to be calculated.
+
+###### variable
+
+`string`
+
+The key (as a string) of the numeric variable for which the Z-score will be computed.
+
+###### options
+
+Optional settings for the Z-score calculation.
+
+###### newKey
+
+`K`
+
+The name of the new key to be added to each object, representing the Z-score. If not provided, it defaults to `'zScore'`.
+
+##### Returns
+
+`T` & `{ [P in string]: number }`[]
+
+The input `data` array, with the Z-score added to each object under the specified key.
+
+##### Throws
+
+If the specified `variable` is not found in an object or its value is not a number.
+
+##### Examples
 
 ```ts
 // Basic usage with a list of student grades
 const studentData = [
-  { student: "Alice", grade: 85 },
-  { student: "Bob", grade: 92 },
-  { student: "Charlie", grade: 78 },
-  { student: "David", grade: 95 },
-  { student: "Eve", grade: 62 },
+  { student: 'Alice', grade: 85 },
+  { student: 'Bob', grade: 92 },
+  { student: 'Charlie', grade: 78 },
+  { student: 'David', grade: 95 },
+  { student: 'Eve', grade: 62 }
 ];
 
 // Calculate the Z-score for the 'grade' variable
-addZScore(studentData, "grade");
+addZScore(studentData, 'grade');
 
 console.log(studentData);
 // Expected output:
@@ -289,7 +821,7 @@ console.log(studentData);
 
 ```ts
 // Using a custom key for the Z-score
-addZScore(studentData, "grade", { newKey: "gradeZScore" });
+addZScore(studentData, 'grade', { newKey: 'gradeZScore' });
 
 console.log(studentData);
 // Expected output with a custom key:
@@ -302,37 +834,89 @@ console.log(studentData);
 // ]
 ```
 
-## euclidianDistance
+#### Call Signature
 
-Calculates the Euclidean distance between two points in a 2D Cartesian
-coordinate system. The Euclidean distance is the shortest straight-line distance
-between two points, often referred to as the "as the crow flies" distance.
+> **addZScore**\<`T`\>(`data`, `variable`, `options?`): `T` & `object`[]
+
+Calculates the Z-score for a specific numeric variable within an array of objects using the default 'zScore' key name.
+
+##### Type Parameters
+
+###### T
+
+`T` *extends* `Record`\<`string`, `unknown`\>
+
+##### Parameters
+
+###### data
+
+`T`[]
+
+An array of objects. Each object should contain the variable for which the Z-score is to be calculated.
+
+###### variable
+
+`string`
+
+The key (as a string) of the numeric variable for which the Z-score will be computed.
+
+###### options?
+
+Optional settings (newKey defaults to undefined, using 'zScore').
+
+###### newKey?
+
+`undefined`
+
+##### Returns
+
+`T` & `object`[]
+
+The input data array with zScore properties added to each object.
+
+***
+
+### euclidianDistance()
+
+> **euclidianDistance**(`x1`, `y1`, `x2`, `y2`): `number`
+
+Calculates the Euclidean distance between two points in a 2D Cartesian coordinate system. The Euclidean distance is the shortest straight-line distance between two points, often referred to as the "as the crow flies" distance.
 
 This function applies the Pythagorean theorem to compute the distance.
 
-### Signature
+#### Parameters
 
-```typescript
-function euclidianDistance(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-): number;
-```
+##### x1
 
-### Parameters
+`number`
 
-- **`x1`**: The x-coordinate of the first point.
-- **`y1`**: The y-coordinate of the first point.
-- **`x2`**: The x-coordinate of the second point.
-- **`y2`**: The y-coordinate of the second point.
+The x-coordinate of the first point.
 
-### Returns
+##### y1
+
+`number`
+
+The y-coordinate of the first point.
+
+##### x2
+
+`number`
+
+The x-coordinate of the second point.
+
+##### y2
+
+`number`
+
+The y-coordinate of the second point.
+
+#### Returns
+
+`number`
 
 The Euclidean distance between the two points.
 
-### Examples
+#### Examples
 
 ```ts
 // Basic usage: Calculate the distance between (0,0) and (3,4).
@@ -352,277 +936,54 @@ const dist3 = euclideanDistance(5, 10, 5, 10);
 console.log(dist3); // 0
 ```
 
-## generateCirPath
+***
 
-Generates a path of values following the Cox-Ingersoll-Ross (CIR) model.
+### getCorrelationMatrix()
 
-The CIR model is a mean-reverting stochastic process used to model variables
-that tend to return to a long-term average over time, such as interest rates or
-volatility.
+> **getCorrelationMatrix**(`data`, `options?`): `number`[][]
 
-**When to use this function:**
+Computes the correlation matrix for a given dataset. The correlation matrix is a square matrix that describes the correlation between each pair of variables in a dataset.
 
-- To simulate future interest rate paths for financial modeling.
-- To test how a mean-reverting system might evolve over time.
-- When you have parameters (`a`, `b`, `sigma`) and wish to generate potential
-  future scenarios.
+The function takes a 2D array (matrix) as input, where each inner array represents a data point and each element within the inner array represents a variable. It calculates the Pearson correlation coefficient between all pairs of variables.
 
-### Signature
+Optionally, you can choose to invert the computed correlation matrix by setting the `invert` option to `true`.
 
-```typescript
-function generateCirPath(
-  startValue: number,
-  a: number,
-  b: number,
-  sigma: number,
-  years: number,
-  periodsPerYear: number,
-): number[];
-```
+#### Parameters
 
-### Parameters
+##### data
 
-- **`startValue`**: The initial value of the process (e.g., current interest
-  rate).
-- **`a`**: The speed of mean reversion.
-- **`b`**: The long-term mean to which the process reverts.
-- **`sigma`**: The volatility of the process.
-- **`years`**: The number of years to simulate.
-- **`periodsPerYear`**: The number of simulation steps per year (e.g., 12 for
-  monthly).
+`number`[][]
 
-### Returns
+A 2D array of numbers representing the dataset. Each inner array is a data point, and each element is a variable.
 
-An array representing the simulated path of values.
+##### options?
 
-### Throws
+Optional settings for the correlation matrix computation.
 
-- **`Error`**: If parameters are invalid (e.g. negative values where prohibited
-  or zero simulation length).
+###### invert?
 
-### Examples
+`boolean`
 
-```ts
-const rates = [0.02, 0.021, 0.019, 0.022, 0.023];
-const periodsPerYear = 12;
+If `true`, the function will return the inverse of the computed correlation matrix. Defaults to `false`.
 
-// First, estimate parameters from historical data
-const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
+#### Returns
 
-// Then, generate a future path
-const initialRate = rates[rates.length - 1];
-const path = generateCirPath(initialRate, a, b, sigma, 1, 12);
-```
+`number`[][]
 
-## generateGbmPath
+A 2D array representing the correlation matrix. If `options.invert` is `true`, the inverse correlation matrix is returned.
 
-Generates a simulated path for an asset using the Geometric Brownian Motion
-(GBM) model.
+#### Throws
 
-Geometric Brownian Motion is a continuous-time stochastic process in which the
-logarithm of the randomly varying quantity follows a Brownian motion with drift.
-It is widely used in mathematical finance to model stock prices, as it ensures
-that values remain positive and accounts for compounded returns.
+If any element in the input `data` is not a number.
 
-**When to use this function:**
-
-- To simulate future value paths for a stock, index, or other financial asset
-- For risk management and stress testing by generating multiple potential
-  scenarios
-- To visualize the impact of volatility and drift on an investment over time
-
-**Note:** You can use `getGbmParameters` to estimate the `mu` and `sigma`
-parameters from historical data before generating a path.
-
-### Signature
-
-```typescript
-function generateGbmPath(
-  startValue: number,
-  mu: number,
-  sigma: number,
-  years: number,
-  periodsPerYear: number,
-): number[];
-```
-
-### Parameters
-
-- **`startValue`**: The initial value of the asset at the beginning of the
-  simulation
-- **`mu`**: The expected annualized drift (average growth rate) of the asset
-- **`sigma`**: The annualized volatility (degree of variation) of the asset
-- **`years`**: The total duration of the simulation in years
-- **`periodsPerYear`**: The number of simulation steps per year (e.g., 252 for
-  daily trading days, 12 for monthly data, 52 for weekly)
-
-### Returns
-
-An array of numerical values representing the simulated path, including the
-`startValue`
-
-### Examples
-
-```ts
-import getGbmParameters from "./getGbmParameters";
-
-const historicalValues = [100, 102, 101, 105, 107, 110];
-const periodsPerYear = 252; // Daily data
-
-// Estimate parameters from historical data
-const { mu, sigma } = getGbmParameters(historicalValues, periodsPerYear);
-
-// Generate a simulated path for the next year
-const startValue = historicalValues[historicalValues.length - 1];
-const path = generateGbmPath(startValue, mu, sigma, 1, periodsPerYear);
-console.log(`Simulated path: ${path.map((v) => v.toFixed(2)).join(", ")}`);
-```
-
-## getCholeskyMatrix
-
-Performs Cholesky Decomposition on a symmetric, positive-definite covariance
-matrix.
-
-### Signature
-
-```typescript
-function getCholeskyMatrix(matrix: number[][], jitter?: number): number[][];
-```
-
-### Parameters
-
-- **`matrix`**: A square, symmetric, positive-definite covariance matrix.
-- **`jitter`**: A tiny positive value (e.g., 1e-9) added to the diagonal to
-  force positive-definiteness.
-
-### Returns
-
-A lower triangular matrix L.
-
-## getCirParameters
-
-Estimates the parameters of the Cox-Ingersoll-Ross (CIR) model based on
-historical values using ordinary least squares on the discretized process.
-
-The CIR model is a mean-reverting stochastic process often used to model
-interest rates or other variables that tend to move toward a long-term average.
-This function returns the speed of mean reversion (`a`), the long-term mean
-(`b`), and the volatility (`sigma`).
-
-**When to use this function:**
-
-- To model interest rates, where rates are likely to revert to a mean but stay
-  positive.
-- When you need to estimate the behavior of a mean-reverting process from
-  historical data points.
-- To determine parameters for simulating potential future paths using
-  `getCirPath`.
-
-### Signature
-
-```typescript
-function getCirParameters(
-  values: number[],
-  periodsPerYear: number,
-): { a: number; b: number; sigma: number };
-```
-
-### Parameters
-
-- **`values`**: An array of numerical data points (e.g., historical interest
-  rates).
-- **`periodsPerYear`**: The number of data points per year (e.g., 252 for daily,
-  12 for monthly).
-
-### Returns
-
-An object containing the estimated speed of mean reversion (`a`), long-term mean
-(`b`), and volatility (`sigma`). Note that `a` is silently clamped to a minimum
-of 0.001 and `b` to a minimum of 0.
-
-### Throws
-
-- **`Error`**: If `values` contains fewer than four data points, if
-  `periodsPerYear` is not positive, if any value is negative, or if the data is
-  degenerate (collinear).
-
-### Examples
-
-```ts
-const rates = [0.02, 0.021, 0.019, 0.022, 0.023];
-const periodsPerYear = 12; // Monthly data
-
-const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
-```
-
-## getCorrelatedShocks
-
-Multiplies a lower triangular Cholesky matrix (L) by a vector of independent
-standard normal random variables (Z).
-
-### Signature
-
-```typescript
-function getCorrelatedShocks(L: number[][], Z: number[]): number[];
-```
-
-### Parameters
-
-- **`L`**: The lower triangular matrix.
-- **`Z`**: An array of independent standard normal random variables.
-
-### Returns
-
-An array of correlated random variables.
-
-## getCorrelationMatrix
-
-Computes the correlation matrix for a given dataset. The correlation matrix is a
-square matrix that describes the correlation between each pair of variables in a
-dataset.
-
-The function takes a 2D array (matrix) as input, where each inner array
-represents a data point and each element within the inner array represents a
-variable. It calculates the Pearson correlation coefficient between all pairs of
-variables.
-
-Optionally, you can choose to invert the computed correlation matrix by setting
-the `invert` option to `true`.
-
-### Signature
-
-```typescript
-function getCorrelationMatrix(
-  data: number[][],
-  options?: { invert?: boolean },
-): number[][];
-```
-
-### Parameters
-
-- **`data`**: A 2D array of numbers representing the dataset. Each inner array
-  is a data point, and each element is a variable.
-- **`options`**: Optional settings for the correlation matrix computation.
-- **`options.invert`**: If `true`, the function will return the inverse of the
-  computed correlation matrix. Defaults to `false`.
-
-### Returns
-
-A 2D array representing the correlation matrix. If `options.invert` is `true`,
-the inverse correlation matrix is returned.
-
-### Throws
-
-- **`Error`**: If any element in the input `data` is not a number.
-
-### Examples
+#### Examples
 
 ```ts
 // Basic usage: Compute the correlation matrix for a 2x2 dataset.
 const twoVariables = [
   [6.5, 11],
   [7.1, 12.2],
-  [6.3, 10.5],
+  [6.3, 10.5]
 ];
 const matrix2x2 = getCorrelationMatrix(twoVariables);
 console.log(matrix2x2);
@@ -644,48 +1005,47 @@ console.log(invertedMatrix2x2);
 // ]
 ```
 
-## getCovarianceMatrix
+***
 
-Computes the covariance matrix for a given dataset. The covariance matrix is a
-square matrix that describes the covariance between each pair of variables in a
-dataset.
+### getCovarianceMatrix()
 
-The function takes a 2D array (matrix) as input, where each inner array
-represents a data point and each element within the inner array represents a
-variable. It calculates the covariance between all pairs of variables.
+> **getCovarianceMatrix**(`data`, `options?`): `number`[][]
 
-Optionally, you can choose to invert the computed covariance matrix by setting
-the `invert` option to `true`. The inverse covariance matrix is often used in
-statistical applications, particularly in the calculation of Mahalanobis
-distance.
+Computes the covariance matrix for a given dataset. The covariance matrix is a square matrix that describes the covariance between each pair of variables in a dataset.
 
-### Signature
+The function takes a 2D array (matrix) as input, where each inner array represents a data point and each element within the inner array represents a variable. It calculates the covariance between all pairs of variables.
 
-```typescript
-function getCovarianceMatrix(
-  data: number[][],
-  options?: { invert?: boolean },
-): number[][];
-```
+Optionally, you can choose to invert the computed covariance matrix by setting the `invert` option to `true`. The inverse covariance matrix is often used in statistical applications, particularly in the calculation of Mahalanobis distance.
 
-### Parameters
+#### Parameters
 
-- **`data`**: A 2D array of numbers representing the dataset. Each inner array
-  is a data point, and each element is a variable.
-- **`options`**: Optional settings for the covariance matrix computation.
-- **`options.invert`**: If `true`, the function will return the inverse of the
-  computed covariance matrix. Defaults to `false`.
+##### data
 
-### Returns
+`number`[][]
 
-A 2D array representing the covariance matrix. If `options.invert` is `true`,
-the inverse covariance matrix is returned.
+A 2D array of numbers representing the dataset. Each inner array is a data point, and each element is a variable.
 
-### Throws
+##### options?
 
-- **`Error`**: If any element in the input `data` is not a number.
+Optional settings for the covariance matrix computation.
 
-### Examples
+###### invert?
+
+`boolean`
+
+If `true`, the function will return the inverse of the computed covariance matrix. Defaults to `false`.
+
+#### Returns
+
+`number`[][]
+
+A 2D array representing the covariance matrix. If `options.invert` is `true`, the inverse covariance matrix is returned.
+
+#### Throws
+
+If any element in the input `data` is not a number.
+
+#### Examples
 
 ```ts
 // Basic usage: Compute the covariance matrix for a 2x2 dataset.
@@ -693,7 +1053,7 @@ the inverse covariance matrix is returned.
 const twoVariables = [
   [6.5, 11],
   [7.1, 12.2],
-  [6.3, 10.5],
+  [6.3, 10.5]
 ];
 const matrix2x2 = getCovarianceMatrix(twoVariables);
 console.log(matrix2x2);
@@ -715,124 +1075,103 @@ console.log(invertedMatrix2x2);
 // ]
 ```
 
-// Basic usage: Compute the covariance matrix for a 3x3 dataset. const
-threeVariables = [ [6.5, 1.9, 11], [7.1, 2.2, 12.2], [6.3, 2.1, 10.5] ]; const
-matrix3x3 = getCovarianceMatrix(threeVariables); console.log(matrix3x3); //
-Expected output (approximately): // [ // [0.7119681970550005,
-0.3809440223475775, -0.12550719251309772], // [0.3809440223475775,
-25.72051786341322, -2.8121660685891356], // [-0.12550719251309772,
--2.8121660685891356, 1.514117788841716] // ]
-
-// Compute the inverse covariance matrix for a 3x3 dataset. const
-invertedMatrix3x3 = getCovarianceMatrix(threeVariables, { invert: true });
-console.log(invertedMatrix3x3); // Expected output (approximately): // [ //
-[1.4275549391155293, -0.01029636303437083, 0.09920848359253127], //
-[-0.010296363034370827, 0.048860722373056165, 0.08989538259823723], //
-[0.09920848359253126, 0.08989538259823725, 0.835636521966158] // ]
-
-// Basic usage: Compute the covariance matrix for a 4x4 dataset. const
-fourVariables = [ [6.5, 1.9, 0.99], [7.1, 2.2, 0.98], [6.3, 2.1, 0.97] ]; const
-matrix4x4 = getCovarianceMatrix(fourVariables); console.log(matrix4x4); //
-Expected output (approximately): // [ // [0.7119681970550005,
-0.3809440223475775, 0.0006695405312093783, -0.12550719251309772], //
-[0.3809440223475775, 25.72051786341322, 0.012724566900994994,
--2.8121660685891356], // [0.0006695405312093783, 0.012724566900994994,
-0.000008943697841212739, -0.00287084411696803], // [-0.12550719251309772,
--2.8121660685891356, -0.00287084411696803, 1.514117788841716] // ]
-
-// Compute the inverse covariance matrix for a 4x4 dataset. const
-invertedMatrix4x4 = getCovarianceMatrix(fourVariables, { invert: true });
-console.log(invertedMatrix4x4); // Expected output (approximately): // [ //
-[1.890366500801349, 0.29548258210193046, -857.0948891407204,
--0.9196015969508056], // [0.29548258210193046, 0.2508884395460819,
--566.2813827046937, -0.583230998661561], // [-857.0948891407204,
--566.2813827046937, 1587280.2449344082, 1886.7655549874191], //
-[-0.9196015969508056, -0.583230998661561, 1886.7655549874191, 3.078393760864504]
+```ts
+// Basic usage: Compute the covariance matrix for a 3x3 dataset.
+const threeVariables = [
+  [6.5, 1.9, 11],
+  [7.1, 2.2, 12.2],
+  [6.3, 2.1, 10.5]
+];
+const matrix3x3 = getCovarianceMatrix(threeVariables);
+console.log(matrix3x3);
+// Expected output (approximately):
+// [
+//   [0.7119681970550005, 0.3809440223475775, -0.12550719251309772],
+//   [0.3809440223475775, 25.72051786341322, -2.8121660685891356],
+//   [-0.12550719251309772, -2.8121660685891356, 1.514117788841716]
 // ]
-
-## getGbmParameters
-
-Calculates the parameters (drift `mu` and volatility `sigma`) for a Geometric
-Brownian Motion (GBM) model based on historical data.
-
-Geometric Brownian Motion is a continuous-time stochastic process often used to
-model stock prices and other financial assets. This function estimates the drift
-and volatility from a series of observed values, assuming the returns follow a
-log-normal distribution.
-
-**When to use this function:**
-
-- To estimate parameters for simulating future asset paths using GBM
-- When you have a sequence of historical prices or values and need to determine
-  their annualized growth rate (drift) and risk (volatility)
-- To model potential future scenarios for a stock, index, or commodity based on
-  historical trends
-
-### Signature
-
-```typescript
-function getGbmParameters(
-  values: number[],
-  periodsPerYear: number,
-): { mu: number; sigma: number };
 ```
-
-### Parameters
-
-- **`values`**: An array of numerical values (e.g., historical prices)
-- **`periodsPerYear`**: The number of data points per year (e.g., 252 for daily
-  trading days, 12 for monthly data, 52 for weekly)
-
-### Returns
-
-An object containing the annualized drift (`mu`) and annualized volatility
-(`sigma`)
-
-### Examples
 
 ```ts
-const prices = [100, 102, 101, 105, 107, 110];
-const periodsPerYear = 252; // Daily data
-
-const { mu, sigma } = calculateGbmParameters(prices, periodsPerYear);
-console.log(`Annualized Drift (mu): ${mu.toFixed(4)}`);
-console.log(`Annualized Volatility (sigma): ${sigma.toFixed(4)}`);
+// Compute the inverse covariance matrix for a 3x3 dataset.
+const invertedMatrix3x3 = getCovarianceMatrix(threeVariables, { invert: true });
+console.log(invertedMatrix3x3);
+// Expected output (approximately):
+// [
+//   [1.4275549391155293, -0.01029636303437083, 0.09920848359253127],
+//   [-0.010296363034370827, 0.048860722373056165, 0.08989538259823723],
+//   [0.09920848359253126, 0.08989538259823725, 0.835636521966158]
+// ]
 ```
 
-## getMahalanobisDistance
-
-Computes the Mahalanobis distance between two data points (`x1` and `x2`) given
-the inverted covariance matrix of the dataset. The Mahalanobis distance is a
-measure of the distance between a point and a distribution. It is a unitless
-measure. This function can handle data points of any dimension (i.e., with more
-than 2 coordinates).
-
-This function requires the inverted covariance matrix of your dataset, which can
-be computed using the `getCovarianceMatrix` function with the `invert: true`
-option.
-
-### Signature
-
-```typescript
-function getMahalanobisDistance(
-  x1: number[],
-  x2: number[],
-  invCovMatrix: number[][],
-): number;
+```ts
+// Basic usage: Compute the covariance matrix for a 4x4 dataset.
+const fourVariables = [
+  [6.5, 1.9, 0.99],
+  [7.1, 2.2, 0.98],
+  [6.3, 2.1, 0.97]
+];
+const matrix4x4 = getCovarianceMatrix(fourVariables);
+console.log(matrix4x4);
+// Expected output (approximately):
+// [
+//   [0.7119681970550005, 0.3809440223475775, 0.0006695405312093783, -0.12550719251309772],
+//   [0.3809440223475775, 25.72051786341322, 0.012724566900994994, -2.8121660685891356],
+//   [0.0006695405312093783, 0.012724566900994994, 0.000008943697841212739, -0.00287084411696803],
+//   [-0.12550719251309772, -2.8121660685891356, -0.00287084411696803, 1.514117788841716]
+// ]
 ```
 
-### Parameters
+```ts
+// Compute the inverse covariance matrix for a 4x4 dataset.
+const invertedMatrix4x4 = getCovarianceMatrix(fourVariables, { invert: true });
+console.log(invertedMatrix4x4);
+// Expected output (approximately):
+// [
+//   [1.890366500801349, 0.29548258210193046, -857.0948891407204, -0.9196015969508056],
+//   [0.29548258210193046, 0.2508884395460819, -566.2813827046937, -0.583230998661561],
+//   [-857.0948891407204, -566.2813827046937, 1587280.2449344082, 1886.7655549874191],
+//   [-0.9196015969508056, -0.583230998661561, 1886.7655549874191, 3.078393760864504]
+// ]
+```
 
-- **`x1`**: The first data point (an array of numbers).
-- **`x2`**: The second data point (an array of numbers).
-- **`invCovMatrix`**: The inverted covariance matrix of the dataset (a 2D array
-  of numbers).
+***
 
-### Returns
+### getMahalanobisDistance()
+
+> **getMahalanobisDistance**(`x1`, `x2`, `invCovMatrix`): `number`
+
+Computes the Mahalanobis distance between two data points (`x1` and `x2`) given the inverted covariance matrix of the dataset. The Mahalanobis distance is a measure of the distance between a point and a distribution. It is a unitless measure. This function can handle data points of any dimension (i.e., with more than 2 coordinates).
+
+This function requires the inverted covariance matrix of your dataset, which can be computed using the `getCovarianceMatrix` function with the `invert: true` option.
+
+#### Parameters
+
+##### x1
+
+`number`[]
+
+The first data point (an array of numbers).
+
+##### x2
+
+`number`[]
+
+The second data point (an array of numbers).
+
+##### invCovMatrix
+
+`number`[][]
+
+The inverted covariance matrix of the dataset (a 2D array of numbers).
+
+#### Returns
+
+`number`
 
 The Mahalanobis distance between `x1` and `x2`.
 
-### Examples
+#### Examples
 
 ```ts
 // Calculate the Mahalanobis distance between two simple 2D points.
@@ -841,7 +1180,7 @@ const x1 = [1, 2];
 const x2 = [3, 4];
 const invCovMatrix = [
   [1, 0],
-  [0, 1],
+  [0, 1]
 ];
 const distance = getMahalanobisDistance(x1, x2, invCovMatrix);
 console.log(`Mahalanobis Distance: ${distance}`);
@@ -854,7 +1193,7 @@ const p2 = [4, 5, 6];
 const invCovMatrix3D = [
   [1, 0, 0],
   [0, 1, 0],
-  [0, 0, 1],
+  [0, 0, 1]
 ];
 const distance3D = getMahalanobisDistance(p1, p2, invCovMatrix3D);
 console.log(`Mahalanobis Distance (3D): ${distance3D}`);
@@ -862,86 +1201,93 @@ console.log(`Mahalanobis Distance (3D): ${distance3D}`);
 
 ```ts
 // Demonstrate how `getMahalanobisDistance` would typically be used with `getCovarianceMatrix`.
-import { getCovarianceMatrix, getMahalanobisDistance } from "journalism";
+import { getCovarianceMatrix, getMahalanobisDistance} from "journalism";
 
 const dataPoints = [
   [1, 10],
   [2, 12],
   [3, 11],
   [4, 15],
-  [5, 13],
+  [5, 13]
 ];
 const point1 = [2, 12];
 const point2 = [4, 15];
 
 const covMatrix = getCovarianceMatrix(dataPoints, { invert: true });
 const mahalanobisDist = getMahalanobisDistance(point1, point2, covMatrix);
-console.log(
-  `Mahalanobis Distance between point1 and point2: ${mahalanobisDist}`,
-);
+console.log(`Mahalanobis Distance between point1 and point2: ${mahalanobisDist}`);
 ```
 
-## getSampleSizeMean
+***
 
-Calculates the required sample size for estimating a population mean with a
-specified confidence level and margin of error.
+### getSampleSizeMean()
 
-The function uses the finite population correction formula. It calculates the
-sample standard deviation from the provided data to estimate the population
-standard deviation, which is then used in the sample size calculation.
+> **getSampleSizeMean**\<`T`\>(`data`, `key`, `confidenceLevel`, `marginOfError`, `options?`): `number`
+
+Calculates the required sample size for estimating a population mean with a specified confidence level and margin of error.
+
+The function uses the finite population correction formula. It calculates the sample standard deviation from the provided data to estimate the population standard deviation, which is then used in the sample size calculation.
 
 **When to use this function:**
-
-- Use when you want to estimate the average (mean) value of a numeric variable
-  in a population
-- When your outcome is continuous/numeric data (income, age, test scores,
-  measurements, etc.)
-- When you need to answer questions like "What's the average household income?"
-  or "What's the mean temperature?"
+- Use when you want to estimate the average (mean) value of a numeric variable in a population
+- When your outcome is continuous/numeric data (income, age, test scores, measurements, etc.)
+- When you need to answer questions like "What's the average household income?" or "What's the mean temperature?"
 - When you have existing data to calculate the standard deviation from
 
 **Use `getSampleSizeProportion` instead when:**
-
-- You want to estimate what percentage/proportion of a population has a certain
-  characteristic
+- You want to estimate what percentage/proportion of a population has a certain characteristic
 - Your outcome is categorical (yes/no, present/absent, pass/fail, etc.)
-- You need to answer questions like "What percentage of people support this
-  policy?" or "What proportion of records are accurate?"
+- You need to answer questions like "What percentage of people support this policy?" or "What proportion of records are accurate?"
 
-### Signature
+#### Type Parameters
 
-```typescript
-function getSampleSizeMean<T extends Record<string, unknown>>(
-  data: T[],
-  key: keyof T,
-  confidenceLevel: 90 | 95 | 99,
-  marginOfError: number,
-  options?: { populationSize?: number },
-): number;
-```
+##### T
 
-### Parameters
+`T` *extends* `Record`\<`string`, `unknown`\>
 
-- **`data`**: An array of objects used to calculate the sample standard
-  deviation. Each object must contain the specified key with numeric values.
-- **`key`**: The key in each data object that contains the numeric values to
-  analyze for calculating the sample size.
-- **`confidenceLevel`**: The desired confidence level for the sample. Must be
-  90, 95, or 99. The higher the confidence level, the larger the returned sample
-  size.
-- **`marginOfError`**: The acceptable margin of error in the same units as the
-  data values. The smaller the margin of error, the larger the returned sample
-  size.
-- **`options`**: Optional configuration object.
-- **`options.populationSize`**: The total size of the population. If not
-  provided, the function assumes the provided data represents the entire
-  population and uses data.length as the population size.
+#### Parameters
 
-### Returns
+##### data
+
+`T`[]
+
+An array of objects used to calculate the sample standard deviation. Each object must contain the specified key with numeric values.
+
+##### key
+
+keyof `T`
+
+The key in each data object that contains the numeric values to analyze for calculating the sample size.
+
+##### confidenceLevel
+
+`90` \| `95` \| `99`
+
+The desired confidence level for the sample. Must be 90, 95, or 99. The higher the confidence level, the larger the returned sample size.
+
+##### marginOfError
+
+`number`
+
+The acceptable margin of error in the same units as the data values. The smaller the margin of error, the larger the returned sample size.
+
+##### options?
+
+Optional configuration object.
+
+###### populationSize?
+
+`number`
+
+The total size of the population. If not provided, the function assumes the provided data represents the entire population and uses data.length as the population size.
+
+#### Returns
+
+`number`
 
 The minimum required sample size, rounded up to the nearest whole number.
 
-### Examples
+#### Examples
 
 ```ts
 // A journalist analyzing income data wants to know how many records to sample
@@ -953,9 +1299,7 @@ const incomeData = [
   // ... thousands more records
 ];
 const sampleSize = getSampleSizeMean(incomeData, "annual_income", 95, 2000);
-console.log(
-  `You need to analyze ${sampleSize} income records to estimate the average income within $2,000 with 95% confidence`,
-);
+console.log(`You need to analyze ${sampleSize} income records to estimate the average income within $2,000 with 95% confidence`);
 ```
 
 ```ts
@@ -972,11 +1316,9 @@ const requiredSample = getSampleSizeMean(
   "score",
   99,
   5,
-  { populationSize: 10000 }, // Total student population is 10,000
+  { populationSize: 10000 } // Total student population is 10,000
 );
-console.log(
-  `For 99% confidence with a 5-point margin of error, sample ${requiredSample} test scores from the 10,000 students.`,
-);
+console.log(`For 99% confidence with a 5-point margin of error, sample ${requiredSample} test scores from the 10,000 students.`);
 ```
 
 ```ts
@@ -988,120 +1330,106 @@ const testScores = [
   // ... more test data
 ];
 const requiredSample = getSampleSizeMean(testScores, "score", 99, 5);
-console.log(
-  `For 99% confidence with a 5-point margin of error, sample ${requiredSample} test scores.`,
-);
+console.log(`For 99% confidence with a 5-point margin of error, sample ${requiredSample} test scores.`);
 ```
 
-## getSampleSizeProportion
+***
 
-Calculates the required sample size for estimating a population proportion with
-a specified confidence level and margin of error.
+### getSampleSizeProportion()
 
-The function uses the finite population correction formula when the population
-size is known, which provides more accurate sample size calculations for smaller
-populations. It assumes a worst-case scenario proportion of 0.5 (50%) to ensure
-the calculated sample size is sufficient regardless of the actual population
-proportion.
+> **getSampleSizeProportion**(`populationSize`, `confidenceLevel`, `marginOfError`): `number`
+
+Calculates the required sample size for estimating a population proportion with a specified confidence level and margin of error.
+
+The function uses the finite population correction formula when the population size is known, which provides more accurate sample size calculations for smaller populations. It assumes a worst-case scenario proportion of 0.5 (50%) to ensure the calculated sample size is sufficient regardless of the actual population proportion.
 
 **When to use this function:**
-
-- Use when you want to estimate what percentage/proportion of a population has a
-  certain characteristic
+- Use when you want to estimate what percentage/proportion of a population has a certain characteristic
 - When your outcome is categorical (yes/no, pass/fail, present/absent)
-- When you need to answer questions like "What percentage of voters support this
-  candidate?" or "What proportion of records contain errors?"
-- When you don't know the actual proportion in advance (this function uses the
-  conservative 50% assumption)
+- When you need to answer questions like "What percentage of voters support this candidate?" or "What proportion of records contain errors?"
+- When you don't know the actual proportion in advance (this function uses the conservative 50% assumption)
 
 **Use `getSampleSizeMean` instead when:**
-
 - You want to estimate an average value (mean) rather than a proportion
 - Your data is continuous/numeric (income, temperature, test scores, etc.)
-- You need to answer questions like "What's the average salary?" or "What's the
-  mean test score?"
+- You need to answer questions like "What's the average salary?" or "What's the mean test score?"
 
-### Signature
+#### Parameters
 
-```typescript
-function getSampleSizeProportion(
-  populationSize: number,
-  confidenceLevel: 90 | 95 | 99,
-  marginOfError: number,
-): number;
-```
+##### populationSize
 
-### Parameters
+`number`
 
-- **`populationSize`**: The size of the population from which the sample will be
-  drawn. Used in the finite population correction formula for more accurate
-  sample size calculations.
-- **`confidenceLevel`**: The desired confidence level for the sample. Must be
-  90, 95, or 99. The higher the confidence level, the larger the returned sample
-  size.
-- **`marginOfError`**: The acceptable margin of error as a percentage (1-100).
-  The smaller the margin of error, the larger the returned sample size.
+The size of the population from which the sample will be drawn. Used in the finite population correction formula for more accurate sample size calculations.
 
-### Returns
+##### confidenceLevel
+
+`90` \| `95` \| `99`
+
+The desired confidence level for the sample. Must be 90, 95, or 99. The higher the confidence level, the larger the returned sample size.
+
+##### marginOfError
+
+`number`
+
+The acceptable margin of error as a percentage (1-100). The smaller the margin of error, the larger the returned sample size.
+
+#### Returns
+
+`number`
 
 The minimum required sample size, rounded up to the nearest whole number.
 
-### Examples
+#### Examples
 
 ```ts
 // A journalist has a dataset of 1,000 records and wants to know how many
 // data points to manually double-check to ensure their analysis is accurate
 const recordsToVerify = getSampleSizeProportion(1000, 95, 5);
-console.log(
-  `You need to manually verify ${recordsToVerify} records to be 95% confident in your analysis with a 5% margin of error`,
-); // 278
+console.log(`You need to manually verify ${recordsToVerify} records to be 95% confident in your analysis with a 5% margin of error`); // 278
 ```
 
 ```ts
 // Example for survey planning
 const requiredSample = getSampleSizeProportion(50000, 95, 4);
-console.log(
-  `For a city survey with 95% confidence and 4% margin of error, you need ${requiredSample} respondents.`,
-); // 594
+console.log(`For a city survey with 95% confidence and 4% margin of error, you need ${requiredSample} respondents.`); // 594
 ```
 
-## invertMatrix
+***
+
+### invertMatrix()
+
+> **invertMatrix**(`matrix`): `number`[][]
 
 Computes the inverse of a square matrix.
 
-The function takes a square matrix as input and returns its inverse. It handles
-both 2x2 and larger square matrices. If the matrix is singular (i.e., its
-determinant is zero), it cannot be inverted, and the function will throw an
-error.
+The function takes a square matrix as input and returns its inverse. It handles both 2x2 and larger square matrices. If the matrix is singular (i.e., its determinant is zero), it cannot be inverted, and the function will throw an error.
 
-### Signature
+#### Parameters
 
-```typescript
-function invertMatrix(matrix: number[][]): number[][];
-```
+##### matrix
 
-### Parameters
+`number`[][]
 
-- **`matrix`**: The square matrix to be inverted. It must be a 2D array where
-  the number of rows equals the number of columns.
+The square matrix to be inverted. It must be a 2D array where the number of rows equals the number of columns.
 
-### Returns
+#### Returns
+
+`number`[][]
 
 A new 2D array representing the inverse of the input matrix.
 
-### Throws
+#### Throws
 
-- **`Error`**: If the input matrix is not square (e.g.,
-  `matrix.length !== matrix[0].length`), or if it is singular (non-invertible),
-  an error will be thrown.
+If the input matrix is not square (e.g., `matrix.length !== matrix[0].length`), or if it is singular (non-invertible), an error will be thrown.
 
-### Examples
+#### Examples
 
 ```ts
 // Invert a simple 2x2 matrix.
 const matrix2x2 = [
   [4, 7],
-  [2, 6],
+  [2, 6]
 ];
 const inverted2x2 = invertMatrix(matrix2x2);
 console.log(inverted2x2);
@@ -1112,7 +1440,7 @@ console.log(inverted2x2);
 const matrix3x3 = [
   [1, 2, 3],
   [0, 1, 4],
-  [5, 6, 0],
+  [5, 6, 0]
 ];
 const inverted3x3 = invertMatrix(matrix3x3);
 console.log(inverted3x3);
@@ -1122,7 +1450,7 @@ console.log(inverted3x3);
 // Attempting to invert a singular matrix will throw an error.
 const singularMatrix = [
   [1, 2],
-  [2, 4],
+  [2, 4]
 ];
 try {
   invertMatrix(singularMatrix);
@@ -1132,63 +1460,83 @@ try {
 }
 ```
 
-## performChiSquaredGoodnessOfFitTest
+***
 
-Performs a Chi-Squared goodness of fit test to determine if observed frequencies
-match expected frequencies.
+### performChiSquaredGoodnessOfFitTest()
 
-The Chi-Squared goodness of fit test examines whether observed frequencies in
-categorical data differ significantly from expected frequencies. This test helps
-determine if a sample follows a particular theoretical distribution or pattern.
+> **performChiSquaredGoodnessOfFitTest**\<`T`\>(`data`, `categoryKey`, `observedKey`, `expectedKey`): `object`
+
+Performs a Chi-Squared goodness of fit test to determine if observed frequencies match expected frequencies.
+
+The Chi-Squared goodness of fit test examines whether observed frequencies in categorical data differ significantly from expected frequencies. This test helps determine if a sample follows a particular theoretical distribution or pattern.
 
 **When to use this function:**
-
-- Use for goodness of fit tests to see if observed data matches expected
-  distribution
+- Use for goodness of fit tests to see if observed data matches expected distribution
 - When testing if a sample follows a specific theoretical distribution
 - For validating assumptions about population proportions
 - When comparing actual results against theoretical models
 
 **Important Requirements:**
-
-- The sum of observed frequencies must equal the sum of expected frequencies
-  (within 0.1% tolerance)
+- The sum of observed frequencies must equal the sum of expected frequencies (within 0.1% tolerance)
 - All expected frequencies must be greater than 0
 - For reliable results, at least 80% of expected frequencies should be ≥ 5
 - For tests with 1 degree of freedom, all expected frequencies should be ≥ 5
 
-### Signature
+#### Type Parameters
 
-```typescript
-function performChiSquaredGoodnessOfFitTest<T extends Record<string, unknown>>(
-  data: T[],
-  categoryKey: keyof T,
-  observedKey: keyof T,
-  expectedKey: keyof T,
-): {
-  chiSquared: number;
-  degreesOfFreedom: number;
-  pValue: number;
-  warnings: string[];
-};
-```
+##### T
 
-### Parameters
+`T` *extends* `Record`\<`string`, `unknown`\>
 
-- **`data`**: An array of objects containing the categorical data and frequency
-  counts.
-- **`categoryKey`**: The key for the categorical variable.
-- **`observedKey`**: The key containing the observed frequency count for each
-  category.
-- **`expectedKey`**: The key containing the expected frequency count for each
-  category.
+#### Parameters
 
-### Returns
+##### data
 
-An object containing the chi-squared statistic, degrees of freedom, p-value, and
-any warnings about test assumptions.
+`T`[]
 
-### Examples
+An array of objects containing the categorical data and frequency counts.
+
+##### categoryKey
+
+keyof `T`
+
+The key for the categorical variable.
+
+##### observedKey
+
+keyof `T`
+
+The key containing the observed frequency count for each category.
+
+##### expectedKey
+
+keyof `T`
+
+The key containing the expected frequency count for each category.
+
+#### Returns
+
+`object`
+
+An object containing the chi-squared statistic, degrees of freedom, p-value, and any warnings about test assumptions.
+
+##### chiSquared
+
+> **chiSquared**: `number`
+
+##### degreesOfFreedom
+
+> **degreesOfFreedom**: `number`
+
+##### pValue
+
+> **pValue**: `number`
+
+##### warnings
+
+> **warnings**: `string`[]
+
+#### Examples
 
 ```ts
 // Testing if observed crime types match expected distribution (goodness of fit)
@@ -1204,14 +1552,12 @@ const testResult = performChiSquaredGoodnessOfFitTest(
   crimeData,
   "crime_type",
   "observed_count",
-  "expected_count",
+  "expected_count"
 );
 
 console.log(`Chi-squared: ${testResult.chiSquared.toFixed(3)}`);
 if (testResult.pValue < 0.05) {
-  console.log(
-    "Observed crime distribution differs significantly from expected",
-  );
+  console.log("Observed crime distribution differs significantly from expected");
 } else {
   console.log("Observed crime distribution matches expected pattern");
 }
@@ -1219,7 +1565,7 @@ if (testResult.pValue < 0.05) {
 // Check for any warnings about test assumptions
 if (testResult.warnings.length > 0) {
   console.log("Test assumption warnings:");
-  testResult.warnings.forEach((warning) => console.log("- " + warning));
+  testResult.warnings.forEach(warning => console.log("- " + warning));
 }
 ```
 
@@ -1239,7 +1585,7 @@ const result = performChiSquaredGoodnessOfFitTest(
   diceData,
   "face",
   "observed",
-  "expected",
+  "expected"
 );
 
 if (result.pValue > 0.05) {
@@ -1257,65 +1603,83 @@ const invalidData = [
 ];
 
 try {
-  performChiSquaredGoodnessOfFitTest(
-    invalidData,
-    "category",
-    "observed",
-    "expected",
-  );
+  performChiSquaredGoodnessOfFitTest(invalidData, "category", "observed", "expected");
 } catch (error) {
   console.log("Error:", error.message);
   // "Total observed frequencies (80) must approximately equal total expected frequencies (65)"
 }
 ```
 
-## performChiSquaredIndependenceTest
+***
 
-Performs a Chi-Squared independence test to determine if two categorical
-variables are statistically independent or associated.
+### performChiSquaredIndependenceTest()
 
-The Chi-Squared independence test examines whether there is a statistically
-significant association between two categorical variables by comparing observed
-frequencies against expected frequencies calculated under the assumption of
-independence.
+> **performChiSquaredIndependenceTest**\<`T`\>(`data`, `firstVariableKey`, `secondVariableKey`, `countKey`): `object`
+
+Performs a Chi-Squared independence test to determine if two categorical variables are statistically independent or associated.
+
+The Chi-Squared independence test examines whether there is a statistically significant association between two categorical variables by comparing observed frequencies against expected frequencies calculated under the assumption of independence.
 
 **When to use this function:**
-
-- Use for testing independence between two categorical variables (e.g., gender
-  vs voting preference)
+- Use for testing independence between two categorical variables (e.g., gender vs voting preference)
 - When you have categorical data organized in frequency counts
 - When testing hypotheses about associations between variables
 
-### Signature
+#### Type Parameters
 
-```typescript
-function performChiSquaredIndependenceTest<T extends Record<string, unknown>>(
-  data: T[],
-  firstVariableKey: keyof T,
-  secondVariableKey: keyof T,
-  countKey: keyof T,
-): {
-  chiSquared: number;
-  degreesOfFreedom: number;
-  pValue: number;
-  warnings: string[];
-};
-```
+##### T
 
-### Parameters
+`T` *extends* `Record`\<`string`, `unknown`\>
 
-- **`data`**: An array of objects containing the categorical data and frequency
-  counts.
-- **`firstVariableKey`**: The key for the first categorical variable.
-- **`secondVariableKey`**: The key for the second categorical variable.
-- **`countKey`**: The key containing the frequency count for each combination.
+#### Parameters
 
-### Returns
+##### data
 
-An object containing the chi-squared statistic, degrees of freedom, p-value,
-contingency table details, and any warnings about test assumptions.
+`T`[]
 
-### Examples
+An array of objects containing the categorical data and frequency counts.
+
+##### firstVariableKey
+
+keyof `T`
+
+The key for the first categorical variable.
+
+##### secondVariableKey
+
+keyof `T`
+
+The key for the second categorical variable.
+
+##### countKey
+
+keyof `T`
+
+The key containing the frequency count for each combination.
+
+#### Returns
+
+`object`
+
+An object containing the chi-squared statistic, degrees of freedom, p-value, contingency table details, and any warnings about test assumptions.
+
+##### chiSquared
+
+> **chiSquared**: `number`
+
+##### degreesOfFreedom
+
+> **degreesOfFreedom**: `number`
+
+##### pValue
+
+> **pValue**: `number`
+
+##### warnings
+
+> **warnings**: `string`[]
+
+#### Examples
 
 ```ts
 // A journalist investigating if voting preference is independent of age group
@@ -1328,12 +1692,7 @@ const votingData = [
   { age_group: "51+", candidate: "B", count: 30 },
 ];
 
-const result = performChiSquaredIndependenceTest(
-  votingData,
-  "age_group",
-  "candidate",
-  "count",
-);
+const result = performChiSquaredIndependenceTest(votingData, "age_group", "candidate", "count");
 
 console.log(`Chi-squared statistic: ${result.chiSquared.toFixed(3)}`);
 console.log(`Degrees of freedom: ${result.degreesOfFreedom}`);
@@ -1348,7 +1707,7 @@ if (result.pValue < 0.05) {
 // Check for any warnings about test assumptions
 if (result.warnings.length > 0) {
   console.log("Test assumption warnings:");
-  result.warnings.forEach((warning) => console.log("- " + warning));
+  result.warnings.forEach(warning => console.log("- " + warning));
 }
 ```
 
@@ -1370,7 +1729,7 @@ const result = performChiSquaredIndependenceTest(
   educationIncomeData,
   "education",
   "income",
-  "count",
+  "count"
 );
 
 if (result.pValue < 0.01) {
@@ -1380,75 +1739,108 @@ if (result.pValue < 0.01) {
 }
 ```
 
-## performPairedTTest
+***
 
-Performs a paired t-test for dependent means to determine if there is a
-significant difference between two related samples.
+### performPairedTTest()
 
-The paired t-test is used when comparing two measurements from the same subjects
-or entities, such as before and after an event, policy change, or intervention.
-It tests whether the mean difference between paired observations is
-significantly different from zero. This is a test for **dependent means**
-(related samples), not independent groups.
+> **performPairedTTest**\<`T`\>(`pairedData`, `firstVariableKey`, `secondVariableKey`, `options?`): `object`
+
+Performs a paired t-test for dependent means to determine if there is a significant difference between two related samples.
+
+The paired t-test is used when comparing two measurements from the same subjects or entities,
+such as before and after an event, policy change, or intervention. It tests whether the mean difference between paired observations
+is significantly different from zero. This is a test for **dependent means** (related samples), not independent groups.
 
 **When to use this function:**
-
-- Use when you have two measurements from the same subjects or entities
-  (before/after an event, pre/post policy change)
-- When comparing two related conditions or matched pairs (same districts,
-  candidates, regions, etc.)
-- When you want to control for individual variation between subjects (dependent
-  means)
+- Use when you have two measurements from the same subjects or entities (before/after an event, pre/post policy change)
+- When comparing two related conditions or matched pairs (same districts, candidates, regions, etc.)
+- When you want to control for individual variation between subjects (dependent means)
 - When data differences are approximately normally distributed
 
 **Test types:**
+- **"two-tailed"** (default): Tests if the mean difference is significantly different from zero
+- **"left-tailed"**: Tests if the mean difference is significantly less than zero
+- **"right-tailed"**: Tests if the mean difference is significantly greater than zero
 
-- **"two-tailed"** (default): Tests if the mean difference is significantly
-  different from zero
-- **"left-tailed"**: Tests if the mean difference is significantly less than
-  zero
-- **"right-tailed"**: Tests if the mean difference is significantly greater than
-  zero
+#### Type Parameters
 
-### Signature
+##### T
 
-```typescript
-function performPairedTTest<T extends Record<string, unknown>>(
-  pairedData: T[],
-  firstVariableKey: keyof T,
-  secondVariableKey: keyof T,
-  options?: { tail?: "two-tailed" | "left-tailed" | "right-tailed" },
-): {
-  sampleSize: number;
-  firstMean: number;
-  secondMean: number;
-  meanDifference: number;
-  differenceStdDev: number;
-  differenceVariance: number;
-  degreesOfFreedom: number;
-  tStatistic: number;
-  pValue: number;
-};
-```
+`T` *extends* `Record`\<`string`, `unknown`\>
 
-### Parameters
+#### Parameters
 
-- **`pairedData`**: An array of objects containing paired observations. Each
-  object must contain both specified keys with numeric values.
-- **`firstVariableKey`**: The key for the first measurement in each pair (e.g.,
-  "before_event", "baseline", "pre_policy").
-- **`secondVariableKey`**: The key for the second measurement in each pair
-  (e.g., "after_event", "follow_up", "post_policy").
-- **`options`**: Optional configuration object.
-- **`options.tail`**: The type of test to perform: "two-tailed" (default),
-  "left-tailed", or "right-tailed".
+##### pairedData
 
-### Returns
+`T`[]
 
-An object containing comprehensive test results including sample statistics,
-differences, degrees of freedom, t-statistic, and p-value.
+An array of objects containing paired observations. Each object must contain both specified keys with numeric values.
 
-### Examples
+##### firstVariableKey
+
+keyof `T`
+
+The key for the first measurement in each pair (e.g., "before_event", "baseline", "pre_policy").
+
+##### secondVariableKey
+
+keyof `T`
+
+The key for the second measurement in each pair (e.g., "after_event", "follow_up", "post_policy").
+
+##### options?
+
+Optional configuration object.
+
+###### tail?
+
+`"two-tailed"` \| `"left-tailed"` \| `"right-tailed"`
+
+The type of test to perform: "two-tailed" (default), "left-tailed", or "right-tailed".
+
+#### Returns
+
+`object`
+
+An object containing comprehensive test results including sample statistics, differences, degrees of freedom, t-statistic, and p-value.
+
+##### degreesOfFreedom
+
+> **degreesOfFreedom**: `number`
+
+##### differenceStdDev
+
+> **differenceStdDev**: `number`
+
+##### differenceVariance
+
+> **differenceVariance**: `number`
+
+##### firstMean
+
+> **firstMean**: `number`
+
+##### meanDifference
+
+> **meanDifference**: `number`
+
+##### pValue
+
+> **pValue**: `number`
+
+##### sampleSize
+
+> **sampleSize**: `number`
+
+##### secondMean
+
+> **secondMean**: `number`
+
+##### tStatistic
+
+> **tStatistic**: `number`
+
+#### Examples
 
 ```ts
 // A journalist investigating if parking fines increased after new enforcement policy
@@ -1461,14 +1853,8 @@ const parkingFineData = [
   { district_id: 6, fines_before: 134, fines_after: 149 },
 ];
 
-const result = performPairedTTest(
-  parkingFineData,
-  "fines_before",
-  "fines_after",
-);
-console.log(
-  `Mean increase in fines: ${result.meanDifference.toFixed(2)} per month`,
-);
+const result = performPairedTTest(parkingFineData, "fines_before", "fines_after");
+console.log(`Mean increase in fines: ${result.meanDifference.toFixed(2)} per month`);
 console.log(`T-statistic: ${result.tStatistic.toFixed(3)}`);
 console.log(`P-value: ${result.pValue.toFixed(4)}`);
 
@@ -1494,12 +1880,10 @@ const testResult = performPairedTTest(
   campaignData,
   "before_ads",
   "after_ads",
-  { tail: "right-tailed" },
+  { tail: "right-tailed" }
 );
 
-console.log(
-  `Mean vote share increase: ${testResult.meanDifference.toFixed(2)}%`,
-);
+console.log(`Mean vote share increase: ${testResult.meanDifference.toFixed(2)}%`);
 if (testResult.pValue < 0.05) {
   console.log("Campaign ads show significant increase in vote share!");
 } else {
@@ -1507,80 +1891,104 @@ if (testResult.pValue < 0.05) {
 }
 ```
 
-## performTTest
+***
 
-Performs a one-sample t-test for independent means to determine if a sample mean
-is significantly different from a hypothesized population mean.
+### performTTest()
 
-The function compares the mean of a sample against a hypothesized population
-mean when the population standard deviation is unknown. This is the most common
-scenario in real-world statistical analysis where we only have sample data and
-need to estimate the population parameters. This is a test for **independent
-means** (sample vs population), not related/paired samples.
+> **performTTest**\<`T`\>(`sampleData`, `variableKey`, `hypothesizedMean`, `options?`): `object`
+
+Performs a one-sample t-test for independent means to determine if a sample mean is significantly different from a hypothesized population mean.
+
+The function compares the mean of a sample against a hypothesized population mean when the population standard deviation is unknown. This is the most common scenario in real-world statistical analysis where we only have sample data and need to estimate the population parameters. This is a test for **independent means** (sample vs population), not related/paired samples.
 
 **When to use this function:**
-
-- Use when you have sample data and want to test if the sample mean differs
-  significantly from a known or hypothesized value
+- Use when you have sample data and want to test if the sample mean differs significantly from a known or hypothesized value
 - When the population standard deviation is unknown (most common case)
-- When data is approximately normally distributed OR when you have a large
-  sample size (n ≥ 30-50)
-- **Robustness to non-normality**: Due to the Central Limit Theorem, the t-test
-  becomes robust to violations of normality as sample size increases. For large
-  samples (n ≥ 30-50), the sampling distribution of the mean approaches
-  normality even if the underlying data is not normally distributed
-- **Small samples (n < 30)**: Normality assumption is more critical. Consider
-  checking for normality or using non-parametric alternatives (like Wilcoxon
-  signed-rank test) if data is heavily skewed or has extreme outliers
+- When data is approximately normally distributed OR when you have a large sample size (n ≥ 30-50)
+- **Robustness to non-normality**: Due to the Central Limit Theorem, the t-test becomes robust to violations of normality as sample size increases. For large samples (n ≥ 30-50), the sampling distribution of the mean approaches normality even if the underlying data is not normally distributed
+- **Small samples (n < 30)**: Normality assumption is more critical. Consider checking for normality or using non-parametric alternatives (like Wilcoxon signed-rank test) if data is heavily skewed or has extreme outliers
 - For independent observations (not paired or matched data)
 
 **Test types:**
+- **"two-tailed"** (default): Tests if sample mean is significantly different (higher OR lower) than hypothesized mean
+- **"left-tailed"**: Tests if sample mean is significantly lower than hypothesized mean
+- **"right-tailed"**: Tests if sample mean is significantly higher than hypothesized mean
 
-- **"two-tailed"** (default): Tests if sample mean is significantly different
-  (higher OR lower) than hypothesized mean
-- **"left-tailed"**: Tests if sample mean is significantly lower than
-  hypothesized mean
-- **"right-tailed"**: Tests if sample mean is significantly higher than
-  hypothesized mean
+#### Type Parameters
 
-### Signature
+##### T
 
-```typescript
-function performTTest<T extends Record<string, unknown>>(
-  sampleData: T[],
-  variableKey: keyof T,
-  hypothesizedMean: number,
-  options?: { tail?: "two-tailed" | "left-tailed" | "right-tailed" },
-): {
-  sampleSize: number;
-  sampleMean: number;
-  sampleStdDev: number;
-  sampleVariance: number;
-  hypothesizedMean: number;
-  degreesOfFreedom: number;
-  tStatistic: number;
-  pValue: number;
-};
-```
+`T` *extends* `Record`\<`string`, `unknown`\>
 
-### Parameters
+#### Parameters
 
-- **`sampleData`**: An array of objects representing the sample data. Each
-  object must contain the specified key with numeric values.
-- **`variableKey`**: The key in each data object that contains the numeric
-  values to analyze for the statistical test.
-- **`hypothesizedMean`**: The hypothesized population mean to test against (null
-  hypothesis value).
-- **`options`**: Optional configuration object.
-- **`options.tail`**: The type of test to perform: "two-tailed" (default),
-  "left-tailed", or "right-tailed".
+##### sampleData
 
-### Returns
+`T`[]
 
-An object containing comprehensive test results including sample statistics,
-degrees of freedom, t-statistic, and p-value.
+An array of objects representing the sample data. Each object must contain the specified key with numeric values.
 
-### Examples
+##### variableKey
+
+keyof `T`
+
+The key in each data object that contains the numeric values to analyze for the statistical test.
+
+##### hypothesizedMean
+
+`number`
+
+The hypothesized population mean to test against (null hypothesis value).
+
+##### options?
+
+Optional configuration object.
+
+###### tail?
+
+`"two-tailed"` \| `"left-tailed"` \| `"right-tailed"`
+
+The type of test to perform: "two-tailed" (default), "left-tailed", or "right-tailed".
+
+#### Returns
+
+`object`
+
+An object containing comprehensive test results including sample statistics, degrees of freedom, t-statistic, and p-value.
+
+##### degreesOfFreedom
+
+> **degreesOfFreedom**: `number`
+
+##### hypothesizedMean
+
+> **hypothesizedMean**: `number`
+
+##### pValue
+
+> **pValue**: `number`
+
+##### sampleMean
+
+> **sampleMean**: `number`
+
+##### sampleSize
+
+> **sampleSize**: `number`
+
+##### sampleStdDev
+
+> **sampleStdDev**: `number`
+
+##### sampleVariance
+
+> **sampleVariance**: `number`
+
+##### tStatistic
+
+> **tStatistic**: `number`
+
+#### Examples
 
 ```ts
 // A journalist investigating if basketball players in a local league
@@ -1602,9 +2010,7 @@ console.log(`T-statistic: ${result.tStatistic.toFixed(3)}`);
 console.log(`P-value: ${result.pValue.toFixed(4)}`);
 
 if (result.pValue < 0.05) {
-  console.log(
-    "Local players score significantly different from national average",
-  );
+  console.log("Local players score significantly different from national average");
 } else {
   console.log("Local players' scoring is consistent with national average");
 }
@@ -1626,7 +2032,7 @@ const testResult = performTTest(
   trainingResults,
   "improvement_score",
   expectedImprovement,
-  { tail: "right-tailed" },
+  { tail: "right-tailed" }
 );
 
 console.log(`Sample mean improvement: ${testResult.sampleMean.toFixed(2)}`);
@@ -1637,89 +2043,130 @@ if (testResult.pValue < 0.05) {
 }
 ```
 
-## performTwoSampleTTest
+***
 
-Performs a two-sample t-test for independent means to determine if there is a
-significant difference between two independent groups.
+### performTwoSampleTTest()
 
-The two-sample t-test compares the means of two independent groups when the
-population standard deviations are unknown. It tests whether the difference
-between the two group means is significantly different from zero. This is a test
-for **independent means** (unrelated groups), not paired/related samples.
+> **performTwoSampleTTest**\<`T1`, `T2`, `K`\>(`group1Data`, `group2Data`, `variableKey`, `options?`): `object`
+
+Performs a two-sample t-test for independent means to determine if there is a significant difference between two independent groups.
+
+The two-sample t-test compares the means of two independent groups when the population standard deviations are unknown.
+It tests whether the difference between the two group means is significantly different from zero. This is a test for **independent means** (unrelated groups), not paired/related samples.
 
 **When to use this function:**
-
 - Use when you have two separate, independent groups to compare
 - When comparing measurements from different subjects, entities, or populations
 - When the population standard deviations are unknown (most common case)
-- When data in both groups are approximately normally distributed OR when you
-  have large sample sizes (n ≥ 30-50 per group)
-- **Robustness to non-normality**: Due to the Central Limit Theorem, the
-  two-sample t-test becomes robust to violations of normality as sample sizes
-  increase. For large samples (n ≥ 30-50 per group), the sampling distribution
-  of the difference in means approaches normality even if the underlying data is
-  not normally distributed
-- **Small samples (n < 30 per group)**: Normality assumption is more critical
-  for both groups. Consider checking for normality or using non-parametric
-  alternatives (like Mann-Whitney U test) if data is heavily skewed or has
-  extreme outliers
+- When data in both groups are approximately normally distributed OR when you have large sample sizes (n ≥ 30-50 per group)
+- **Robustness to non-normality**: Due to the Central Limit Theorem, the two-sample t-test becomes robust to violations of normality as sample sizes increase. For large samples (n ≥ 30-50 per group), the sampling distribution of the difference in means approaches normality even if the underlying data is not normally distributed
+- **Small samples (n < 30 per group)**: Normality assumption is more critical for both groups. Consider checking for normality or using non-parametric alternatives (like Mann-Whitney U test) if data is heavily skewed or has extreme outliers
 - For independent observations (not paired, matched, or related data)
 
 **Test types:**
+- **"two-tailed"** (default): Tests if the group means are significantly different from each other
+- **"left-tailed"**: Tests if group 1 mean is significantly less than group 2 mean
+- **"right-tailed"**: Tests if group 1 mean is significantly greater than group 2 mean
 
-- **"two-tailed"** (default): Tests if the group means are significantly
-  different from each other
-- **"left-tailed"**: Tests if group 1 mean is significantly less than group 2
-  mean
-- **"right-tailed"**: Tests if group 1 mean is significantly greater than group
-  2 mean
+#### Type Parameters
 
-### Signature
+##### T1
 
-```typescript
-function performTwoSampleTTest<
-  T1 extends Record<string, unknown>,
-  T2 extends Record<string, unknown>,
-  K extends keyof T1 & keyof T2,
->(
-  group1Data: T1[],
-  group2Data: T2[],
-  variableKey: K,
-  options?: { tail?: "two-tailed" | "left-tailed" | "right-tailed" },
-): {
-  group1SampleSize: number;
-  group2SampleSize: number;
-  group1Mean: number;
-  group2Mean: number;
-  group1StdDev: number;
-  group2StdDev: number;
-  group1Variance: number;
-  group2Variance: number;
-  meanDifference: number;
-  degreesOfFreedom: number;
-  tStatistic: number;
-  pValue: number;
-};
-```
+`T1` *extends* `Record`\<`string`, `unknown`\>
 
-### Parameters
+##### T2
 
-- **`group1Data`**: An array of objects containing observations for the first
-  group. Each object must contain the specified key with a numeric value.
-- **`group2Data`**: An array of objects containing observations for the second
-  group. Each object must contain the specified key with a numeric value.
-- **`variableKey`**: The key for the measurement in both group objects (e.g.,
-  "income", "score", "price").
-- **`options`**: Optional configuration object.
-- **`options.tail`**: The type of test to perform: "two-tailed" (default),
-  "left-tailed", or "right-tailed".
+`T2` *extends* `Record`\<`string`, `unknown`\>
 
-### Returns
+##### K
 
-An object containing comprehensive test results including sample statistics for
-both groups, mean difference, degrees of freedom, t-statistic, and p-value.
+`K` *extends* `string` \| `number` \| `symbol`
 
-### Examples
+#### Parameters
+
+##### group1Data
+
+`T1`[]
+
+An array of objects containing observations for the first group. Each object must contain the specified key with a numeric value.
+
+##### group2Data
+
+`T2`[]
+
+An array of objects containing observations for the second group. Each object must contain the specified key with a numeric value.
+
+##### variableKey
+
+`K`
+
+The key for the measurement in both group objects (e.g., "income", "score", "price").
+
+##### options?
+
+Optional configuration object.
+
+###### tail?
+
+`"two-tailed"` \| `"left-tailed"` \| `"right-tailed"`
+
+The type of test to perform: "two-tailed" (default), "left-tailed", or "right-tailed".
+
+#### Returns
+
+`object`
+
+An object containing comprehensive test results including sample statistics for both groups, mean difference, degrees of freedom, t-statistic, and p-value.
+
+##### degreesOfFreedom
+
+> **degreesOfFreedom**: `number`
+
+##### group1Mean
+
+> **group1Mean**: `number`
+
+##### group1SampleSize
+
+> **group1SampleSize**: `number`
+
+##### group1StdDev
+
+> **group1StdDev**: `number`
+
+##### group1Variance
+
+> **group1Variance**: `number`
+
+##### group2Mean
+
+> **group2Mean**: `number`
+
+##### group2SampleSize
+
+> **group2SampleSize**: `number`
+
+##### group2StdDev
+
+> **group2StdDev**: `number`
+
+##### group2Variance
+
+> **group2Variance**: `number`
+
+##### meanDifference
+
+> **meanDifference**: `number`
+
+##### pValue
+
+> **pValue**: `number`
+
+##### tStatistic
+
+> **tStatistic**: `number`
+
+#### Examples
 
 ```ts
 // A journalist comparing average housing prices between two different cities
@@ -1776,7 +2223,7 @@ const testResult = performTwoSampleTTest(
   maleCandidates,
   femaleCandidates,
   "donation_total",
-  { tail: "right-tailed" },
+  { tail: "right-tailed" }
 );
 
 console.log(`Male average: $${testResult.group1Mean.toFixed(0)}`);
@@ -1788,78 +2235,106 @@ if (testResult.pValue < 0.05) {
 }
 ```
 
-## performZTest
+***
 
-Performs a one-sample Z-test to determine if a sample mean is significantly
-different from a population mean.
+### performZTest()
 
-The function compares the mean of a sample against the mean of a known
-population to test the null hypothesis. It automatically applies the finite
-population correction (FPC) when the sample size exceeds 5% of the population
-size, which provides more accurate results for smaller populations. This is a
-**one-sample Z-test** comparing a sample against a known population, not a
-comparison between two independent samples.
+> **performZTest**\<`T`\>(`populationData`, `sampleData`, `variableKey`, `options?`): `object`
+
+Performs a one-sample Z-test to determine if a sample mean is significantly different from a population mean.
+
+The function compares the mean of a sample against the mean of a known population to test the null hypothesis. It automatically applies the finite population correction (FPC) when the sample size exceeds 5% of the population size, which provides more accurate results for smaller populations. This is a **one-sample Z-test** comparing a sample against a known population, not a comparison between two independent samples.
 
 **When to use this function:**
-
-- Use when you have a complete population dataset and want to test if a sample
-  represents that population
-- When you need to validate whether observed differences between sample and
-  population means are statistically significant
-- When data is approximately normally distributed or sample size is large
-  (Central Limit Theorem applies)
+- Use when you have a complete population dataset and want to test if a sample represents that population
+- When you need to validate whether observed differences between sample and population means are statistically significant
+- When data is approximately normally distributed or sample size is large (Central Limit Theorem applies)
 - For independent observations (not paired or matched data)
 
 **Test types:**
+- **"two-tailed"** (default): Tests if sample mean is significantly different (higher OR lower) than population mean
+- **"left-tailed"**: Tests if sample mean is significantly lower than population mean
+- **"right-tailed"**: Tests if sample mean is significantly higher than population mean
 
-- **"two-tailed"** (default): Tests if sample mean is significantly different
-  (higher OR lower) than population mean
-- **"left-tailed"**: Tests if sample mean is significantly lower than population
-  mean
-- **"right-tailed"**: Tests if sample mean is significantly higher than
-  population mean
+#### Type Parameters
 
-### Signature
+##### T
 
-```typescript
-function performZTest<T extends Record<string, unknown>>(
-  populationData: T[],
-  sampleData: T[],
-  variableKey: keyof T,
-  options?: { tail?: "two-tailed" | "left-tailed" | "right-tailed" },
-): {
-  populationSize: number;
-  sampleSize: number;
-  populationMean: number;
-  sampleMean: number;
-  populationStdDev: number;
-  populationVariance: number;
-  fpcApplied: boolean;
-  zScore: number;
-  pValue: number;
-};
-```
+`T` *extends* `Record`\<`string`, `unknown`\>
 
-### Parameters
+#### Parameters
 
-- **`populationData`**: An array of objects representing the complete population
-  data. Each object must contain the specified key with numeric values.
-- **`sampleData`**: An array of objects representing the sample data to test
-  against the population. Each object must contain the specified key with
-  numeric values.
-- **`variableKey`**: The key in each data object that contains the numeric
-  values to analyze for the statistical test.
-- **`options`**: Optional configuration object.
-- **`options.tail`**: The type of test to perform: "two-tailed" (default),
-  "left-tailed", or "right-tailed".
+##### populationData
 
-### Returns
+`T`[]
 
-An object containing comprehensive test results including population and sample
-statistics, population variance and standard deviation, test statistics
-(z-score), p-value, and whether finite population correction was applied.
+An array of objects representing the complete population data. Each object must contain the specified key with numeric values.
 
-### Examples
+##### sampleData
+
+`T`[]
+
+An array of objects representing the sample data to test against the population. Each object must contain the specified key with numeric values.
+
+##### variableKey
+
+keyof `T`
+
+The key in each data object that contains the numeric values to analyze for the statistical test.
+
+##### options?
+
+Optional configuration object.
+
+###### tail?
+
+`"two-tailed"` \| `"left-tailed"` \| `"right-tailed"`
+
+The type of test to perform: "two-tailed" (default), "left-tailed", or "right-tailed".
+
+#### Returns
+
+`object`
+
+An object containing comprehensive test results including population and sample statistics, population variance and standard deviation, test statistics (z-score), p-value, and whether finite population correction was applied.
+
+##### fpcApplied
+
+> **fpcApplied**: `boolean`
+
+##### populationMean
+
+> **populationMean**: `number`
+
+##### populationSize
+
+> **populationSize**: `number`
+
+##### populationStdDev
+
+> **populationStdDev**: `number`
+
+##### populationVariance
+
+> **populationVariance**: `number`
+
+##### pValue
+
+> **pValue**: `number`
+
+##### sampleMean
+
+> **sampleMean**: `number`
+
+##### sampleSize
+
+> **sampleSize**: `number`
+
+##### zScore
+
+> **zScore**: `number`
+
+#### Examples
 
 ```ts
 // A journalist investigating if Democratic candidates receive significantly
@@ -1879,22 +2354,14 @@ const democraticCandidates = [
   // ... all Democratic candidates (1,200 records)
 ];
 
-const result = performZTest(
-  allCandidates,
-  democraticCandidates,
-  "donation_amount",
-);
+const result = performZTest(allCandidates, democraticCandidates, "donation_amount");
 console.log(`Population mean donation: $${result.populationMean.toFixed(2)}`);
 console.log(`Democratic candidates mean: $${result.sampleMean.toFixed(2)}`);
 console.log(`P-value: ${result.pValue.toFixed(4)}`);
 if (result.pValue < 0.05) {
-  console.log(
-    "Democratic candidates receive significantly different donations than average",
-  );
+  console.log("Democratic candidates receive significantly different donations than average");
 } else {
-  console.log(
-    "Democratic candidates' donations are consistent with overall average",
-  );
+  console.log("Democratic candidates' donations are consistent with overall average");
 }
 ```
 
@@ -1913,12 +2380,8 @@ const corporateDonors = [
   // ... all corporate donors
 ];
 
-const testResult = performZTest(allDonors, corporateDonors, "amount", {
-  tail: "right-tailed",
-});
-console.log(
-  `All donors mean donation: $${testResult.populationMean.toFixed(2)}`,
-);
+const testResult = performZTest(allDonors, corporateDonors, "amount", { tail: "right-tailed" });
+console.log(`All donors mean donation: $${testResult.populationMean.toFixed(2)}`);
 console.log(`Corporate donors mean: $${testResult.sampleMean.toFixed(2)}`);
 if (testResult.pValue < 0.05) {
   console.log("Corporate donors give significantly MORE than average");
@@ -1926,61 +2389,3 @@ if (testResult.pValue < 0.05) {
   console.log("Corporate donors don't give significantly more than average");
 }
 ```
-
-## stepCir
-
-Calculates the next value in a Cox-Ingersoll-Ross (CIR) process.
-
-### Signature
-
-```typescript
-function stepCir(
-  currentValue: number,
-  a: number,
-  b: number,
-  sigma: number,
-  dt: number,
-  shock: number,
-): number;
-```
-
-### Parameters
-
-- **`currentValue`**: The current value of the process.
-- **`a`**: The speed of mean reversion.
-- **`b`**: The long-term mean level.
-- **`sigma`**: The volatility coefficient.
-- **`dt`**: The time step.
-- **`shock`**: A standard normal random variable (Z).
-
-### Returns
-
-The next value in the process.
-
-## stepGbm
-
-Calculates the next value in a Geometric Brownian Motion (GBM) process.
-
-### Signature
-
-```typescript
-function stepGbm(
-  currentValue: number,
-  mu: number,
-  sigma: number,
-  dt: number,
-  shock: number,
-): number;
-```
-
-### Parameters
-
-- **`currentValue`**: The current value of the process.
-- **`mu`**: The drift coefficient.
-- **`sigma`**: The volatility coefficient.
-- **`dt`**: The time step.
-- **`shock`**: A standard normal random variable (Z).
-
-### Returns
-
-The next value in the process.

@@ -1,7 +1,7 @@
-import { assertEquals } from "jsr:@std/assert";
+import { expect, test } from "vitest";
 import getCorrelatedShocks from "../../src/statistics/getCorrelatedShocks.ts";
 
-Deno.test("getCorrelatedShocks: correctly multiplies lower triangular matrix by Z vector", () => {
+test("getCorrelatedShocks: correctly multiplies lower triangular matrix by Z vector", () => {
   const L = [
     [2.0, 0.0],
     [0.5, 1.5],
@@ -13,5 +13,5 @@ Deno.test("getCorrelatedShocks: correctly multiplies lower triangular matrix by 
   const expectedX = [2.0, -1.0];
 
   const X = getCorrelatedShocks(L, Z);
-  assertEquals(X, expectedX);
+  expect(X).toStrictEqual(expectedX);
 });

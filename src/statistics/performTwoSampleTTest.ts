@@ -136,9 +136,9 @@ export default function performTwoSampleTTest<
 
       if (typeof value !== "number" || !isFinite(value)) {
         throw new Error(
-          `Invalid data in ${groupName} at index ${index}. Expected a finite number for key "${
-            String(key)
-          }", but received: ${JSON.stringify(value)}.`,
+          `Invalid data in ${groupName} at index ${index}. Expected a finite number for key "${String(
+            key,
+          )}", but received: ${JSON.stringify(value)}.`,
         );
       }
 

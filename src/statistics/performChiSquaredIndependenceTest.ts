@@ -107,18 +107,18 @@ export default function performChiSquaredIndependenceTest<
     if (expectedType === "number") {
       if (typeof value !== "number" || !isFinite(value) || value < 0) {
         throw new Error(
-          `Invalid data at index ${index}. Expected a non-negative finite number for key "${key}", but received: ${
-            JSON.stringify(value)
-          }.`,
+          `Invalid data at index ${index}. Expected a non-negative finite number for key "${key}", but received: ${JSON.stringify(
+            value,
+          )}.`,
         );
       }
       return value;
     } else if (expectedType === "string") {
       if (typeof value !== "string" && typeof value !== "number") {
         throw new Error(
-          `Invalid data at index ${index}. Expected a string or number for key "${key}", but received: ${
-            JSON.stringify(value)
-          }.`,
+          `Invalid data at index ${index}. Expected a string or number for key "${key}", but received: ${JSON.stringify(
+            value,
+          )}.`,
         );
       }
       return value;
@@ -164,10 +164,10 @@ export default function performChiSquaredIndependenceTest<
 
   // --- 4. Calculate totals ---
   const rowTotals = rows.map((row) =>
-    columns.reduce((sum, col) => sum + (contingencyData[row]?.[col] || 0), 0)
+    columns.reduce((sum, col) => sum + (contingencyData[row]?.[col] || 0), 0),
   );
   const colTotals = columns.map((col) =>
-    rows.reduce((sum, row) => sum + (contingencyData[row]?.[col] || 0), 0)
+    rows.reduce((sum, row) => sum + (contingencyData[row]?.[col] || 0), 0),
   );
   const grandTotal = rowTotals.reduce((sum, total) => sum + total, 0);
 
@@ -180,8 +180,8 @@ export default function performChiSquaredIndependenceTest<
   rows.forEach((row, i) => {
     expectedFrequencies[row] = {};
     columns.forEach((col, j) => {
-      expectedFrequencies[row][col] = (rowTotals[i] * colTotals[j]) /
-        grandTotal;
+      expectedFrequencies[row][col] =
+        (rowTotals[i] * colTotals[j]) / grandTotal;
     });
   });
 
@@ -215,9 +215,9 @@ export default function performChiSquaredIndependenceTest<
 
   if (percentageAtLeastFive < 80) {
     warnings.push(
-      `Warning: Only ${
-        percentageAtLeastFive.toFixed(1)
-      }% of expected frequencies are ≥ 5 (recommended: ≥ 80%). Results may be unreliable.`,
+      `Warning: Only ${percentageAtLeastFive.toFixed(
+        1,
+      )}% of expected frequencies are ≥ 5 (recommended: ≥ 80%). Results may be unreliable.`,
     );
   }
 

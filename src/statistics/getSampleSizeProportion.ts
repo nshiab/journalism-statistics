@@ -61,13 +61,12 @@ export default function getSampleSizeProportion(
   }
 
   const estimatedProportion = 0.5;
-  const numerator = Math.pow(zScore, 2) * estimatedProportion *
-    (1 - estimatedProportion);
+  const numerator =
+    Math.pow(zScore, 2) * estimatedProportion * (1 - estimatedProportion);
   const denominator = Math.pow(marginOfError / 100, 2);
   const sampleSize = numerator / denominator;
 
-  const finalSampleSize = sampleSize /
-    (1 + ((sampleSize - 1) / populationSize));
+  const finalSampleSize = sampleSize / (1 + (sampleSize - 1) / populationSize);
 
   return Math.ceil(finalSampleSize);
 }

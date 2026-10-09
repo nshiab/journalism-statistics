@@ -96,17 +96,14 @@ export default function performZTest<T extends Record<string, unknown>>(
   pValue: number;
 } {
   // --- 1. Helper function to safely extract and validate numeric data ---
-  const extractNumericValues = (
-    data: T[],
-    sourceName: string,
-  ): number[] => {
+  const extractNumericValues = (data: T[], sourceName: string): number[] => {
     return data.map((item, index) => {
       const value = item[variableKey];
       if (typeof value !== "number" || !isFinite(value)) {
         throw new Error(
-          `Invalid data in ${sourceName} array at index ${index}. Expected a finite number for key "${
-            String(variableKey)
-          }", but received: ${JSON.stringify(value)}.`,
+          `Invalid data in ${sourceName} array at index ${index}. Expected a finite number for key "${String(
+            variableKey,
+          )}", but received: ${JSON.stringify(value)}.`,
         );
       }
       return value;
@@ -167,8 +164,9 @@ export default function performZTest<T extends Record<string, unknown>>(
     const sign = x >= 0 ? 1 : -1;
     x = Math.abs(x);
     const t = 1.0 / (1.0 + p * x);
-    const y = 1.0 -
-      (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+    const y =
+      1.0 -
+      ((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
     return sign * y;
   };
   const cdf = (val: number): number => 0.5 * (1 + erf(val / Math.sqrt(2)));

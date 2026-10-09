@@ -1,13 +1,7 @@
 const LANCZOS_COEFFICIENTS = [
-  0.9999999999998099,
-  676.5203681218851,
-  -1259.1392167224028,
-  771.3234287776531,
-  -176.6150291621406,
-  12.507343278686905,
-  -0.13857109526572012,
-  9.984369578019572e-6,
-  1.5056327351493116e-7,
+  0.9999999999998099, 676.5203681218851, -1259.1392167224028, 771.3234287776531,
+  -176.6150291621406, 12.507343278686905, -0.13857109526572012,
+  9.984369578019572e-6, 1.5056327351493116e-7,
 ] as const;
 
 const LOG_SQRT_TWO_PI = 0.9189385332046727;
@@ -20,8 +14,11 @@ const GAMMA_MAX_ITERATIONS = 10_000;
 /** Natural logarithm of the gamma function, using the Lanczos approximation. */
 export function logGamma(value: number): number {
   if (value < 0.5) {
-    return Math.log(Math.PI) - Math.log(Math.sin(Math.PI * value)) -
-      logGamma(1 - value);
+    return (
+      Math.log(Math.PI) -
+      Math.log(Math.sin(Math.PI * value)) -
+      logGamma(1 - value)
+    );
   }
 
   const shifted = value - 1;
@@ -30,8 +27,9 @@ export function logGamma(value: number): number {
     sum += LANCZOS_COEFFICIENTS[index] / (shifted + index);
   }
   const base = shifted + 7.5;
-  return LOG_SQRT_TWO_PI + (shifted + 0.5) * Math.log(base) - base +
-    Math.log(sum);
+  return (
+    LOG_SQRT_TWO_PI + (shifted + 0.5) * Math.log(base) - base + Math.log(sum)
+  );
 }
 
 function incompleteBetaContinuedFraction(
@@ -43,7 +41,7 @@ function incompleteBetaContinuedFraction(
   const firstShapePlusOne = firstShape + 1;
   const firstShapeMinusOne = firstShape - 1;
   let numeratorFactor = 1;
-  let denominatorFactor = 1 - shapeSum * value / firstShapePlusOne;
+  let denominatorFactor = 1 - (shapeSum * value) / firstShapePlusOne;
   if (Math.abs(denominatorFactor) < CONTINUED_FRACTION_FLOOR) {
     denominatorFactor = CONTINUED_FRACTION_FLOOR;
   }
@@ -52,7 +50,8 @@ function incompleteBetaContinuedFraction(
 
   for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
     const doubledIteration = 2 * iteration;
-    let numerator = iteration * (secondShape - iteration) * value /
+    let numerator =
+      (iteration * (secondShape - iteration) * value) /
       ((firstShapeMinusOne + doubledIteration) *
         (firstShape + doubledIteration));
     denominatorFactor = 1 + numerator * denominatorFactor;
@@ -66,7 +65,8 @@ function incompleteBetaContinuedFraction(
     denominatorFactor = 1 / denominatorFactor;
     fraction *= denominatorFactor * numeratorFactor;
 
-    numerator = -(firstShape + iteration) * (shapeSum + iteration) * value /
+    numerator =
+      (-(firstShape + iteration) * (shapeSum + iteration) * value) /
       ((firstShape + doubledIteration) *
         (firstShapePlusOne + doubledIteration));
     denominatorFactor = 1 + numerator * denominatorFactor;
@@ -99,24 +99,26 @@ export function regularizedIncompleteBeta(
   if (value >= 1) return 1;
 
   const scale = Math.exp(
-    logGamma(firstShape + secondShape) - logGamma(firstShape) -
-      logGamma(secondShape) + firstShape * Math.log(value) +
+    logGamma(firstShape + secondShape) -
+      logGamma(firstShape) -
+      logGamma(secondShape) +
+      firstShape * Math.log(value) +
       secondShape * Math.log1p(-value),
   );
 
   if (value < (firstShape + 1) / (firstShape + secondShape + 2)) {
-    return scale * incompleteBetaContinuedFraction(
-      firstShape,
-      secondShape,
-      value,
-    ) / firstShape;
+    return (
+      (scale *
+        incompleteBetaContinuedFraction(firstShape, secondShape, value)) /
+      firstShape
+    );
   }
-  return 1 - scale * incompleteBetaContinuedFraction(
-        secondShape,
-        firstShape,
-        1 - value,
-      ) /
-      secondShape;
+  return (
+    1 -
+    (scale *
+      incompleteBetaContinuedFraction(secondShape, firstShape, 1 - value)) /
+      secondShape
+  );
 }
 
 function gammaSeries(shape: number, value: number): number {
@@ -129,9 +131,7 @@ function gammaSeries(shape: number, value: number): number {
     term *= value / denominator;
     sum += term;
     if (Math.abs(term) <= Math.abs(sum) * GAMMA_EPSILON) {
-      return sum * Math.exp(
-        -value + shape * Math.log(value) - logGamma(shape),
-      );
+      return sum * Math.exp(-value + shape * Math.log(value) - logGamma(shape));
     }
   }
 
@@ -159,9 +159,9 @@ function gammaContinuedFraction(shape: number, value: number): number {
     const delta = denominatorFactor * numeratorFactor;
     fraction *= delta;
     if (Math.abs(delta - 1) <= GAMMA_EPSILON) {
-      return Math.exp(
-        -value + shape * Math.log(value) - logGamma(shape),
-      ) * fraction;
+      return (
+        Math.exp(-value + shape * Math.log(value) - logGamma(shape)) * fraction
+      );
     }
   }
 
@@ -221,8 +221,7 @@ export function studentTCdf(
   if (tStatistic === -Infinity) return 0;
 
   const beta = regularizedIncompleteBeta(
-    degreesOfFreedom /
-      (degreesOfFreedom + tStatistic * tStatistic),
+    degreesOfFreedom / (degreesOfFreedom + tStatistic * tStatistic),
     degreesOfFreedom / 2,
     0.5,
   );
@@ -239,8 +238,7 @@ export function studentTSurvival(
   if (tStatistic === -Infinity) return 1;
 
   const beta = regularizedIncompleteBeta(
-    degreesOfFreedom /
-      (degreesOfFreedom + tStatistic * tStatistic),
+    degreesOfFreedom / (degreesOfFreedom + tStatistic * tStatistic),
     degreesOfFreedom / 2,
     0.5,
   );

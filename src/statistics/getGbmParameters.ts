@@ -53,7 +53,7 @@ export default function getGbmParameters(
   const sigma = Math.sqrt(variance) * Math.sqrt(periodsPerYear);
 
   // 5. Calculate Annualized Drift (mu)
-  const mu = (meanReturn * periodsPerYear) + (sigma ** 2 / 2);
+  const mu = meanReturn * periodsPerYear + sigma ** 2 / 2;
 
   return { mu, sigma };
 }

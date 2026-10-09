@@ -23,7 +23,7 @@ export default function getCholeskyMatrix(
         for (let k = 0; k < j; k++) sum += L[j][k] ** 2;
 
         // Inject the jitter directly into the diagonal element
-        const val = (matrix[j][j] + jitter) - sum;
+        const val = matrix[j][j] + jitter - sum;
 
         if (val <= 0) {
           throw new Error(

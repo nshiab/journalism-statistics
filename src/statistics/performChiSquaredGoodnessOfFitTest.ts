@@ -129,18 +129,18 @@ export default function performChiSquaredGoodnessOfFitTest<
     if (expectedType === "number") {
       if (typeof value !== "number" || !isFinite(value) || value < 0) {
         throw new Error(
-          `Invalid data at index ${index}. Expected a non-negative finite number for key "${key}", but received: ${
-            JSON.stringify(value)
-          }.`,
+          `Invalid data at index ${index}. Expected a non-negative finite number for key "${key}", but received: ${JSON.stringify(
+            value,
+          )}.`,
         );
       }
       return value;
     } else if (expectedType === "string") {
       if (typeof value !== "string" && typeof value !== "number") {
         throw new Error(
-          `Invalid data at index ${index}. Expected a string or number for key "${key}", but received: ${
-            JSON.stringify(value)
-          }.`,
+          `Invalid data at index ${index}. Expected a string or number for key "${key}", but received: ${JSON.stringify(
+            value,
+          )}.`,
         );
       }
       return value;
@@ -199,8 +199,8 @@ export default function performChiSquaredGoodnessOfFitTest<
     0,
   );
   const totalDifference = Math.abs(totalObserved - totalExpected);
-  const relativeDifference = totalDifference /
-    Math.max(totalObserved, totalExpected);
+  const relativeDifference =
+    totalDifference / Math.max(totalObserved, totalExpected);
 
   // Allow up to 0.1% difference to account for rounding
   if (relativeDifference > 0.001) {
@@ -229,9 +229,9 @@ export default function performChiSquaredGoodnessOfFitTest<
 
   if (percentageAtLeastFive < 80) {
     warnings.push(
-      `Warning: Only ${
-        percentageAtLeastFive.toFixed(1)
-      }% of expected frequencies are ≥ 5 (recommended: ≥ 80%). Results may be unreliable.`,
+      `Warning: Only ${percentageAtLeastFive.toFixed(
+        1,
+      )}% of expected frequencies are ≥ 5 (recommended: ≥ 80%). Results may be unreliable.`,
     );
   }
 

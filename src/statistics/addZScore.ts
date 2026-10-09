@@ -60,12 +60,9 @@ export default function addZScore<
   data: T[],
   variable: string,
   options: { newKey: K },
-): (
-  & T
-  & {
-    [P in K]: number;
-  }
-)[];
+): (T & {
+  [P in K]: number;
+})[];
 
 /**
  * Calculates the Z-score for a specific numeric variable within an array of objects using the default 'zScore' key name.
@@ -106,7 +103,7 @@ export default function addZScore<
   // Standard deviation
   const sqdDistFromMean = data
     .map((d) => Math.pow((d[variable] as number) - mean, 2)) // we checked the type above
-    .reduce((acc, curr) => (acc += curr), 0);
+    .reduce((acc, curr) => acc + curr, 0);
 
   const stdDev = Math.sqrt(sqdDistFromMean / data.length);
 

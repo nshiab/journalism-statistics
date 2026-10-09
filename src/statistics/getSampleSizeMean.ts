@@ -103,18 +103,16 @@ export default function getSampleSizeMean<T extends Record<string, unknown>>(
     const value = d[key];
     if (typeof value !== "number") {
       throw new Error(
-        `Invalid value for key "${
-          String(key)
-        }": ${value}. Values must be numbers.`,
+        `Invalid value for key "${String(
+          key,
+        )}": ${value}. Values must be numbers.`,
       );
     }
     return value;
   });
 
-  const sampleMean = values.reduce(
-    (sum, value) => sum + value,
-    0,
-  ) / values.length;
+  const sampleMean =
+    values.reduce((sum, value) => sum + value, 0) / values.length;
   const sumOfSquaredDifferences = values.reduce((sum, value) => {
     const diff = value - sampleMean;
     return sum + diff * diff;
@@ -126,8 +124,9 @@ export default function getSampleSizeMean<T extends Record<string, unknown>>(
   const denominator = Math.pow(marginOfError, 2);
   const initialSampleSize = numerator / denominator;
 
-  const finalSampleSize = initialSampleSize /
-    (1 + ((initialSampleSize - 1) / (options?.populationSize ?? data.length)));
+  const finalSampleSize =
+    initialSampleSize /
+    (1 + (initialSampleSize - 1) / (options?.populationSize ?? data.length));
 
   return Math.ceil(finalSampleSize);
 }

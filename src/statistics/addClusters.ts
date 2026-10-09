@@ -118,8 +118,9 @@ export default function addClusters<T extends Record<string, unknown>>(
         (n) => (n as ClusterPoint).clusterType === "core",
       );
       if (clusterNeighbours) {
-        (point as ClusterPoint).clusterId =
-          (clusterNeighbours as ClusterPoint).clusterId;
+        (point as ClusterPoint).clusterId = (
+          clusterNeighbours as ClusterPoint
+        ).clusterId;
         (point as ClusterPoint).clusterType = "border";
       }
     }
@@ -131,10 +132,7 @@ export default function addClusters<T extends Record<string, unknown>>(
   }
 
   // Add a point and its neighbours to the same cluster.
-  function expandCluster(
-    neighbours: T[],
-    clusterLabel: string,
-  ): void {
+  function expandCluster(neighbours: T[], clusterLabel: string): void {
     for (let i = 0; i < neighbours.length; i++) {
       const neighbour = neighbours[i];
 
@@ -154,9 +152,7 @@ export default function addClusters<T extends Record<string, unknown>>(
           // If not core, it's a border point
           (neighbour as ClusterPoint).clusterType = "border";
         }
-      } else if (
-        (neighbour as ClusterPoint).clusterId === null
-      ) {
+      } else if ((neighbour as ClusterPoint).clusterId === null) {
         // If the neighbour is a border point, we add it to the cluster.
         (neighbour as ClusterPoint).clusterId = clusterLabel;
         (neighbour as ClusterPoint).clusterType = "border";

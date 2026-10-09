@@ -17,7 +17,7 @@ export default function stepCir(
   shock: number,
 ): number {
   const drift = a * (b - currentValue) * dt;
-  const diffusion = sigma * Math.sqrt(Math.max(currentValue, 0)) *
-    Math.sqrt(dt) * shock;
+  const diffusion =
+    sigma * Math.sqrt(Math.max(currentValue, 0)) * Math.sqrt(dt) * shock;
   return Math.max(currentValue + drift + diffusion, 0.00001); // Bounded to prevent negative rates
 }

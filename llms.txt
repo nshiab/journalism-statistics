@@ -1,0 +1,29 @@
+# Journalism Statistics
+
+> Useful TypeScript functions for journalism projects. This library focuses on statistical calculations.
+
+## API
+- [addClusters](https://nshiab.github.io/journalism-statistics/llm.md#addclusters): addClusters function
+- [addMahalanobisDistance](https://nshiab.github.io/journalism-statistics/llm.md#addmahalanobisdistance): addMahalanobisDistance function
+- [addZScore](https://nshiab.github.io/journalism-statistics/llm.md#addzscore): addZScore function
+- [euclidianDistance](https://nshiab.github.io/journalism-statistics/llm.md#euclidiandistance): euclidianDistance function
+- [generateCirPath](https://nshiab.github.io/journalism-statistics/llm.md#generatecirpath): generateCirPath function
+- [generateGbmPath](https://nshiab.github.io/journalism-statistics/llm.md#generategbmpath): generateGbmPath function
+- [getCholeskyMatrix](https://nshiab.github.io/journalism-statistics/llm.md#getcholeskymatrix): getCholeskyMatrix function
+- [getCirParameters](https://nshiab.github.io/journalism-statistics/llm.md#getcirparameters): getCirParameters function
+- [getCorrelatedShocks](https://nshiab.github.io/journalism-statistics/llm.md#getcorrelatedshocks): getCorrelatedShocks function
+- [getCorrelationMatrix](https://nshiab.github.io/journalism-statistics/llm.md#getcorrelationmatrix): getCorrelationMatrix function
+- [getCovarianceMatrix](https://nshiab.github.io/journalism-statistics/llm.md#getcovariancematrix): getCovarianceMatrix function
+- [getGbmParameters](https://nshiab.github.io/journalism-statistics/llm.md#getgbmparameters): getGbmParameters function
+- [getMahalanobisDistance](https://nshiab.github.io/journalism-statistics/llm.md#getmahalanobisdistance): getMahalanobisDistance function
+- [getSampleSizeMean](https://nshiab.github.io/journalism-statistics/llm.md#getsamplesizemean): getSampleSizeMean function
+- [getSampleSizeProportion](https://nshiab.github.io/journalism-statistics/llm.md#getsamplesizeproportion): getSampleSizeProportion function
+- [invertMatrix](https://nshiab.github.io/journalism-statistics/llm.md#invertmatrix): invertMatrix function
+- [performChiSquaredGoodnessOfFitTest](https://nshiab.github.io/journalism-statistics/llm.md#performchisquaredgoodnessoffittest): performChiSquaredGoodnessOfFitTest function
+- [performChiSquaredIndependenceTest](https://nshiab.github.io/journalism-statistics/llm.md#performchisquaredindependencetest): performChiSquaredIndependenceTest function
+- [performPairedTTest](https://nshiab.github.io/journalism-statistics/llm.md#performpairedttest): performPairedTTest function
+- [performTTest](https://nshiab.github.io/journalism-statistics/llm.md#performttest): performTTest function
+- [performTwoSampleTTest](https://nshiab.github.io/journalism-statistics/llm.md#performtwosamplettest): performTwoSampleTTest function
+- [performZTest](https://nshiab.github.io/journalism-statistics/llm.md#performztest): performZTest function
+- [stepCir](https://nshiab.github.io/journalism-statistics/llm.md#stepcir): stepCir function
+- [stepGbm](https://nshiab.github.io/journalism-statistics/llm.md#stepgbm): stepGbm function
