@@ -21,7 +21,16 @@
         "entryFileName": "llm.md",
         "mergeReadme": true,
         "cleanOutputDir": false,
-        "out": "."
+        "llmsTxt": false
+      }
+    },
+    {
+      "name": "markdown",
+      "path": "site",
+      "options": {
+        "entryFileName": "index.md",
+        "cleanOutputDir": false,
+        "out": "site"
       }
     }
   ],

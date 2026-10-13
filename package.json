@@ -27,7 +27,7 @@
     "access": "public"
   },
   "scripts": {
-    "docs": "typedoc && node --input-type=module -e \"import { readFileSync, writeFileSync, copyFileSync } from 'node:fs'; import config from './typedoc.json' with { type: 'json' }; writeFileSync('llms.txt', readFileSync('llms.txt', 'utf8').replaceAll('(llm.md#', '(' + new URL('llm.md', config.hostedBaseUrl).href + '#')); for (const file of ['llm.md', 'llms.txt']) copyFileSync(file, 'site/' + file);\"",
+    "docs": "typedoc && node scripts/docs.mjs",
     "all-tests": "vp check && vp test && vp pack && npm run docs",
     "preversion": "npm run all-tests",
     "version": "npm run docs && git add llm.md llms.txt",
