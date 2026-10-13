@@ -14,14 +14,16 @@ Implement functions in `src/` and their tests in `test/`. Keep public JSDoc
 comments and examples up to date. Keep `.ts` extensions in relative source
 imports; Vite+ bundles the source into the published JavaScript.
 
-| Command                                                               | Purpose                                                                          |
-| --------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `npm test`                                                            | Run all Vitest tests once                                                        |
-| `npm test -- --watch test/statistics/getSampleSizeProportion.test.ts` | Run one test file and watch for changes during development                       |
-| `npm run all-tests`                                                   | Check formatting, lint and types; run tests; build the package and documentation |
+| Command                                                         | Purpose                                                                          |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `vp test`                                                       | Run all Vitest tests once                                                        |
+| `vp test watch test/statistics/getSampleSizeProportion.test.ts` | Run one test file and watch for changes during development                       |
+| `npm run all-tests`                                             | Check formatting, lint and types; run tests; build the package and documentation |
 
 The documentation website in `site/`, along with `llm.md` and `llms.txt`, is
 generated automatically. Do not edit these files by hand.
+
+If `vp` is not installed globally, use `npx vp` to run the project's local version.
 
 Run `npm run all-tests` before opening a pull request. Explain the behavior
 changed and any relevant test results in your PR.
