@@ -22,11 +22,7 @@ test("should return a 2x2 inverted covariance matrix", () => {
   ]);
 });
 test("should return a 3x3 covariance matrix", () => {
-  const threeVariables = data.map((d) => [
-    d["fixed acidity"],
-    d["residual sugar"],
-    d.alcohol,
-  ]);
+  const threeVariables = data.map((d) => [d["fixed acidity"], d["residual sugar"], d.alcohol]);
   const matrix = getCovarianceMatrix(threeVariables);
   expect(matrix).toStrictEqual([
     [0.7119681970550005, 0.3809440223475775, -0.12550719251309772],
@@ -35,11 +31,7 @@ test("should return a 3x3 covariance matrix", () => {
   ]);
 });
 test("should return a 3x3 inverted covariance matrix", () => {
-  const threeVariables = data.map((d) => [
-    d["fixed acidity"],
-    d["residual sugar"],
-    d.alcohol,
-  ]);
+  const threeVariables = data.map((d) => [d["fixed acidity"], d["residual sugar"], d.alcohol]);
   const matrix = getCovarianceMatrix(threeVariables, { invert: true });
   expect(matrix).toStrictEqual([
     [1.4275549391155293, -0.01029636303437083, 0.09920848359253127],
@@ -56,22 +48,10 @@ test("should return a 4x4 covariance matrix", () => {
   ]);
   const matrix = getCovarianceMatrix(fourVariables);
   expect(matrix).toStrictEqual([
-    [
-      0.7119681970550005, 0.3809440223475775, 0.0006695405312093783,
-      -0.12550719251309772,
-    ],
-    [
-      0.3809440223475775, 25.72051786341322, 0.012724566900994994,
-      -2.8121660685891356,
-    ],
-    [
-      0.0006695405312093783, 0.012724566900994994, 0.000008943697841212739,
-      -0.00287084411696803,
-    ],
-    [
-      -0.12550719251309772, -2.8121660685891356, -0.00287084411696803,
-      1.514117788841716,
-    ],
+    [0.7119681970550005, 0.3809440223475775, 0.0006695405312093783, -0.12550719251309772],
+    [0.3809440223475775, 25.72051786341322, 0.012724566900994994, -2.8121660685891356],
+    [0.0006695405312093783, 0.012724566900994994, 0.000008943697841212739, -0.00287084411696803],
+    [-0.12550719251309772, -2.8121660685891356, -0.00287084411696803, 1.514117788841716],
   ]);
 });
 test("should return a 4x4 inverted covariance matrix", () => {
@@ -83,21 +63,9 @@ test("should return a 4x4 inverted covariance matrix", () => {
   ]);
   const matrix = getCovarianceMatrix(fourVariables, { invert: true });
   expect(matrix).toStrictEqual([
-    [
-      1.890366500801349, 0.29548258210193046, -857.0948891407204,
-      -0.9196015969508056,
-    ],
-    [
-      0.29548258210193046, 0.2508884395460819, -566.2813827046937,
-      -0.583230998661561,
-    ],
-    [
-      -857.0948891407204, -566.2813827046937, 1587280.2449344082,
-      1886.7655549874191,
-    ],
-    [
-      -0.9196015969508056, -0.583230998661561, 1886.7655549874191,
-      3.078393760864504,
-    ],
+    [1.890366500801349, 0.29548258210193046, -857.0948891407204, -0.9196015969508056],
+    [0.29548258210193046, 0.2508884395460819, -566.2813827046937, -0.583230998661561],
+    [-857.0948891407204, -566.2813827046937, 1587280.2449344082, 1886.7655549874191],
+    [-0.9196015969508056, -0.583230998661561, 1886.7655549874191, 3.078393760864504],
   ]);
 });

@@ -1,12 +1,10 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": ["src/index.ts"],
-  "tsconfig": "tsconfig.json",
   "name": "Journalism Statistics",
   "includeVersion": true,
   "plugin": ["typedoc-plugin-markdown", "typedoc-plugin-llms-txt"],
   "hostedBaseUrl": "https://nshiab.github.io/journalism-statistics/",
-  "excludeInternal": true,
   "outputs": [
     {
       "name": "html",

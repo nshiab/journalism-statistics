@@ -56,8 +56,7 @@ export default function generateCirPath(
     const epsilon = normalRandom();
 
     const drift = a * (b - currentRate) * dt;
-    const diffusion =
-      sigma * Math.sqrt(Math.max(currentRate, 0)) * Math.sqrt(dt) * epsilon;
+    const diffusion = sigma * Math.sqrt(Math.max(currentRate, 0)) * Math.sqrt(dt) * epsilon;
 
     currentRate += drift + diffusion;
 

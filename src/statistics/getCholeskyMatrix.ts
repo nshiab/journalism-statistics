@@ -4,10 +4,7 @@
  * @param jitter - A tiny positive value (e.g., 1e-9) added to the diagonal to force positive-definiteness.
  * @returns A lower triangular matrix L.
  */
-export default function getCholeskyMatrix(
-  matrix: number[][],
-  jitter: number = 0,
-): number[][] {
+export default function getCholeskyMatrix(matrix: number[][], jitter: number = 0): number[][] {
   const n = matrix.length;
   if (n === 0 || matrix.some((row) => row.length !== n)) {
     throw new Error("Matrix must be square.");

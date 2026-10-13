@@ -71,12 +71,7 @@ test("should perform one-sample t-test with basketball data (left-tailed)", () =
 
 // Test edge case: zero standard deviation (all values identical)
 test("should handle zero standard deviation when sample mean equals hypothesized mean", () => {
-  const identicalData = [
-    { value: 10 },
-    { value: 10 },
-    { value: 10 },
-    { value: 10 },
-  ];
+  const identicalData = [{ value: 10 }, { value: 10 }, { value: 10 }, { value: 10 }];
 
   const result = performTTest(identicalData, "value", 10);
 
@@ -93,12 +88,7 @@ test("should handle zero standard deviation when sample mean equals hypothesized
 });
 
 test("should handle zero standard deviation when sample mean differs from hypothesized mean", () => {
-  const identicalData = [
-    { value: 15 },
-    { value: 15 },
-    { value: 15 },
-    { value: 15 },
-  ];
+  const identicalData = [{ value: 15 }, { value: 15 }, { value: 15 }, { value: 15 }];
 
   const result = performTTest(identicalData, "value", 10);
 
@@ -115,12 +105,7 @@ test("should handle zero standard deviation when sample mean differs from hypoth
 });
 
 test("should handle zero standard deviation when sample mean is less than hypothesized mean", () => {
-  const identicalData = [
-    { value: 5 },
-    { value: 5 },
-    { value: 5 },
-    { value: 5 },
-  ];
+  const identicalData = [{ value: 5 }, { value: 5 }, { value: 5 }, { value: 5 }];
 
   const result = performTTest(identicalData, "value", 10);
 

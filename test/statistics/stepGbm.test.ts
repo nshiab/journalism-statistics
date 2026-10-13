@@ -12,7 +12,5 @@ test("stepGbm: calculates next step correctly", () => {
   const diffusion = sigma * Math.sqrt(dt) * shock;
   const expected = current * Math.exp(drift + diffusion);
 
-  expect(
-    Math.abs(stepGbm(current, mu, sigma, dt, shock) - expected),
-  ).toBeLessThanOrEqual(1e-6);
+  expect(Math.abs(stepGbm(current, mu, sigma, dt, shock) - expected)).toBeLessThanOrEqual(1e-6);
 });

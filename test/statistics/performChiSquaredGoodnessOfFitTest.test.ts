@@ -1,10 +1,7 @@
 import { expect, test } from "vite-plus/test";
 import captureError from "../helpers/captureError.ts";
 import performChiSquaredGoodnessOfFitTest from "../../src/statistics/performChiSquaredGoodnessOfFitTest.ts";
-import {
-  assertProbability,
-  goodnessOfFitData,
-} from "../helpers/distributionCharacterization.ts";
+import { assertProbability, goodnessOfFitData } from "../helpers/distributionCharacterization.ts";
 
 // Tested with
 // https://www.graphpad.com/quickcalcs/chisquared2/
@@ -43,12 +40,7 @@ test("should perform the chi-squared goodness of fit with crimeData", () => {
   });
 });
 test("should perform the chi-squared goodness of fit with diceData", () => {
-  const result = performChiSquaredGoodnessOfFitTest(
-    diceData,
-    "face",
-    "observed",
-    "expected",
-  );
+  const result = performChiSquaredGoodnessOfFitTest(diceData, "face", "observed", "expected");
   expect(result).toStrictEqual({
     chiSquared: 17.8,
     degreesOfFreedom: 5,
@@ -79,12 +71,7 @@ test("should perform chi-squared goodness of fit test correctly", () => {
 });
 
 test("should handle dice roll goodness of fit test", () => {
-  const result = performChiSquaredGoodnessOfFitTest(
-    diceData,
-    "face",
-    "observed",
-    "expected",
-  );
+  const result = performChiSquaredGoodnessOfFitTest(diceData, "face", "observed", "expected");
 
   expect(result.degreesOfFreedom).toStrictEqual(5); // 6 faces - 1
 
@@ -94,12 +81,7 @@ test("should handle dice roll goodness of fit test", () => {
 test("should handle single category", () => {
   const singleData = [{ category: "A", observed: 45, expected: 45 }];
 
-  const result = performChiSquaredGoodnessOfFitTest(
-    singleData,
-    "category",
-    "observed",
-    "expected",
-  );
+  const result = performChiSquaredGoodnessOfFitTest(singleData, "category", "observed", "expected");
 
   expect(result.degreesOfFreedom).toStrictEqual(0); // 1 category - 1
 
@@ -143,17 +125,10 @@ test("should throw error for invalid observed values", () => {
   ];
 
   const error = captureError(() => {
-    performChiSquaredGoodnessOfFitTest(
-      invalidData,
-      "category",
-      "observed",
-      "expected",
-    );
+    performChiSquaredGoodnessOfFitTest(invalidData, "category", "observed", "expected");
   });
   expect(error).toBeInstanceOf(Error);
-  expect((error as Error).message).toContain(
-    "Expected a non-negative finite number",
-  );
+  expect((error as Error).message).toContain("Expected a non-negative finite number");
 });
 
 test("should throw error for zero expected frequency", () => {
@@ -163,17 +138,10 @@ test("should throw error for zero expected frequency", () => {
   ];
 
   const error = captureError(() => {
-    performChiSquaredGoodnessOfFitTest(
-      zeroExpectedData,
-      "category",
-      "observed",
-      "expected",
-    );
+    performChiSquaredGoodnessOfFitTest(zeroExpectedData, "category", "observed", "expected");
   });
   expect(error).toBeInstanceOf(Error);
-  expect((error as Error).message).toContain(
-    "Expected frequency must be greater than 0",
-  );
+  expect((error as Error).message).toContain("Expected frequency must be greater than 0");
 });
 
 test("should throw error when observed and expected totals don't match", () => {
@@ -183,12 +151,7 @@ test("should throw error when observed and expected totals don't match", () => {
   ];
 
   const error = captureError(() => {
-    performChiSquaredGoodnessOfFitTest(
-      mismatchedTotalsData,
-      "category",
-      "observed",
-      "expected",
-    );
+    performChiSquaredGoodnessOfFitTest(mismatchedTotalsData, "category", "observed", "expected");
   });
   expect(error).toBeInstanceOf(Error);
   expect((error as Error).message).toContain(
@@ -203,12 +166,7 @@ test("should handle string and number category values", () => {
     { category: 3, observed: 15, expected: 15 },
   ];
 
-  const result = performChiSquaredGoodnessOfFitTest(
-    mixedData,
-    "category",
-    "observed",
-    "expected",
-  );
+  const result = performChiSquaredGoodnessOfFitTest(mixedData, "category", "observed", "expected");
 
   // Verify the test processed all 3 categories correctly
   expect(result.degreesOfFreedom).toStrictEqual(2); // 3 categories - 1
@@ -270,9 +228,7 @@ test("should generate warning for very small expected frequencies", () => {
   expect(hasVerySmallWarning).toStrictEqual(true);
 
   // Check for frequencies below 1 warning
-  const hasBelowOneWarning = result.warnings.some((warning) =>
-    warning.includes("less than 1"),
-  );
+  const hasBelowOneWarning = result.warnings.some((warning) => warning.includes("less than 1"));
   expect(hasBelowOneWarning).toStrictEqual(true);
 });
 
@@ -283,12 +239,7 @@ test("should not generate warnings for adequate expected frequencies", () => {
     { category: "C", observed: 40, expected: 50 },
   ];
 
-  const result = performChiSquaredGoodnessOfFitTest(
-    goodData,
-    "category",
-    "observed",
-    "expected",
-  );
+  const result = performChiSquaredGoodnessOfFitTest(goodData, "category", "observed", "expected");
 
   // Should have no warnings
   expect(result.warnings.length).toStrictEqual(0);

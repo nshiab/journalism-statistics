@@ -48,10 +48,7 @@ export default function invertMatrix(matrix: number[][]): number[][] {
   const n = matrix.length;
 
   // Create an augmented matrix [A|I]
-  const augmented: number[][] = matrix.map((row) => [
-    ...row,
-    ...Array(n).fill(0),
-  ]);
+  const augmented: number[][] = matrix.map((row) => [...row, ...Array(n).fill(0)]);
   for (let i = 0; i < n; i++) {
     augmented[i][n + i] = 1;
   }

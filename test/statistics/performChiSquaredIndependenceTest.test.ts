@@ -1,10 +1,7 @@
 import { expect, test } from "vite-plus/test";
 import captureError from "../helpers/captureError.ts";
 import performChiSquaredIndependenceTest from "../../src/statistics/performChiSquaredIndependenceTest.ts";
-import {
-  assertProbability,
-  independenceData,
-} from "../helpers/distributionCharacterization.ts";
+import { assertProbability, independenceData } from "../helpers/distributionCharacterization.ts";
 
 // Tested with
 // https://www.socscistatistics.com/tests/chisquare2/default2.aspx
@@ -32,12 +29,7 @@ const educationData = [
 ];
 
 test("should perform chi-squared independence test for votingData", () => {
-  const result = performChiSquaredIndependenceTest(
-    votingData,
-    "age_group",
-    "candidate",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(votingData, "age_group", "candidate", "count");
   const { pValue, ...statistics } = result;
   expect(statistics).toStrictEqual({
     chiSquared: 13.028571428571428,
@@ -46,17 +38,10 @@ test("should perform chi-squared independence test for votingData", () => {
   });
   // JavaScript runtimes can differ by one ULP for this tail probability.
   const expectedPValue = 0.0014821141744508063;
-  expect(Math.abs(pValue - expectedPValue)).toBeLessThanOrEqual(
-    Number.EPSILON * expectedPValue,
-  );
+  expect(Math.abs(pValue - expectedPValue)).toBeLessThanOrEqual(Number.EPSILON * expectedPValue);
 });
 test("should perform chi-squared independence test for educationData", () => {
-  const result = performChiSquaredIndependenceTest(
-    educationData,
-    "education",
-    "income",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(educationData, "education", "income", "count");
   expect(result).toStrictEqual({
     chiSquared: 145.59976422045386,
     degreesOfFreedom: 4,
@@ -65,12 +50,7 @@ test("should perform chi-squared independence test for educationData", () => {
   });
 });
 test("should perform chi-squared independence test correctly", () => {
-  const result = performChiSquaredIndependenceTest(
-    votingData,
-    "age_group",
-    "candidate",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(votingData, "age_group", "candidate", "count");
 
   // Check basic structure
   expect(typeof result.chiSquared).toStrictEqual("number");
@@ -98,12 +78,7 @@ test("should handle simple 2x2 contingency table", () => {
     { gender: "female", preference: "no", count: 25 },
   ];
 
-  const result = performChiSquaredIndependenceTest(
-    simpleData,
-    "gender",
-    "preference",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(simpleData, "gender", "preference", "count");
 
   expect(result.degreesOfFreedom).toStrictEqual(1); // (2-1) * (2-1) = 1
   expect(result.pValue > 0 && result.pValue < 1).toStrictEqual(true);
@@ -117,12 +92,7 @@ test("should handle string and number category values", () => {
     { category: "2", candidate: "B", count: 30 },
   ];
 
-  const result = performChiSquaredIndependenceTest(
-    mixedData,
-    "category",
-    "candidate",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(mixedData, "category", "candidate", "count");
 
   expect(result.degreesOfFreedom).toStrictEqual(1);
 });
@@ -142,26 +112,14 @@ test("should throw error for invalid count values", () => {
   ];
 
   const error = captureError(() => {
-    performChiSquaredIndependenceTest(
-      invalidData,
-      "category",
-      "preference",
-      "count",
-    );
+    performChiSquaredIndependenceTest(invalidData, "category", "preference", "count");
   });
   expect(error).toBeInstanceOf(Error);
-  expect((error as Error).message).toContain(
-    "Expected a non-negative finite number",
-  );
+  expect((error as Error).message).toContain("Expected a non-negative finite number");
 });
 
 test("should handle large contingency table", () => {
-  const result = performChiSquaredIndependenceTest(
-    educationData,
-    "education",
-    "income",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(educationData, "education", "income", "count");
 
   expect(result.degreesOfFreedom).toStrictEqual(4); // (3-1) * (3-1) = 4
 });
@@ -175,21 +133,14 @@ test("should generate warnings for low expected frequencies", () => {
     { group: "B", outcome: "Y", count: 4 },
   ];
 
-  const result = performChiSquaredIndependenceTest(
-    lowFrequencyData,
-    "group",
-    "outcome",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(lowFrequencyData, "group", "outcome", "count");
 
   // Should have warnings about low frequencies
   expect(result.warnings.length > 0).toStrictEqual(true);
 
   // Should warn about frequencies below 5 for 2x2 table
   const hasBelow5Warning = result.warnings.some((warning) =>
-    warning.includes(
-      "For 2x2 contingency tables, all expected frequencies should be ≥ 5",
-    ),
+    warning.includes("For 2x2 contingency tables, all expected frequencies should be ≥ 5"),
   );
   expect(hasBelow5Warning).toStrictEqual(true);
 });
@@ -203,12 +154,7 @@ test("should not generate warnings for adequate expected frequencies", () => {
     { group: "B", outcome: "Y", count: 25 },
   ];
 
-  const result = performChiSquaredIndependenceTest(
-    goodFrequencyData,
-    "group",
-    "outcome",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(goodFrequencyData, "group", "outcome", "count");
 
   // Should have no warnings
   expect(result.warnings.length).toStrictEqual(0);

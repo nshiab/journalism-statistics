@@ -167,8 +167,7 @@ export default function performPairedTTest<T extends Record<string, unknown>>(
   // Calculate variance using the computational formula: Var = E[X²] - (E[X])²
   // Sample variance (with Bessel's correction: n-1 denominator)
   const differenceVariance =
-    (differenceSumSquared - (differenceSum * differenceSum) / sampleSize) /
-    (sampleSize - 1);
+    (differenceSumSquared - (differenceSum * differenceSum) / sampleSize) / (sampleSize - 1);
   const differenceStdDev = Math.sqrt(differenceVariance);
 
   // --- 5. Handle zero standard deviation edge case ---
@@ -223,7 +222,7 @@ export default function performPairedTTest<T extends Record<string, unknown>>(
     pValue = studentTCdf(tStatistic, degreesOfFreedom);
   } else {
     throw new Error(
-      `Invalid tail option: ${tail}. Use "two-tailed", "left-tailed", or "right-tailed".`,
+      `Invalid tail option: ${String(tail)}. Use "two-tailed", "left-tailed", or "right-tailed".`,
     );
   }
 

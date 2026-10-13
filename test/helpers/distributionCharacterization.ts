@@ -37,8 +37,7 @@ export function goodnessOfFitData(
   const deviation = Math.sqrt((chiSquared * expected) / 2);
   return Array.from({ length: categoryCount }, (_, category) => ({
     category,
-    observed:
-      expected + (category === 0 ? deviation : category === 1 ? -deviation : 0),
+    observed: expected + (category === 0 ? deviation : category === 1 ? -deviation : 0),
     expected,
   }));
 }
@@ -55,15 +54,7 @@ export function independenceData(
   for (let row = 0; row < 2; row++) {
     for (let column = 0; column < columnCount; column++) {
       const direction =
-        column === 0
-          ? row === 0
-            ? 1
-            : -1
-          : column === 1
-            ? row === 0
-              ? -1
-              : 1
-            : 0;
+        column === 0 ? (row === 0 ? 1 : -1) : column === 1 ? (row === 0 ? -1 : 1) : 0;
       data.push({ row, column, count: expected + direction * deviation });
     }
   }

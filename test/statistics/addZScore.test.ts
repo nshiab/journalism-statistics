@@ -2,13 +2,7 @@ import { expect, test } from "vite-plus/test";
 import addZScore from "../../src/statistics/addZScore.ts";
 
 test("should compute the zScore", () => {
-  const data = [
-    { grade: 1 },
-    { grade: 4 },
-    { grade: 7 },
-    { grade: 2 },
-    { grade: 6 },
-  ];
+  const data = [{ grade: 1 }, { grade: 4 }, { grade: 7 }, { grade: 2 }, { grade: 6 }];
   const dataWithZScore = addZScore(data, "grade");
 
   expect(dataWithZScore).toStrictEqual([
@@ -20,13 +14,7 @@ test("should compute the zScore", () => {
   ]);
 });
 test("should compute the zScore and add a specific key", () => {
-  const data = [
-    { grade: 1 },
-    { grade: 4 },
-    { grade: 7 },
-    { grade: 2 },
-    { grade: 6 },
-  ];
+  const data = [{ grade: 1 }, { grade: 4 }, { grade: 7 }, { grade: 2 }, { grade: 6 }];
   const dataWithZScore = addZScore(data, "grade", { newKey: "zScoreGrade" });
 
   expect(dataWithZScore).toStrictEqual([

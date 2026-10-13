@@ -1,7 +1,6 @@
 const LANCZOS_COEFFICIENTS = [
-  0.9999999999998099, 676.5203681218851, -1259.1392167224028, 771.3234287776531,
-  -176.6150291621406, 12.507343278686905, -0.13857109526572012,
-  9.984369578019572e-6, 1.5056327351493116e-7,
+  0.9999999999998099, 676.5203681218851, -1259.1392167224028, 771.3234287776531, -176.6150291621406,
+  12.507343278686905, -0.13857109526572012, 9.984369578019572e-6, 1.5056327351493116e-7,
 ] as const;
 
 const LOG_SQRT_TWO_PI = 0.9189385332046727;
@@ -14,11 +13,7 @@ const GAMMA_MAX_ITERATIONS = 10_000;
 /** Natural logarithm of the gamma function, using the Lanczos approximation. */
 export function logGamma(value: number): number {
   if (value < 0.5) {
-    return (
-      Math.log(Math.PI) -
-      Math.log(Math.sin(Math.PI * value)) -
-      logGamma(1 - value)
-    );
+    return Math.log(Math.PI) - Math.log(Math.sin(Math.PI * value)) - logGamma(1 - value);
   }
 
   const shifted = value - 1;
@@ -27,9 +22,7 @@ export function logGamma(value: number): number {
     sum += LANCZOS_COEFFICIENTS[index] / (shifted + index);
   }
   const base = shifted + 7.5;
-  return (
-    LOG_SQRT_TWO_PI + (shifted + 0.5) * Math.log(base) - base + Math.log(sum)
-  );
+  return LOG_SQRT_TWO_PI + (shifted + 0.5) * Math.log(base) - base + Math.log(sum);
 }
 
 function incompleteBetaContinuedFraction(
@@ -52,8 +45,7 @@ function incompleteBetaContinuedFraction(
     const doubledIteration = 2 * iteration;
     let numerator =
       (iteration * (secondShape - iteration) * value) /
-      ((firstShapeMinusOne + doubledIteration) *
-        (firstShape + doubledIteration));
+      ((firstShapeMinusOne + doubledIteration) * (firstShape + doubledIteration));
     denominatorFactor = 1 + numerator * denominatorFactor;
     if (Math.abs(denominatorFactor) < CONTINUED_FRACTION_FLOOR) {
       denominatorFactor = CONTINUED_FRACTION_FLOOR;
@@ -67,8 +59,7 @@ function incompleteBetaContinuedFraction(
 
     numerator =
       (-(firstShape + iteration) * (shapeSum + iteration) * value) /
-      ((firstShape + doubledIteration) *
-        (firstShapePlusOne + doubledIteration));
+      ((firstShape + doubledIteration) * (firstShapePlusOne + doubledIteration));
     denominatorFactor = 1 + numerator * denominatorFactor;
     if (Math.abs(denominatorFactor) < CONTINUED_FRACTION_FLOOR) {
       denominatorFactor = CONTINUED_FRACTION_FLOOR;
@@ -107,17 +98,10 @@ export function regularizedIncompleteBeta(
   );
 
   if (value < (firstShape + 1) / (firstShape + secondShape + 2)) {
-    return (
-      (scale *
-        incompleteBetaContinuedFraction(firstShape, secondShape, value)) /
-      firstShape
-    );
+    return (scale * incompleteBetaContinuedFraction(firstShape, secondShape, value)) / firstShape;
   }
   return (
-    1 -
-    (scale *
-      incompleteBetaContinuedFraction(secondShape, firstShape, 1 - value)) /
-      secondShape
+    1 - (scale * incompleteBetaContinuedFraction(secondShape, firstShape, 1 - value)) / secondShape
   );
 }
 
@@ -159,9 +143,7 @@ function gammaContinuedFraction(shape: number, value: number): number {
     const delta = denominatorFactor * numeratorFactor;
     fraction *= delta;
     if (Math.abs(delta - 1) <= GAMMA_EPSILON) {
-      return (
-        Math.exp(-value + shape * Math.log(value) - logGamma(shape)) * fraction
-      );
+      return Math.exp(-value + shape * Math.log(value) - logGamma(shape)) * fraction;
     }
   }
 
@@ -169,53 +151,34 @@ function gammaContinuedFraction(shape: number, value: number): number {
 }
 
 /** Regularized lower incomplete gamma P(a, x). */
-export function regularizedIncompleteGamma(
-  shape: number,
-  value: number,
-): number {
+export function regularizedIncompleteGamma(shape: number, value: number): number {
   if (shape <= 0 || !Number.isFinite(shape)) {
     throw new Error("The gamma shape must be a positive finite number.");
   }
   if (value <= 0) return 0;
   if (value === Infinity) return 1;
 
-  return value < shape + 1
-    ? gammaSeries(shape, value)
-    : 1 - gammaContinuedFraction(shape, value);
+  return value < shape + 1 ? gammaSeries(shape, value) : 1 - gammaContinuedFraction(shape, value);
 }
 
 /** Regularized upper incomplete gamma Q(a, x), evaluated directly in its tail. */
-export function regularizedIncompleteGammaSurvival(
-  shape: number,
-  value: number,
-): number {
+export function regularizedIncompleteGammaSurvival(shape: number, value: number): number {
   if (shape <= 0 || !Number.isFinite(shape)) {
     throw new Error("The gamma shape must be a positive finite number.");
   }
   if (value <= 0) return 1;
   if (value === Infinity) return 0;
 
-  return value < shape + 1
-    ? 1 - gammaSeries(shape, value)
-    : gammaContinuedFraction(shape, value);
+  return value < shape + 1 ? 1 - gammaSeries(shape, value) : gammaContinuedFraction(shape, value);
 }
 
 /** Chi-square survival function P(X >= x). */
-export function chiSquaredSurvival(
-  chiSquared: number,
-  degreesOfFreedom: number,
-): number {
-  return regularizedIncompleteGammaSurvival(
-    degreesOfFreedom / 2,
-    chiSquared / 2,
-  );
+export function chiSquaredSurvival(chiSquared: number, degreesOfFreedom: number): number {
+  return regularizedIncompleteGammaSurvival(degreesOfFreedom / 2, chiSquared / 2);
 }
 
 /** Student's t cumulative distribution function. */
-export function studentTCdf(
-  tStatistic: number,
-  degreesOfFreedom: number,
-): number {
+export function studentTCdf(tStatistic: number, degreesOfFreedom: number): number {
   if (tStatistic === 0) return 0.5;
   if (tStatistic === Infinity) return 1;
   if (tStatistic === -Infinity) return 0;
@@ -229,10 +192,7 @@ export function studentTCdf(
 }
 
 /** Student's t survival function, calculated directly in the upper tail. */
-export function studentTSurvival(
-  tStatistic: number,
-  degreesOfFreedom: number,
-): number {
+export function studentTSurvival(tStatistic: number, degreesOfFreedom: number): number {
   if (tStatistic === 0) return 0.5;
   if (tStatistic === Infinity) return 0;
   if (tStatistic === -Infinity) return 1;

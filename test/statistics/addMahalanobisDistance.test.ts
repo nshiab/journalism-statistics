@@ -17,9 +17,7 @@ test("should add the Mahalanobis distance with two variables (example from doc)"
 
   const origin = { "fixed acidity": 7.2, alcohol: 11.3 };
 
-  const dataWithDist = addMahalanobisDistance(origin, data).sort(
-    (a, b) => a.mahaDist - b.mahaDist,
-  );
+  const dataWithDist = addMahalanobisDistance(origin, data).sort((a, b) => a.mahaDist - b.mahaDist);
 
   expect(dataWithDist).toStrictEqual([
     { "fixed acidity": 7.2, alcohol: 11.3, mahaDist: 0 },
@@ -137,9 +135,7 @@ test("should add the Mahalanobis distance with two variables", () => {
     })),
   );
 
-  expect(
-    winesTwoVariables.sort((a, b) => a.mahaDist - b.mahaDist).slice(0, 20),
-  ).toStrictEqual([
+  expect(winesTwoVariables.sort((a, b) => a.mahaDist - b.mahaDist).slice(0, 20)).toStrictEqual([
     { "fixed acidity": 7.2, alcohol: 11.3, mahaDist: 0 },
     { "fixed acidity": 7.2, alcohol: 11.3, mahaDist: 0 },
     { "fixed acidity": 7.2, alcohol: 11.3, mahaDist: 0 },
@@ -228,9 +224,7 @@ test("should add the Mahalanobis distance with three variables", () => {
     })),
   );
 
-  expect(
-    winesThreeVariables.sort((a, b) => a.mahaDist - b.mahaDist).slice(0, 20),
-  ).toStrictEqual([
+  expect(winesThreeVariables.sort((a, b) => a.mahaDist - b.mahaDist).slice(0, 20)).toStrictEqual([
     {
       "fixed acidity": 7.3,
       "residual sugar": 9.9,
@@ -369,9 +363,7 @@ test("should add the Mahalanobis distance with four variables", () => {
     })),
   );
 
-  expect(
-    winesFourVariables.sort((a, b) => a.mahaDist - b.mahaDist).slice(0, 20),
-  ).toStrictEqual([
+  expect(winesFourVariables.sort((a, b) => a.mahaDist - b.mahaDist).slice(0, 20)).toStrictEqual([
     {
       "fixed acidity": 7.8,
       "residual sugar": 7.4,

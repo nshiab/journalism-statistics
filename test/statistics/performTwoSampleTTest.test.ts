@@ -1,10 +1,7 @@
 import { expect, test } from "vite-plus/test";
 import captureError from "../helpers/captureError.ts";
 import performTwoSampleTTest from "../../src/statistics/performTwoSampleTTest.ts";
-import {
-  assertProbability,
-  type Tail,
-} from "../helpers/distributionCharacterization.ts";
+import { assertProbability, type Tail } from "../helpers/distributionCharacterization.ts";
 
 // Tested with
 // https://www.graphpad.com/quickcalcs/ttest2/
@@ -45,21 +42,9 @@ test("performTwoSampleTTest - basic two-tailed test", () => {
 });
 
 test("performTwoSampleTTest - right-tailed test", () => {
-  const group1 = [
-    { score: 85 },
-    { score: 90 },
-    { score: 95 },
-    { score: 88 },
-    { score: 92 },
-  ];
+  const group1 = [{ score: 85 }, { score: 90 }, { score: 95 }, { score: 88 }, { score: 92 }];
 
-  const group2 = [
-    { score: 78 },
-    { score: 82 },
-    { score: 80 },
-    { score: 85 },
-    { score: 79 },
-  ];
+  const group2 = [{ score: 78 }, { score: 82 }, { score: 80 }, { score: 85 }, { score: 79 }];
 
   const result = performTwoSampleTTest(group1, group2, "score", {
     tail: "right-tailed",
@@ -84,13 +69,7 @@ test("performTwoSampleTTest - right-tailed test", () => {
 test("performTwoSampleTTest - left-tailed test", () => {
   const group1 = [{ value: 15 }, { value: 18 }, { value: 20 }, { value: 17 }];
 
-  const group2 = [
-    { value: 25 },
-    { value: 28 },
-    { value: 30 },
-    { value: 27 },
-    { value: 26 },
-  ];
+  const group2 = [{ value: 25 }, { value: 28 }, { value: 30 }, { value: 27 }, { value: 26 }];
 
   const result = performTwoSampleTTest(group1, group2, "value", {
     tail: "left-tailed",
@@ -163,21 +142,9 @@ test("performTwoSampleTTest - similar groups (no significant difference)", () =>
 });
 
 test("performTwoSampleTTest - very similar values", () => {
-  const group1 = [
-    { val: 10.1 },
-    { val: 10.2 },
-    { val: 9.9 },
-    { val: 10.0 },
-    { val: 10.1 },
-  ];
+  const group1 = [{ val: 10.1 }, { val: 10.2 }, { val: 9.9 }, { val: 10.0 }, { val: 10.1 }];
 
-  const group2 = [
-    { val: 10.0 },
-    { val: 10.1 },
-    { val: 9.9 },
-    { val: 10.2 },
-    { val: 10.0 },
-  ];
+  const group2 = [{ val: 10.0 }, { val: 10.1 }, { val: 9.9 }, { val: 10.2 }, { val: 10.0 }];
 
   const result = performTwoSampleTTest(group1, group2, "val");
 
@@ -191,11 +158,7 @@ test("performTwoSampleTTest - zero variance edge cases", () => {
 
   const identicalGroup2 = [{ x: 10 }, { x: 10 }, { x: 10 }];
 
-  const resultIdentical = performTwoSampleTTest(
-    identicalGroup1,
-    identicalGroup2,
-    "x",
-  );
+  const resultIdentical = performTwoSampleTTest(identicalGroup1, identicalGroup2, "x");
 
   expect(resultIdentical.group1Variance).toStrictEqual(0);
   expect(resultIdentical.group2Variance).toStrictEqual(0);
@@ -225,26 +188,18 @@ test("performTwoSampleTTest - error handling", () => {
     performTwoSampleTTest([{ x: 1 }], [{ x: 1 }, { x: 2 }], "x");
   });
   expect(error1).toBeInstanceOf(Error);
-  expect((error1 as Error).message).toContain(
-    "Group 1 must contain at least 2 observations",
-  );
+  expect((error1 as Error).message).toContain("Group 1 must contain at least 2 observations");
 
   // Test with insufficient data in group 2
   const error2 = captureError(() => {
     performTwoSampleTTest([{ x: 1 }, { x: 2 }], [{ x: 1 }], "x");
   });
   expect(error2).toBeInstanceOf(Error);
-  expect((error2 as Error).message).toContain(
-    "Group 2 must contain at least 2 observations",
-  );
+  expect((error2 as Error).message).toContain("Group 2 must contain at least 2 observations");
 
   // Test with invalid data in group 1
   const error3 = captureError(() => {
-    performTwoSampleTTest(
-      [{ x: 1 }, { x: "invalid" }],
-      [{ x: 1 }, { x: 2 }],
-      "x",
-    );
+    performTwoSampleTTest([{ x: 1 }, { x: "invalid" }], [{ x: 1 }, { x: 2 }], "x");
   });
   expect(error3).toBeInstanceOf(Error);
   expect((error3 as Error).message).toContain("Invalid data in group1");
@@ -289,21 +244,9 @@ test("performTwoSampleTTest - single key for both groups", () => {
 });
 
 test("performTwoSampleTTest - statistical properties", () => {
-  const group1 = [
-    { value: 1 },
-    { value: 2 },
-    { value: 3 },
-    { value: 4 },
-    { value: 5 },
-  ];
+  const group1 = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
 
-  const group2 = [
-    { value: 6 },
-    { value: 7 },
-    { value: 8 },
-    { value: 9 },
-    { value: 10 },
-  ];
+  const group2 = [{ value: 6 }, { value: 7 }, { value: 8 }, { value: 9 }, { value: 10 }];
 
   const result = performTwoSampleTTest(group1, group2, "value");
 

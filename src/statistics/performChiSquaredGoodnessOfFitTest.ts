@@ -100,9 +100,7 @@ import { chiSquaredSurvival } from "./distributions.ts";
  *
  * @category Statistics
  */
-export default function performChiSquaredGoodnessOfFitTest<
-  T extends Record<string, unknown>,
->(
+export default function performChiSquaredGoodnessOfFitTest<T extends Record<string, unknown>>(
   data: T[],
   categoryKey: keyof T,
   observedKey: keyof T,
@@ -145,9 +143,7 @@ export default function performChiSquaredGoodnessOfFitTest<
       }
       return value;
     }
-    throw new Error(
-      `Invalid expectedType: ${expectedType}. Must be "number" or "string".`,
-    );
+    throw new Error(`Invalid expectedType: ${expectedType}. Must be "number" or "string".`);
   };
 
   // --- 3. Process data ---
@@ -155,21 +151,9 @@ export default function performChiSquaredGoodnessOfFitTest<
   const expectedFreqs: { [category: string]: number } = {};
 
   data.forEach((item, index) => {
-    const category = String(
-      extractValue(item, String(categoryKey), index, "string"),
-    );
-    const observed = extractValue(
-      item,
-      String(observedKey),
-      index,
-      "number",
-    ) as number;
-    const expected = extractValue(
-      item,
-      String(expectedKey),
-      index,
-      "number",
-    ) as number;
+    const category = String(extractValue(item, String(categoryKey), index, "string"));
+    const observed = extractValue(item, String(observedKey), index, "number") as number;
+    const expected = extractValue(item, String(expectedKey), index, "number") as number;
 
     if (!observedFreqs[category]) {
       observedFreqs[category] = 0;
@@ -183,24 +167,15 @@ export default function performChiSquaredGoodnessOfFitTest<
   const categories = Object.keys(observedFreqs);
   categories.forEach((category) => {
     if (expectedFreqs[category] <= 0) {
-      throw new Error(
-        `Expected frequency must be greater than 0 for category "${category}".`,
-      );
+      throw new Error(`Expected frequency must be greater than 0 for category "${category}".`);
     }
   });
 
   // Check if total observed equals total expected (allowing small rounding differences)
-  const totalObserved = Object.values(observedFreqs).reduce(
-    (sum, freq) => sum + freq,
-    0,
-  );
-  const totalExpected = Object.values(expectedFreqs).reduce(
-    (sum, freq) => sum + freq,
-    0,
-  );
+  const totalObserved = Object.values(observedFreqs).reduce((sum, freq) => sum + freq, 0);
+  const totalExpected = Object.values(expectedFreqs).reduce((sum, freq) => sum + freq, 0);
   const totalDifference = Math.abs(totalObserved - totalExpected);
-  const relativeDifference =
-    totalDifference / Math.max(totalObserved, totalExpected);
+  const relativeDifference = totalDifference / Math.max(totalObserved, totalExpected);
 
   // Allow up to 0.1% difference to account for rounding
   if (relativeDifference > 0.001) {
@@ -286,10 +261,7 @@ export default function performChiSquaredGoodnessOfFitTest<
 /**
  * Calculate the upper-tail probability for a chi-squared statistic.
  */
-function calculateChiSquaredPValue(
-  chiSquared: number,
-  degreesOfFreedom: number,
-): number {
+function calculateChiSquaredPValue(chiSquared: number, degreesOfFreedom: number): number {
   if (degreesOfFreedom <= 0) {
     throw new Error("Degrees of freedom must be greater than 0.");
   }

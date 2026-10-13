@@ -22,11 +22,7 @@ test("should return a 2x2 inverted correlation matrix", () => {
   ]);
 });
 test("should return a 3x3 correlation matrix", () => {
-  const threeVariables = data.map((d) => [
-    d["fixed acidity"],
-    d["residual sugar"],
-    d.alcohol,
-  ]);
+  const threeVariables = data.map((d) => [d["fixed acidity"], d["residual sugar"], d.alcohol]);
   const matrix = getCorrelationMatrix(threeVariables);
   expect(matrix).toStrictEqual([
     [1, 0.08902070136220205, -0.12088112319352692],

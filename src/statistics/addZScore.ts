@@ -53,10 +53,7 @@
  */
 
 // Function overload: when a custom newKey is provided
-export default function addZScore<
-  T extends Record<string, unknown>,
-  K extends string,
->(
+export default function addZScore<T extends Record<string, unknown>, K extends string>(
   data: T[],
   variable: string,
   options: { newKey: K },
@@ -81,10 +78,7 @@ export default function addZScore<T extends Record<string, unknown>>(
 })[];
 
 // Implementation
-export default function addZScore<
-  T extends Record<string, unknown>,
-  K extends string = "zScore",
->(
+export default function addZScore<T extends Record<string, unknown>, K extends string = "zScore">(
   data: T[],
   variable: string,
   options: { newKey?: K } = {},
@@ -94,7 +88,7 @@ export default function addZScore<
   for (let i = 0; i < data.length; i++) {
     const val = data[i][variable];
     if (typeof val !== "number") {
-      throw new Error(`This is not a number: ${data[i][variable]}`);
+      throw new Error(`This is not a number: ${String(data[i][variable])}`);
     }
     sum += val;
   }
@@ -110,8 +104,7 @@ export default function addZScore<
   // Z-Score
   const newKey = (options.newKey ?? "zScore") as K;
   for (let i = 0; i < data.length; i++) {
-    (data[i] as Record<string, unknown>)[newKey] =
-      ((data[i][variable] as number) - mean) / stdDev; // we checked the type above
+    (data[i] as Record<string, unknown>)[newKey] = ((data[i][variable] as number) - mean) / stdDev; // we checked the type above
   }
 
   return data as (T & { [P in K]: number })[];

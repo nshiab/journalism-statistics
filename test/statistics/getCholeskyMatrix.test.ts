@@ -65,14 +65,10 @@ test("getCholeskyMatrix: correctly handles jitter to force positive-definiteness
     [L[1][0] * L[0][0], L[1][0] ** 2 + L[1][1] ** 2],
   ];
 
-  expect(Math.abs(reconstructed[0][0] - (1 + jitter))).toBeLessThanOrEqual(
-    1e-6,
-  );
+  expect(Math.abs(reconstructed[0][0] - (1 + jitter))).toBeLessThanOrEqual(1e-6);
   expect(Math.abs(reconstructed[0][1] - 2)).toBeLessThanOrEqual(1e-6);
   expect(Math.abs(reconstructed[1][0] - 2)).toBeLessThanOrEqual(1e-6);
-  expect(Math.abs(reconstructed[1][1] - (1 + jitter))).toBeLessThanOrEqual(
-    1e-6,
-  );
+  expect(Math.abs(reconstructed[1][1] - (1 + jitter))).toBeLessThanOrEqual(1e-6);
 });
 
 test("getCholeskyMatrix: throws with custom jitter message if still not positive-definite", () => {

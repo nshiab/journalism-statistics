@@ -39,7 +39,5 @@ test("should throw an error for a singular matrix", () => {
     error = e as Error;
   }
   expect(error instanceof Error).toStrictEqual(true);
-  expect(error?.message).toStrictEqual(
-    "Matrix is singular and cannot be inverted",
-  );
+  expect(error?.message).toStrictEqual("Matrix is singular and cannot be inverted");
 });

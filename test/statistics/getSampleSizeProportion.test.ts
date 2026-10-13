@@ -39,17 +39,13 @@ test("Return the sample size for the doc example", () => {
 test("Throw error for population size of 0", () => {
   const error = captureError(() => getSampleSizeProportion(0, 95, 5));
   expect(error).toBeInstanceOf(Error);
-  expect((error as Error).message).toContain(
-    "Population size must be greater than 0.",
-  );
+  expect((error as Error).message).toContain("Population size must be greater than 0.");
 });
 
 test("Throw error for negative population size", () => {
   const error = captureError(() => getSampleSizeProportion(-10, 95, 5));
   expect(error).toBeInstanceOf(Error);
-  expect((error as Error).message).toContain(
-    "Population size must be greater than 0.",
-  );
+  expect((error as Error).message).toContain("Population size must be greater than 0.");
 });
 
 test("Throw error for invalid confidence level", () => {
@@ -58,9 +54,7 @@ test("Throw error for invalid confidence level", () => {
     getSampleSizeProportion(1000, 85, 5);
   });
   expect(error).toBeInstanceOf(Error);
-  expect((error as Error).message).toContain(
-    "Invalid confidence level. Use 90, 95, or 99.",
-  );
+  expect((error as Error).message).toContain("Invalid confidence level. Use 90, 95, or 99.");
 });
 
 test("Throw error for invalid margin of error (too low)", () => {

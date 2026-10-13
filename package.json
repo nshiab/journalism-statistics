@@ -2,23 +2,12 @@
   "name": "@nshiab/journalism-statistics",
   "version": "1.5.7",
   "description": "Useful TypeScript functions for journalism projects. This library focuses on statistical calculations.",
-  "type": "module",
-  "engines": {
-    "node": ">=24.21.0"
-  },
+  "homepage": "https://nshiab.github.io/journalism-statistics/",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/nshiab/journalism-statistics.git"
   },
-  "homepage": "https://nshiab.github.io/journalism-statistics/",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs"
-    }
-  },
-  "types": "./dist/index.d.mts",
   "files": [
     "dist",
     "src",
@@ -27,6 +16,14 @@
     "llm.md",
     "llms.txt"
   ],
+  "type": "module",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -57,7 +54,9 @@
     "vite-plus": "1.1.0"
   },
   "overrides": {
-    "vite": "npm:@voidzero-dev/vite-plus-core@1.1.0",
-    "vitest": "5.0.3"
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.1.0"
+  },
+  "engines": {
+    "node": ">=24.21.0"
   }
 }

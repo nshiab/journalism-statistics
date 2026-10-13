@@ -9,40 +9,24 @@ test("getCirParameters should throw error if less than four data points", () => 
 });
 
 test("getCirParameters should throw error for non-positive periodsPerYear", () => {
-  const error1 = captureError(() =>
-    getCirParameters([0.02, 0.03, 0.04, 0.05], 0),
-  );
+  const error1 = captureError(() => getCirParameters([0.02, 0.03, 0.04, 0.05], 0));
   expect(error1).toBeInstanceOf(Error);
-  expect((error1 as Error).message).toContain(
-    "periodsPerYear must be positive.",
-  );
-  const error2 = captureError(() =>
-    getCirParameters([0.02, 0.03, 0.04, 0.05], -12),
-  );
+  expect((error1 as Error).message).toContain("periodsPerYear must be positive.");
+  const error2 = captureError(() => getCirParameters([0.02, 0.03, 0.04, 0.05], -12));
   expect(error2).toBeInstanceOf(Error);
-  expect((error2 as Error).message).toContain(
-    "periodsPerYear must be positive.",
-  );
+  expect((error2 as Error).message).toContain("periodsPerYear must be positive.");
 });
 
 test("getCirParameters should throw error for negative values", () => {
-  const error = captureError(() =>
-    getCirParameters([0.02, -0.03, 0.04, 0.05], 12),
-  );
+  const error = captureError(() => getCirParameters([0.02, -0.03, 0.04, 0.05], 12));
   expect(error).toBeInstanceOf(Error);
-  expect((error as Error).message).toContain(
-    "All values must be non-negative.",
-  );
+  expect((error as Error).message).toContain("All values must be non-negative.");
 });
 
 test("getCirParameters should throw error on degenerate data", () => {
-  const error = captureError(() =>
-    getCirParameters([0.05, 0.05, 0.05, 0.05], 12),
-  );
+  const error = captureError(() => getCirParameters([0.05, 0.05, 0.05, 0.05], 12));
   expect(error).toBeInstanceOf(Error);
-  expect((error as Error).message).toContain(
-    "Degenerate data: Cannot estimate parameters.",
-  );
+  expect((error as Error).message).toContain("Degenerate data: Cannot estimate parameters.");
 });
 
 test("getCirParameters should handle mean reversion toward a target", () => {

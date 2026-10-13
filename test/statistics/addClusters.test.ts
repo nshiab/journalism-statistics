@@ -4,9 +4,7 @@ import dataForClusters from "../data/dataForClusters.json" with { type: "json" }
 import euclideanDistance from "../../src/statistics/euclidianDistance.ts";
 
 test("should add clusterId and clusterType to each point", () => {
-  addClusters(dataForClusters, 0.3, 10, (a, b) =>
-    euclideanDistance(a.x, a.y, b.x, b.y),
-  );
+  addClusters(dataForClusters, 0.3, 10, (a, b) => euclideanDistance(a.x, a.y, b.x, b.y));
 
   const dataWithClusters = dataForClusters as {
     x: number;
@@ -14,24 +12,19 @@ test("should add clusterId and clusterType to each point", () => {
     clusterId: string;
     clusterType: string;
   }[];
-  const clusters = Array.from(
-    new Set(dataWithClusters.map((d) => d.clusterId)),
-  );
+  const clusters = Array.from(new Set(dataWithClusters.map((d) => d.clusterId)));
 
   const summary: {
     [key: string]: { core: number; border: number; noise: number };
   } = {};
   for (const cluster of clusters) {
     summary[cluster] = {
-      core: dataWithClusters.filter(
-        (d) => d.clusterId === cluster && d.clusterType === "core",
-      ).length,
-      border: dataWithClusters.filter(
-        (d) => d.clusterId === cluster && d.clusterType === "border",
-      ).length,
-      noise: dataWithClusters.filter(
-        (d) => d.clusterId === cluster && d.clusterType === "noise",
-      ).length,
+      core: dataWithClusters.filter((d) => d.clusterId === cluster && d.clusterType === "core")
+        .length,
+      border: dataWithClusters.filter((d) => d.clusterId === cluster && d.clusterType === "border")
+        .length,
+      noise: dataWithClusters.filter((d) => d.clusterId === cluster && d.clusterType === "noise")
+        .length,
     };
   }
 

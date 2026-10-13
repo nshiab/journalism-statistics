@@ -3,23 +3,13 @@ import captureError from "../helpers/captureError.ts";
 import generateCirPath from "../../src/statistics/generateCirPath.ts";
 
 test("generateCirPath should throw error for invalid parameters", () => {
-  const error1 = captureError(() =>
-    generateCirPath(-0.05, 0.1, 0.05, 0.02, 1, 12),
-  );
+  const error1 = captureError(() => generateCirPath(-0.05, 0.1, 0.05, 0.02, 1, 12));
   expect(error1).toBeInstanceOf(Error);
-  expect((error1 as Error).message).toContain(
-    "Start value must be non-negative.",
-  );
-  const error2 = captureError(() =>
-    generateCirPath(0.05, -0.1, 0.05, 0.02, 1, 12),
-  );
+  expect((error1 as Error).message).toContain("Start value must be non-negative.");
+  const error2 = captureError(() => generateCirPath(0.05, -0.1, 0.05, 0.02, 1, 12));
   expect(error2).toBeInstanceOf(Error);
-  expect((error2 as Error).message).toContain(
-    "Parameters a, b, and sigma must be non-negative.",
-  );
-  const error3 = captureError(() =>
-    generateCirPath(0.05, 0.1, 0.05, 0.02, 0, 12),
-  );
+  expect((error2 as Error).message).toContain("Parameters a, b, and sigma must be non-negative.");
+  const error3 = captureError(() => generateCirPath(0.05, 0.1, 0.05, 0.02, 0, 12));
   expect(error3).toBeInstanceOf(Error);
   expect((error3 as Error).message).toContain(
     "Years and periods per year must be strictly positive.",

@@ -21,11 +21,7 @@ const parkingFineData = [
 ];
 
 test("should perform paired t-test with parking fines data (two-tailed, default)", () => {
-  const result = performPairedTTest(
-    parkingFineData,
-    "fines_before",
-    "fines_after",
-  );
+  const result = performPairedTTest(parkingFineData, "fines_before", "fines_after");
 
   expect(result).toStrictEqual({
     sampleSize: 6,
@@ -41,14 +37,9 @@ test("should perform paired t-test with parking fines data (two-tailed, default)
 });
 
 test("should perform paired t-test with parking fines data (right-tailed)", () => {
-  const result = performPairedTTest(
-    parkingFineData,
-    "fines_before",
-    "fines_after",
-    {
-      tail: "right-tailed",
-    },
-  );
+  const result = performPairedTTest(parkingFineData, "fines_before", "fines_after", {
+    tail: "right-tailed",
+  });
 
   expect(result).toStrictEqual({
     sampleSize: 6,
@@ -64,14 +55,9 @@ test("should perform paired t-test with parking fines data (right-tailed)", () =
 });
 
 test("should perform paired t-test with parking fines data (left-tailed)", () => {
-  const result = performPairedTTest(
-    parkingFineData,
-    "fines_before",
-    "fines_after",
-    {
-      tail: "left-tailed",
-    },
-  );
+  const result = performPairedTTest(parkingFineData, "fines_before", "fines_after", {
+    tail: "left-tailed",
+  });
 
   expect(result).toStrictEqual({
     sampleSize: 6,
@@ -139,11 +125,7 @@ const weightLossData = [
 ];
 
 test("should perform paired t-test with weight loss data (positive differences)", () => {
-  const result = performPairedTTest(
-    weightLossData,
-    "weight_before",
-    "weight_after",
-  );
+  const result = performPairedTTest(weightLossData, "weight_before", "weight_after");
 
   expect(result).toStrictEqual({
     sampleSize: 5,
@@ -215,11 +197,7 @@ test("should handle constant negative difference", () => {
     { id: 4, before: 45, after: 40 },
   ];
 
-  const result = performPairedTTest(
-    constantNegativeDifferenceData,
-    "before",
-    "after",
-  );
+  const result = performPairedTTest(constantNegativeDifferenceData, "before", "after");
 
   expect(result).toStrictEqual({
     sampleSize: 4,
@@ -264,9 +242,7 @@ test("should throw error for insufficient sample size", () => {
     performPairedTTest(insufficientData, "x", "y");
     throw new Error("Expected error was not thrown");
   } catch (error) {
-    expect((error as Error).message).toStrictEqual(
-      "Paired data must contain at least 2 pairs.",
-    );
+    expect((error as Error).message).toStrictEqual("Paired data must contain at least 2 pairs.");
   }
 });
 
@@ -374,10 +350,9 @@ test("matches Student's t references across degrees of freedom", () => {
   ];
 
   for (const fixture of fixtures) {
-    const pairedData = sampleWithTStatistic(
-      fixture.degreesOfFreedom,
-      fixture.tStatistic,
-    ).map(({ value }) => ({ first: value, second: 0 }));
+    const pairedData = sampleWithTStatistic(fixture.degreesOfFreedom, fixture.tStatistic).map(
+      ({ value }) => ({ first: value, second: 0 }),
+    );
     const result = performPairedTTest(pairedData, "first", "second", {
       tail: fixture.tail,
     });

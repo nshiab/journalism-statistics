@@ -114,13 +114,9 @@ export default function addClusters<T extends Record<string, unknown>>(
   for (const point of data) {
     if ((point as ClusterPoint).clusterId === null) {
       const neighbours = getNeighbours(point);
-      const clusterNeighbours = neighbours.find(
-        (n) => (n as ClusterPoint).clusterType === "core",
-      );
+      const clusterNeighbours = neighbours.find((n) => (n as ClusterPoint).clusterType === "core");
       if (clusterNeighbours) {
-        (point as ClusterPoint).clusterId = (
-          clusterNeighbours as ClusterPoint
-        ).clusterId;
+        (point as ClusterPoint).clusterId = (clusterNeighbours as ClusterPoint).clusterId;
         (point as ClusterPoint).clusterType = "border";
       }
     }
@@ -145,9 +141,7 @@ export default function addClusters<T extends Record<string, unknown>>(
         // If the neighbour is a core point, we add its neighbours to the list of points to be checked.
         if (newNeighbours.length >= minNeighbours) {
           (neighbour as ClusterPoint).clusterType = "core";
-          neighbours.push(
-            ...newNeighbours.filter((n) => !neighbours.includes(n)),
-          );
+          neighbours.push(...newNeighbours.filter((n) => !neighbours.includes(n)));
         } else {
           // If not core, it's a border point
           (neighbour as ClusterPoint).clusterType = "border";

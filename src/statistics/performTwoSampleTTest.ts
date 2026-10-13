@@ -163,15 +163,11 @@ export default function performTwoSampleTTest<
   }
 
   // --- 3. Calculation helpers ---
-  const calculateMean = (data: number[]): number =>
-    data.reduce((a, b) => a + b, 0) / data.length;
+  const calculateMean = (data: number[]): number => data.reduce((a, b) => a + b, 0) / data.length;
 
   // Sample variance (with Bessel's correction: n-1 denominator)
   const calculateSampleVariance = (data: number[], mean: number): number => {
-    const sumSquaredDeviations = data.reduce(
-      (sum, val) => sum + Math.pow(val - mean, 2),
-      0,
-    );
+    const sumSquaredDeviations = data.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0);
     return sumSquaredDeviations / (data.length - 1);
   };
 
@@ -241,7 +237,7 @@ export default function performTwoSampleTTest<
     pValue = studentTCdf(tStatistic, degreesOfFreedom);
   } else {
     throw new Error(
-      `Invalid tail option: ${tail}. Use "two-tailed", "left-tailed", or "right-tailed".`,
+      `Invalid tail option: ${String(tail)}. Use "two-tailed", "left-tailed", or "right-tailed".`,
     );
   }
 

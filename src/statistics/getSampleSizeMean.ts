@@ -94,25 +94,20 @@ export default function getSampleSizeMean<T extends Record<string, unknown>>(
   }
 
   if (data.length < 2) {
-    throw new Error(
-      "At least 2 data points are required to calculate sample standard deviation.",
-    );
+    throw new Error("At least 2 data points are required to calculate sample standard deviation.");
   }
 
   const values = data.map((d) => {
     const value = d[key];
     if (typeof value !== "number") {
       throw new Error(
-        `Invalid value for key "${String(
-          key,
-        )}": ${value}. Values must be numbers.`,
+        `Invalid value for key "${String(key)}": ${String(value)}. Values must be numbers.`,
       );
     }
     return value;
   });
 
-  const sampleMean =
-    values.reduce((sum, value) => sum + value, 0) / values.length;
+  const sampleMean = values.reduce((sum, value) => sum + value, 0) / values.length;
   const sumOfSquaredDifferences = values.reduce((sum, value) => {
     const diff = value - sampleMean;
     return sum + diff * diff;
@@ -125,8 +120,7 @@ export default function getSampleSizeMean<T extends Record<string, unknown>>(
   const initialSampleSize = numerator / denominator;
 
   const finalSampleSize =
-    initialSampleSize /
-    (1 + (initialSampleSize - 1) / (options?.populationSize ?? data.length));
+    initialSampleSize / (1 + (initialSampleSize - 1) / (options?.populationSize ?? data.length));
 
   return Math.ceil(finalSampleSize);
 }

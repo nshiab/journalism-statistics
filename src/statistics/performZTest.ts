@@ -117,14 +117,11 @@ export default function performZTest<T extends Record<string, unknown>>(
   const sampleSize = sampleValues.length;
 
   if (populationSize < 2 || sampleSize < 2) {
-    throw new Error(
-      "Population and sample must contain at least 2 data points.",
-    );
+    throw new Error("Population and sample must contain at least 2 data points.");
   }
 
   // --- 3. Calculation helpers ---
-  const calculateMean = (data: number[]): number =>
-    data.reduce((a, b) => a + b, 0) / data.length;
+  const calculateMean = (data: number[]): number => data.reduce((a, b) => a + b, 0) / data.length;
   const calculateVariance = (data: number[], mean: number): number => {
     return calculateMean(data.map((val) => Math.pow(val - mean, 2)));
   };
@@ -132,10 +129,7 @@ export default function performZTest<T extends Record<string, unknown>>(
   // --- 4. Calculate all necessary statistics ---
   const populationMean = calculateMean(populationValues);
   const sampleMean = calculateMean(sampleValues);
-  const populationVariance = calculateVariance(
-    populationValues,
-    populationMean,
-  );
+  const populationVariance = calculateVariance(populationValues, populationMean);
   const populationStdDev = Math.sqrt(populationVariance);
 
   // --- 5. Extract tail option with default ---
@@ -164,9 +158,7 @@ export default function performZTest<T extends Record<string, unknown>>(
     const sign = x >= 0 ? 1 : -1;
     x = Math.abs(x);
     const t = 1.0 / (1.0 + p * x);
-    const y =
-      1.0 -
-      ((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+    const y = 1.0 - ((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
     return sign * y;
   };
   const cdf = (val: number): number => 0.5 * (1 + erf(val / Math.sqrt(2)));
@@ -184,7 +176,7 @@ export default function performZTest<T extends Record<string, unknown>>(
     pValue = cdf(zScore);
   } else {
     throw new Error(
-      `Invalid tail option: ${tail}. Use "two-tailed", "left-tailed", or "right-tailed".`,
+      `Invalid tail option: ${String(tail)}. Use "two-tailed", "left-tailed", or "right-tailed".`,
     );
   }
 

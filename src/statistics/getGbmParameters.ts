@@ -46,8 +46,7 @@ export default function getGbmParameters(
 
   // 3. Calculate the Variance of log returns
   const variance =
-    logReturns.reduce((acc, val) => acc + (val - meanReturn) ** 2, 0) /
-    (logReturns.length - 1);
+    logReturns.reduce((acc, val) => acc + (val - meanReturn) ** 2, 0) / (logReturns.length - 1);
 
   // 4. Calculate Annualized Volatility (sigma)
   const sigma = Math.sqrt(variance) * Math.sqrt(periodsPerYear);

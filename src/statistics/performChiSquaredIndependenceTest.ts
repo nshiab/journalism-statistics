@@ -78,9 +78,7 @@ import { chiSquaredSurvival } from "./distributions.ts";
  *
  * @category Statistics
  */
-export default function performChiSquaredIndependenceTest<
-  T extends Record<string, unknown>,
->(
+export default function performChiSquaredIndependenceTest<T extends Record<string, unknown>>(
   data: T[],
   firstVariableKey: keyof T,
   secondVariableKey: keyof T,
@@ -123,9 +121,7 @@ export default function performChiSquaredIndependenceTest<
       }
       return value;
     }
-    throw new Error(
-      `Invalid expectedType: ${expectedType}. Must be "number" or "string".`,
-    );
+    throw new Error(`Invalid expectedType: ${expectedType}. Must be "number" or "string".`);
   };
 
   // --- 3. Build contingency table ---
@@ -134,18 +130,9 @@ export default function performChiSquaredIndependenceTest<
   const colCategories = new Set<string>();
 
   data.forEach((item, index) => {
-    const rowValue = String(
-      extractValue(item, String(firstVariableKey), index, "string"),
-    );
-    const colValue = String(
-      extractValue(item, String(secondVariableKey), index, "string"),
-    );
-    const count = extractValue(
-      item,
-      String(countKey),
-      index,
-      "number",
-    ) as number;
+    const rowValue = String(extractValue(item, String(firstVariableKey), index, "string"));
+    const colValue = String(extractValue(item, String(secondVariableKey), index, "string"));
+    const count = extractValue(item, String(countKey), index, "number") as number;
 
     rowCategories.add(rowValue);
     colCategories.add(colValue);
@@ -180,8 +167,7 @@ export default function performChiSquaredIndependenceTest<
   rows.forEach((row, i) => {
     expectedFrequencies[row] = {};
     columns.forEach((col, j) => {
-      expectedFrequencies[row][col] =
-        (rowTotals[i] * colTotals[j]) / grandTotal;
+      expectedFrequencies[row][col] = (rowTotals[i] * colTotals[j]) / grandTotal;
     });
   });
 
@@ -265,10 +251,7 @@ export default function performChiSquaredIndependenceTest<
 /**
  * Calculate the upper-tail probability for a chi-squared statistic.
  */
-function calculateChiSquaredPValue(
-  chiSquared: number,
-  degreesOfFreedom: number,
-): number {
+function calculateChiSquaredPValue(chiSquared: number, degreesOfFreedom: number): number {
   if (degreesOfFreedom <= 0) {
     throw new Error("Degrees of freedom must be greater than 0.");
   }

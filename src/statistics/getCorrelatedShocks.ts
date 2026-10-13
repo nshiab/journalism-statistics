@@ -4,10 +4,7 @@
  * @param Z - An array of independent standard normal random variables.
  * @returns An array of correlated random variables.
  */
-export default function getCorrelatedShocks(
-  L: number[][],
-  Z: number[],
-): number[] {
+export default function getCorrelatedShocks(L: number[][], Z: number[]): number[] {
   const n = L.length;
   if (Z.length !== n) {
     throw new Error("L and Z must have the same length.");
