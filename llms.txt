@@ -1,4 +1,4 @@
-# Journalism Statistics
+# Journalism Statistics v1.5.7
 
 > Useful TypeScript functions for journalism projects. This library focuses on statistical calculations.
 
