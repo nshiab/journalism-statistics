@@ -27,7 +27,3 @@
 - [performZTest](https://nshiab.github.io/journalism-statistics/functions/performZTest.md): performZTest function
 - [stepCir](https://nshiab.github.io/journalism-statistics/functions/stepCir.md): stepCir function
 - [stepGbm](https://nshiab.github.io/journalism-statistics/functions/stepGbm.md): stepGbm function
-
-## Optional
-
-- [llm.md — Complete Markdown reference](https://nshiab.github.io/journalism-statistics/llm.md): All functions and examples in one file.
