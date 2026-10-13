@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import addMahalanobisDistance from "../../src/statistics/addMahalanobisDistance.ts";
 import wineQuality from "../data/wine-quality.json" with { type: "json" };
 import columnsToRows from "../helpers/columnsToRows.ts";

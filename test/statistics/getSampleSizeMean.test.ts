@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import getSampleSizeMean from "../../src/statistics/getSampleSizeMean.ts";
 
 // Compared with https://select-statistics.co.uk/calculators/sample-size-calculator-population-mean/

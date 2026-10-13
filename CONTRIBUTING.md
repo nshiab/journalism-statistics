@@ -12,7 +12,7 @@ npm ci
 
 Implement functions in `src/` and their tests in `test/`. Keep public JSDoc
 comments and examples up to date. Keep `.ts` extensions in relative source
-imports; the TypeScript build rewrites these for the published JavaScript.
+imports; Vite+ bundles the source into the published JavaScript.
 
 | Command                                                               | Purpose                                                                          |
 | --------------------------------------------------------------------- | -------------------------------------------------------------------------------- |

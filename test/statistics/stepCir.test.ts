@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import stepCir from "../../src/statistics/stepCir.ts";
 
 test("stepCir: bounds to minimum value to prevent negative rates", () => {

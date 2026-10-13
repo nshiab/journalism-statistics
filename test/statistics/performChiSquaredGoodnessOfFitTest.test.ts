@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import captureError from "../helpers/captureError.ts";
 import performChiSquaredGoodnessOfFitTest from "../../src/statistics/performChiSquaredGoodnessOfFitTest.ts";
 import {

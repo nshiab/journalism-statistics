@@ -14,11 +14,11 @@
   "homepage": "https://nshiab.github.io/journalism-statistics/",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     }
   },
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist",
     "src",
@@ -31,15 +31,15 @@
     "access": "public"
   },
   "scripts": {
-    "test": "vitest run",
-    "format": "prettier --write .",
-    "format-check": "prettier --check .",
-    "lint": "eslint .",
-    "check": "tsc --noEmit",
-    "build": "tsc -p tsconfig.build.json",
+    "test": "vp test",
+    "format": "vp fmt",
+    "format-check": "vp fmt --check",
+    "lint": "vp lint",
+    "check": "vp check",
+    "build": "vp pack",
     "docs": "typedoc && node --input-type=module -e \"import { readFileSync, writeFileSync, copyFileSync } from 'node:fs'; import config from './typedoc.json' with { type: 'json' }; writeFileSync('llms.txt', readFileSync('llms.txt', 'utf8').replaceAll('(llm.md#', '(' + new URL('llm.md', config.hostedBaseUrl).href + '#')); for (const file of ['llm.md', 'llms.txt']) copyFileSync(file, 'site/' + file);\"",
     "llm": "npm run docs",
-    "all-tests": "npm run format-check && npm run lint && npm run check && npm test && npm run build && npm run docs",
+    "all-tests": "npm run check && npm test && npm run build && npm run docs",
     "prepack": "npm run build && npm run docs",
     "preversion": "npm run all-tests",
     "version": "npm run docs && git add llm.md llms.txt",
@@ -49,15 +49,15 @@
     "major": "npm version major"
   },
   "devDependencies": {
-    "@eslint/js": "10.0.1",
     "@types/node": "24.19.1",
-    "eslint": "10.12.0",
-    "prettier": "3.9.9",
     "typedoc": "0.28.20",
     "typedoc-plugin-llms-txt": "0.1.2",
     "typedoc-plugin-markdown": "4.13.1",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.71.1",
+    "vite-plus": "1.1.0"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.1.0",
     "vitest": "5.0.3"
   }
 }

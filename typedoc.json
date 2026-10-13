@@ -1,7 +1,7 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": ["src/index.ts"],
-  "tsconfig": "tsconfig.build.json",
+  "tsconfig": "tsconfig.json",
   "name": "Journalism Statistics",
   "includeVersion": true,
   "plugin": ["typedoc-plugin-markdown", "typedoc-plugin-llms-txt"],

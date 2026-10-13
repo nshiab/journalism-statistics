@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import addClusters from "../../src/statistics/addClusters.ts";
 import dataForClusters from "../data/dataForClusters.json" with { type: "json" };
 import euclideanDistance from "../../src/statistics/euclidianDistance.ts";

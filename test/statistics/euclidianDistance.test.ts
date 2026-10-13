@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import euclideanDistance from "../../src/statistics/euclidianDistance.ts";
 
 test("should return 0 when both points are the same", () => {

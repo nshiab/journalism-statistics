@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import invertMatrix from "../../src/statistics/invertMatrix.ts";
 
 test("should invert a 2x2 matrix", () => {

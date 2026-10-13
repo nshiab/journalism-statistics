@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import captureError from "../helpers/captureError.ts";
 import performTwoSampleTTest from "../../src/statistics/performTwoSampleTTest.ts";
 import {

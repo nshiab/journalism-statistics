@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import stepGbm from "../../src/statistics/stepGbm.ts";
 
 test("stepGbm: calculates next step correctly", () => {

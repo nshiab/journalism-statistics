@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import addZScore from "../../src/statistics/addZScore.ts";
 
 test("should compute the zScore", () => {

@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import getCorrelatedShocks from "../../src/statistics/getCorrelatedShocks.ts";
 
 test("getCorrelatedShocks: correctly multiplies lower triangular matrix by Z vector", () => {

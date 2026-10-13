@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from "vite-plus/test";
 import performZTest from "../../src/statistics/performZTest.ts";
 
 // Tested with

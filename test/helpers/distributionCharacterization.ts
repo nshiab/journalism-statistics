@@ -1,4 +1,4 @@
-import { expect } from "vitest";
+import { expect } from "vite-plus/test";
 
 export type Tail = "two-tailed" | "left-tailed" | "right-tailed";
 
