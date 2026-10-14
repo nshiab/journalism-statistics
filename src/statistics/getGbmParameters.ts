@@ -21,6 +21,8 @@
  * console.log(`Annualized Drift (mu): ${mu.toFixed(4)}`);
  * console.log(`Annualized Volatility (sigma): ${sigma.toFixed(4)}`);
  * ```
+ *
+ * @category Statistics
  */
 export default function getGbmParameters(
   values: number[],

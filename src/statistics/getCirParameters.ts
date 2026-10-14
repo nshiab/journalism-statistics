@@ -20,6 +20,8 @@
  *
  * const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
  * ```
+ *
+ * @category Statistics
  */
 export default function getCirParameters(
   values: number[],

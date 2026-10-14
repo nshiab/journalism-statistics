@@ -7,6 +7,8 @@
  * @param dt - The time step.
  * @param shock - A standard normal random variable (Z).
  * @returns The next value in the process.
+ *
+ * @category Statistics
  */
 export default function stepCir(
   currentValue: number,

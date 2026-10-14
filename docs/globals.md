@@ -18,25 +18,20 @@ const sampleSize = getSampleSizeProportion(1000, 95, 5);
 console.log(sampleSize); // 278
 ```
 
-## Other
-
-- [generateCirPath](functions/generateCirPath.md)
-- [generateGbmPath](functions/generateGbmPath.md)
-- [getCholeskyMatrix](functions/getCholeskyMatrix.md)
-- [getCirParameters](functions/getCirParameters.md)
-- [getCorrelatedShocks](functions/getCorrelatedShocks.md)
-- [getGbmParameters](functions/getGbmParameters.md)
-- [stepCir](functions/stepCir.md)
-- [stepGbm](functions/stepGbm.md)
-
 ## Statistics
 
 - [addClusters](functions/addClusters.md)
 - [addMahalanobisDistance](functions/addMahalanobisDistance.md)
 - [addZScore](functions/addZScore.md)
 - [euclidianDistance](functions/euclidianDistance.md)
+- [generateCirPath](functions/generateCirPath.md)
+- [generateGbmPath](functions/generateGbmPath.md)
+- [getCholeskyMatrix](functions/getCholeskyMatrix.md)
+- [getCirParameters](functions/getCirParameters.md)
+- [getCorrelatedShocks](functions/getCorrelatedShocks.md)
 - [getCorrelationMatrix](functions/getCorrelationMatrix.md)
 - [getCovarianceMatrix](functions/getCovarianceMatrix.md)
+- [getGbmParameters](functions/getGbmParameters.md)
 - [getMahalanobisDistance](functions/getMahalanobisDistance.md)
 - [getSampleSizeMean](functions/getSampleSizeMean.md)
 - [getSampleSizeProportion](functions/getSampleSizeProportion.md)
@@ -47,3 +42,5 @@ console.log(sampleSize); // 278
 - [performTTest](functions/performTTest.md)
 - [performTwoSampleTTest](functions/performTwoSampleTTest.md)
 - [performZTest](functions/performZTest.md)
+- [stepCir](functions/stepCir.md)
+- [stepGbm](functions/stepGbm.md)

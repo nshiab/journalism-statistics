@@ -29,6 +29,8 @@
  * const initialRate = rates[rates.length - 1];
  * const path = generateCirPath(initialRate, a, b, sigma, 1, 12);
  * ```
+ *
+ * @category Statistics
  */
 export default function generateCirPath(
   startValue: number,

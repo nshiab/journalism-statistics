@@ -32,6 +32,8 @@
  * const path = generateGbmPath(startValue, mu, sigma, 1, periodsPerYear);
  * console.log(`Simulated path: ${path.map(v => v.toFixed(2)).join(', ')}`);
  * ```
+ *
+ * @category Statistics
  */
 export default function generateGbmPath(
   startValue: number,

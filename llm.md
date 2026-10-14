@@ -65,423 +65,6 @@ const sampleSize = getSampleSizeProportion(1000, 95, 5);
 console.log(sampleSize); // 278
 ```
 
-## Other
-
-### generateCirPath()
-
-> **generateCirPath**(`startValue`, `a`, `b`, `sigma`, `years`, `periodsPerYear`): `number`[]
-
-Generates a path of values following the Cox-Ingersoll-Ross (CIR) model.
-
-The CIR model is a mean-reverting stochastic process used to model variables that tend to return to a long-term average over time, such as interest rates or volatility.
-
-**When to use this function:**
-- To simulate future interest rate paths for financial modeling.
-- To test how a mean-reverting system might evolve over time.
-- When you have parameters (`a`, `b`, `sigma`) and wish to generate potential future scenarios.
-
-#### Parameters
-
-##### startValue
-
-`number`
-
-The initial value of the process (e.g., current interest rate).
-
-##### a
-
-`number`
-
-The speed of mean reversion.
-
-##### b
-
-`number`
-
-The long-term mean to which the process reverts.
-
-##### sigma
-
-`number`
-
-The volatility of the process.
-
-##### years
-
-`number`
-
-The number of years to simulate.
-
-##### periodsPerYear
-
-`number`
-
-The number of simulation steps per year (e.g., 12 for monthly).
-
-#### Returns
-
-`number`[]
-
-An array representing the simulated path of values.
-
-#### Throws
-
-If parameters are invalid (e.g. negative values where prohibited or zero simulation length).
-
-#### Example
-
-```ts
-const rates = [0.02, 0.021, 0.019, 0.022, 0.023];
-const periodsPerYear = 12;
-
-// First, estimate parameters from historical data
-const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
-
-// Then, generate a future path
-const initialRate = rates[rates.length - 1];
-const path = generateCirPath(initialRate, a, b, sigma, 1, 12);
-```
-
-***
-
-### generateGbmPath()
-
-> **generateGbmPath**(`startValue`, `mu`, `sigma`, `years`, `periodsPerYear`): `number`[]
-
-Generates a simulated path for an asset using the Geometric Brownian Motion (GBM) model.
-
-Geometric Brownian Motion is a continuous-time stochastic process in which the logarithm of the randomly varying quantity follows a Brownian motion with drift. It is widely used in mathematical finance to model stock prices, as it ensures that values remain positive and accounts for compounded returns.
-
-**When to use this function:**
-- To simulate future value paths for a stock, index, or other financial asset
-- For risk management and stress testing by generating multiple potential scenarios
-- To visualize the impact of volatility and drift on an investment over time
-
-**Note:** You can use `getGbmParameters` to estimate the `mu` and `sigma` parameters from historical data before generating a path.
-
-#### Parameters
-
-##### startValue
-
-`number`
-
-The initial value of the asset at the beginning of the simulation
-
-##### mu
-
-`number`
-
-The expected annualized drift (average growth rate) of the asset
-
-##### sigma
-
-`number`
-
-The annualized volatility (degree of variation) of the asset
-
-##### years
-
-`number`
-
-The total duration of the simulation in years
-
-##### periodsPerYear
-
-`number`
-
-The number of simulation steps per year (e.g., 252 for daily trading days, 12 for monthly data, 52 for weekly)
-
-#### Returns
-
-`number`[]
-
-An array of numerical values representing the simulated path, including the `startValue`
-
-#### Example
-
-```ts
-import getGbmParameters from "./getGbmParameters";
-
-const historicalValues = [100, 102, 101, 105, 107, 110];
-const periodsPerYear = 252; // Daily data
-
-// Estimate parameters from historical data
-const { mu, sigma } = getGbmParameters(historicalValues, periodsPerYear);
-
-// Generate a simulated path for the next year
-const startValue = historicalValues[historicalValues.length - 1];
-const path = generateGbmPath(startValue, mu, sigma, 1, periodsPerYear);
-console.log(`Simulated path: ${path.map(v => v.toFixed(2)).join(', ')}`);
-```
-
-***
-
-### getCholeskyMatrix()
-
-> **getCholeskyMatrix**(`matrix`, `jitter?`): `number`[][]
-
-Performs Cholesky Decomposition on a symmetric, positive-definite covariance matrix.
-
-#### Parameters
-
-##### matrix
-
-`number`[][]
-
-A square, symmetric, positive-definite covariance matrix.
-
-##### jitter?
-
-`number` = `0`
-
-A tiny positive value (e.g., 1e-9) added to the diagonal to force positive-definiteness.
-
-#### Returns
-
-`number`[][]
-
-A lower triangular matrix L.
-
-***
-
-### getCirParameters()
-
-> **getCirParameters**(`values`, `periodsPerYear`): `object`
-
-Estimates the parameters of the Cox-Ingersoll-Ross (CIR) model based on historical values using ordinary least squares on the discretized process.
-
-The CIR model is a mean-reverting stochastic process often used to model interest rates or other variables that tend to move toward a long-term average. This function returns the speed of mean reversion (`a`), the long-term mean (`b`), and the volatility (`sigma`).
-
-**When to use this function:**
-- To model interest rates, where rates are likely to revert to a mean but stay positive.
-- When you need to estimate the behavior of a mean-reverting process from historical data points.
-- To determine parameters for simulating potential future paths using `getCirPath`.
-
-#### Parameters
-
-##### values
-
-`number`[]
-
-An array of numerical data points (e.g., historical interest rates).
-
-##### periodsPerYear
-
-`number`
-
-The number of data points per year (e.g., 252 for daily, 12 for monthly).
-
-#### Returns
-
-`object`
-
-An object containing the estimated speed of mean reversion (`a`), long-term mean (`b`), and volatility (`sigma`). Note that `a` is silently clamped to a minimum of 0.001 and `b` to a minimum of 0.
-
-##### a
-
-> **a**: `number`
-
-##### b
-
-> **b**: `number`
-
-##### sigma
-
-> **sigma**: `number`
-
-#### Throws
-
-If `values` contains fewer than four data points, if `periodsPerYear` is not positive, if any value is negative, or if the data is degenerate (collinear).
-
-#### Example
-
-```ts
-const rates = [0.02, 0.021, 0.019, 0.022, 0.023];
-const periodsPerYear = 12; // Monthly data
-
-const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
-```
-
-***
-
-### getCorrelatedShocks()
-
-> **getCorrelatedShocks**(`L`, `Z`): `number`[]
-
-Multiplies a lower triangular Cholesky matrix (L) by a vector of independent standard normal random variables (Z).
-
-#### Parameters
-
-##### L
-
-`number`[][]
-
-The lower triangular matrix.
-
-##### Z
-
-`number`[]
-
-An array of independent standard normal random variables.
-
-#### Returns
-
-`number`[]
-
-An array of correlated random variables.
-
-***
-
-### getGbmParameters()
-
-> **getGbmParameters**(`values`, `periodsPerYear`): `object`
-
-Calculates the parameters (drift `mu` and volatility `sigma`) for a Geometric Brownian Motion (GBM) model based on historical data.
-
-Geometric Brownian Motion is a continuous-time stochastic process often used to model stock prices and other financial assets. This function estimates the drift and volatility from a series of observed values, assuming the returns follow a log-normal distribution.
-
-**When to use this function:**
-- To estimate parameters for simulating future asset paths using GBM
-- When you have a sequence of historical prices or values and need to determine their annualized growth rate (drift) and risk (volatility)
-- To model potential future scenarios for a stock, index, or commodity based on historical trends
-
-#### Parameters
-
-##### values
-
-`number`[]
-
-An array of numerical values (e.g., historical prices)
-
-##### periodsPerYear
-
-`number`
-
-The number of data points per year (e.g., 252 for daily trading days, 12 for monthly data, 52 for weekly)
-
-#### Returns
-
-`object`
-
-An object containing the annualized drift (`mu`) and annualized volatility (`sigma`)
-
-##### mu
-
-> **mu**: `number`
-
-##### sigma
-
-> **sigma**: `number`
-
-#### Example
-
-```ts
-const prices = [100, 102, 101, 105, 107, 110];
-const periodsPerYear = 252; // Daily data
-
-const { mu, sigma } = calculateGbmParameters(prices, periodsPerYear);
-console.log(`Annualized Drift (mu): ${mu.toFixed(4)}`);
-console.log(`Annualized Volatility (sigma): ${sigma.toFixed(4)}`);
-```
-
-***
-
-### stepCir()
-
-> **stepCir**(`currentValue`, `a`, `b`, `sigma`, `dt`, `shock`): `number`
-
-Calculates the next value in a Cox-Ingersoll-Ross (CIR) process.
-
-#### Parameters
-
-##### currentValue
-
-`number`
-
-The current value of the process.
-
-##### a
-
-`number`
-
-The speed of mean reversion.
-
-##### b
-
-`number`
-
-The long-term mean level.
-
-##### sigma
-
-`number`
-
-The volatility coefficient.
-
-##### dt
-
-`number`
-
-The time step.
-
-##### shock
-
-`number`
-
-A standard normal random variable (Z).
-
-#### Returns
-
-`number`
-
-The next value in the process.
-
-***
-
-### stepGbm()
-
-> **stepGbm**(`currentValue`, `mu`, `sigma`, `dt`, `shock`): `number`
-
-Calculates the next value in a Geometric Brownian Motion (GBM) process.
-
-#### Parameters
-
-##### currentValue
-
-`number`
-
-The current value of the process.
-
-##### mu
-
-`number`
-
-The drift coefficient.
-
-##### sigma
-
-`number`
-
-The volatility coefficient.
-
-##### dt
-
-`number`
-
-The time step.
-
-##### shock
-
-`number`
-
-A standard normal random variable (Z).
-
-#### Returns
-
-`number`
-
-The next value in the process.
-
 ## Statistics
 
 ### addClusters()
@@ -938,6 +521,271 @@ console.log(dist3); // 0
 
 ***
 
+### generateCirPath()
+
+> **generateCirPath**(`startValue`, `a`, `b`, `sigma`, `years`, `periodsPerYear`): `number`[]
+
+Generates a path of values following the Cox-Ingersoll-Ross (CIR) model.
+
+The CIR model is a mean-reverting stochastic process used to model variables that tend to return to a long-term average over time, such as interest rates or volatility.
+
+**When to use this function:**
+- To simulate future interest rate paths for financial modeling.
+- To test how a mean-reverting system might evolve over time.
+- When you have parameters (`a`, `b`, `sigma`) and wish to generate potential future scenarios.
+
+#### Parameters
+
+##### startValue
+
+`number`
+
+The initial value of the process (e.g., current interest rate).
+
+##### a
+
+`number`
+
+The speed of mean reversion.
+
+##### b
+
+`number`
+
+The long-term mean to which the process reverts.
+
+##### sigma
+
+`number`
+
+The volatility of the process.
+
+##### years
+
+`number`
+
+The number of years to simulate.
+
+##### periodsPerYear
+
+`number`
+
+The number of simulation steps per year (e.g., 12 for monthly).
+
+#### Returns
+
+`number`[]
+
+An array representing the simulated path of values.
+
+#### Throws
+
+If parameters are invalid (e.g. negative values where prohibited or zero simulation length).
+
+#### Example
+
+```ts
+const rates = [0.02, 0.021, 0.019, 0.022, 0.023];
+const periodsPerYear = 12;
+
+// First, estimate parameters from historical data
+const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
+
+// Then, generate a future path
+const initialRate = rates[rates.length - 1];
+const path = generateCirPath(initialRate, a, b, sigma, 1, 12);
+```
+
+***
+
+### generateGbmPath()
+
+> **generateGbmPath**(`startValue`, `mu`, `sigma`, `years`, `periodsPerYear`): `number`[]
+
+Generates a simulated path for an asset using the Geometric Brownian Motion (GBM) model.
+
+Geometric Brownian Motion is a continuous-time stochastic process in which the logarithm of the randomly varying quantity follows a Brownian motion with drift. It is widely used in mathematical finance to model stock prices, as it ensures that values remain positive and accounts for compounded returns.
+
+**When to use this function:**
+- To simulate future value paths for a stock, index, or other financial asset
+- For risk management and stress testing by generating multiple potential scenarios
+- To visualize the impact of volatility and drift on an investment over time
+
+**Note:** You can use `getGbmParameters` to estimate the `mu` and `sigma` parameters from historical data before generating a path.
+
+#### Parameters
+
+##### startValue
+
+`number`
+
+The initial value of the asset at the beginning of the simulation
+
+##### mu
+
+`number`
+
+The expected annualized drift (average growth rate) of the asset
+
+##### sigma
+
+`number`
+
+The annualized volatility (degree of variation) of the asset
+
+##### years
+
+`number`
+
+The total duration of the simulation in years
+
+##### periodsPerYear
+
+`number`
+
+The number of simulation steps per year (e.g., 252 for daily trading days, 12 for monthly data, 52 for weekly)
+
+#### Returns
+
+`number`[]
+
+An array of numerical values representing the simulated path, including the `startValue`
+
+#### Example
+
+```ts
+import getGbmParameters from "./getGbmParameters";
+
+const historicalValues = [100, 102, 101, 105, 107, 110];
+const periodsPerYear = 252; // Daily data
+
+// Estimate parameters from historical data
+const { mu, sigma } = getGbmParameters(historicalValues, periodsPerYear);
+
+// Generate a simulated path for the next year
+const startValue = historicalValues[historicalValues.length - 1];
+const path = generateGbmPath(startValue, mu, sigma, 1, periodsPerYear);
+console.log(`Simulated path: ${path.map(v => v.toFixed(2)).join(', ')}`);
+```
+
+***
+
+### getCholeskyMatrix()
+
+> **getCholeskyMatrix**(`matrix`, `jitter?`): `number`[][]
+
+Performs Cholesky Decomposition on a symmetric, positive-definite covariance matrix.
+
+#### Parameters
+
+##### matrix
+
+`number`[][]
+
+A square, symmetric, positive-definite covariance matrix.
+
+##### jitter?
+
+`number` = `0`
+
+A tiny positive value (e.g., 1e-9) added to the diagonal to force positive-definiteness.
+
+#### Returns
+
+`number`[][]
+
+A lower triangular matrix L.
+
+***
+
+### getCirParameters()
+
+> **getCirParameters**(`values`, `periodsPerYear`): `object`
+
+Estimates the parameters of the Cox-Ingersoll-Ross (CIR) model based on historical values using ordinary least squares on the discretized process.
+
+The CIR model is a mean-reverting stochastic process often used to model interest rates or other variables that tend to move toward a long-term average. This function returns the speed of mean reversion (`a`), the long-term mean (`b`), and the volatility (`sigma`).
+
+**When to use this function:**
+- To model interest rates, where rates are likely to revert to a mean but stay positive.
+- When you need to estimate the behavior of a mean-reverting process from historical data points.
+- To determine parameters for simulating potential future paths using `getCirPath`.
+
+#### Parameters
+
+##### values
+
+`number`[]
+
+An array of numerical data points (e.g., historical interest rates).
+
+##### periodsPerYear
+
+`number`
+
+The number of data points per year (e.g., 252 for daily, 12 for monthly).
+
+#### Returns
+
+`object`
+
+An object containing the estimated speed of mean reversion (`a`), long-term mean (`b`), and volatility (`sigma`). Note that `a` is silently clamped to a minimum of 0.001 and `b` to a minimum of 0.
+
+##### a
+
+> **a**: `number`
+
+##### b
+
+> **b**: `number`
+
+##### sigma
+
+> **sigma**: `number`
+
+#### Throws
+
+If `values` contains fewer than four data points, if `periodsPerYear` is not positive, if any value is negative, or if the data is degenerate (collinear).
+
+#### Example
+
+```ts
+const rates = [0.02, 0.021, 0.019, 0.022, 0.023];
+const periodsPerYear = 12; // Monthly data
+
+const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
+```
+
+***
+
+### getCorrelatedShocks()
+
+> **getCorrelatedShocks**(`L`, `Z`): `number`[]
+
+Multiplies a lower triangular Cholesky matrix (L) by a vector of independent standard normal random variables (Z).
+
+#### Parameters
+
+##### L
+
+`number`[][]
+
+The lower triangular matrix.
+
+##### Z
+
+`number`[]
+
+An array of independent standard normal random variables.
+
+#### Returns
+
+`number`[]
+
+An array of correlated random variables.
+
+***
+
 ### getCorrelationMatrix()
 
 > **getCorrelationMatrix**(`data`, `options?`): `number`[][]
@@ -1133,6 +981,60 @@ console.log(invertedMatrix4x4);
 //   [-857.0948891407204, -566.2813827046937, 1587280.2449344082, 1886.7655549874191],
 //   [-0.9196015969508056, -0.583230998661561, 1886.7655549874191, 3.078393760864504]
 // ]
+```
+
+***
+
+### getGbmParameters()
+
+> **getGbmParameters**(`values`, `periodsPerYear`): `object`
+
+Calculates the parameters (drift `mu` and volatility `sigma`) for a Geometric Brownian Motion (GBM) model based on historical data.
+
+Geometric Brownian Motion is a continuous-time stochastic process often used to model stock prices and other financial assets. This function estimates the drift and volatility from a series of observed values, assuming the returns follow a log-normal distribution.
+
+**When to use this function:**
+- To estimate parameters for simulating future asset paths using GBM
+- When you have a sequence of historical prices or values and need to determine their annualized growth rate (drift) and risk (volatility)
+- To model potential future scenarios for a stock, index, or commodity based on historical trends
+
+#### Parameters
+
+##### values
+
+`number`[]
+
+An array of numerical values (e.g., historical prices)
+
+##### periodsPerYear
+
+`number`
+
+The number of data points per year (e.g., 252 for daily trading days, 12 for monthly data, 52 for weekly)
+
+#### Returns
+
+`object`
+
+An object containing the annualized drift (`mu`) and annualized volatility (`sigma`)
+
+##### mu
+
+> **mu**: `number`
+
+##### sigma
+
+> **sigma**: `number`
+
+#### Example
+
+```ts
+const prices = [100, 102, 101, 105, 107, 110];
+const periodsPerYear = 252; // Daily data
+
+const { mu, sigma } = calculateGbmParameters(prices, periodsPerYear);
+console.log(`Annualized Drift (mu): ${mu.toFixed(4)}`);
+console.log(`Annualized Volatility (sigma): ${sigma.toFixed(4)}`);
 ```
 
 ***
@@ -2389,3 +2291,101 @@ if (testResult.pValue < 0.05) {
   console.log("Corporate donors don't give significantly more than average");
 }
 ```
+
+***
+
+### stepCir()
+
+> **stepCir**(`currentValue`, `a`, `b`, `sigma`, `dt`, `shock`): `number`
+
+Calculates the next value in a Cox-Ingersoll-Ross (CIR) process.
+
+#### Parameters
+
+##### currentValue
+
+`number`
+
+The current value of the process.
+
+##### a
+
+`number`
+
+The speed of mean reversion.
+
+##### b
+
+`number`
+
+The long-term mean level.
+
+##### sigma
+
+`number`
+
+The volatility coefficient.
+
+##### dt
+
+`number`
+
+The time step.
+
+##### shock
+
+`number`
+
+A standard normal random variable (Z).
+
+#### Returns
+
+`number`
+
+The next value in the process.
+
+***
+
+### stepGbm()
+
+> **stepGbm**(`currentValue`, `mu`, `sigma`, `dt`, `shock`): `number`
+
+Calculates the next value in a Geometric Brownian Motion (GBM) process.
+
+#### Parameters
+
+##### currentValue
+
+`number`
+
+The current value of the process.
+
+##### mu
+
+`number`
+
+The drift coefficient.
+
+##### sigma
+
+`number`
+
+The volatility coefficient.
+
+##### dt
+
+`number`
+
+The time step.
+
+##### shock
+
+`number`
+
+A standard normal random variable (Z).
+
+#### Returns
+
+`number`
+
+The next value in the process.
