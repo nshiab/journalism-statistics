@@ -41,10 +41,6 @@
   explanatory prose; all `@example` blocks; all `@param` tags; then `@returns`,
   `@category`, and other reference metadata. Include at least one runnable usage
   example and use `@category Statistics` for statistical functions.
-- **Numerical Behavior:** Preserve statistical definitions and existing error
-  behavior during refactoring. For calculation changes, cover representative
-  results and relevant boundary cases with justified numerical tolerances.
-  Control randomness when a test needs reproducible samples.
 
 ## Phase 3: Validation
 
