@@ -10,7 +10,7 @@ const baseUrl = `${repository}/v${pkg.version}/docs/`;
 renameSync("docs/llms.txt", "llms.txt");
 const index = readFileSync("llms.txt", "utf8")
   .replace(/^# .+$/m, `# ${config.name} v${pkg.version}`)
-  .replaceAll(/\]\(([^)]+)\)/g, (_, target) => `](${new URL(target, baseUrl).href})`);
+  .replaceAll(/\]\(([^)]+)\)/g, (_, target: string) => `](${new URL(target, baseUrl).href})`);
 
 writeFileSync("llms.txt", index);
 cpSync("docs", "site", { recursive: true });

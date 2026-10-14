@@ -11,7 +11,8 @@ npm ci
 ```
 
 Implement functions in `src/` and their tests in `test/`. Keep public JSDoc
-comments and examples up to date. Keep `.ts` extensions in relative source
+comments and examples up to date. Documentation generation requires JSDoc for
+public functions, classes, methods and accessors. Keep `.ts` extensions in relative source
 imports; Vite+ bundles the source into the published JavaScript.
 
 | Command                                                         | Purpose                                                                          |

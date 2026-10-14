@@ -5,6 +5,11 @@ export default defineConfig({
     options: { typeAware: true, typeCheck: true },
     rules: {
       "typescript/no-explicit-any": "error",
+      "typescript/no-unsafe-assignment": "error",
+      "typescript/no-unsafe-argument": "error",
+      "typescript/no-unsafe-call": "error",
+      "typescript/no-unsafe-member-access": "error",
+      "typescript/no-unsafe-return": "error",
       // Numeric algorithms intentionally preallocate arrays by length.
       "unicorn/no-new-array": "off",
     },

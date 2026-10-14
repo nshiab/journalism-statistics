@@ -11,7 +11,7 @@ export default function getCorrelatedShocks(L: number[][], Z: number[]): number[
   if (Z.length !== n) {
     throw new Error("L and Z must have the same length.");
   }
-  const X = new Array(n).fill(0);
+  const X = new Array<number>(n).fill(0);
   for (let i = 0; i < n; i++) {
     let sum = 0;
     for (let j = 0; j <= i; j++) {

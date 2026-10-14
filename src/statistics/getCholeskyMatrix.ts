@@ -12,7 +12,7 @@ export default function getCholeskyMatrix(matrix: number[][], jitter: number = 0
     throw new Error("Matrix must be square.");
   }
 
-  const L: number[][] = Array.from({ length: n }, () => new Array(n).fill(0));
+  const L: number[][] = Array.from({ length: n }, () => new Array<number>(n).fill(0));
 
   for (let i = 0; i < n; i++) {
     for (let j = 0; j <= i; j++) {

@@ -3,6 +3,11 @@
   "entryPoints": ["src/index.ts"],
   "name": "Journalism Statistics",
   "includeVersion": true,
+  "validation": { "notDocumented": true },
+  "requiredToBeDocumented": ["Function", "Class", "Method", "Accessor"],
+  "treatValidationWarningsAsErrors": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
   "plugin": ["typedoc-plugin-markdown", "typedoc-plugin-llms-txt"],
   "hostedBaseUrl": "https://nshiab.github.io/journalism-statistics/",
   "outputs": [

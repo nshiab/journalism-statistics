@@ -27,7 +27,7 @@
     "access": "public"
   },
   "scripts": {
-    "docs": "typedoc && node scripts/docs.mjs",
+    "docs": "typedoc && node scripts/docs.ts",
     "all-tests": "vp check && vp test && vp pack && npm run docs",
     "preversion": "npm run all-tests",
     "version": "npm run docs && git add docs llm.md llms.txt",

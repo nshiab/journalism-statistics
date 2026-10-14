@@ -51,7 +51,7 @@ export default function generateGbmPath(
 
   const dt = 1 / periodsPerYear;
   const totalSteps = Math.round(years * periodsPerYear); // Ensures integer steps
-  const path: number[] = new Array(totalSteps + 1); // Pre-allocating array size is faster than .push()
+  const path: number[] = new Array<number>(totalSteps + 1); // Pre-allocating array size is faster than .push()
 
   path[0] = startValue;
   let currentValue = startValue;
