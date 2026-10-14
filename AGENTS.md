@@ -34,9 +34,8 @@
   `Date`, and `URL` may remain named. Reusable implementation-only types stay
   with their implementation and are not re-exported from `src/index.ts`.
 - **Typing:** Use concrete types for known values and `unknown` with validation
-  for untrusted values. Give preallocated arrays an element type, such as
-  `new Array<number>(length)`. Resolve typing issues rather than bypassing checks
-  with assertions or lint suppressions.
+  for untrusted values. Type assertions and lint suppressions are prohibited;
+  resolve issues through accurate types, narrowing, or runtime validation.
 - **Documentation:** Write JSDoc for public functions, classes, methods, and
   accessors. For new or modified blocks, order content as: description and
   explanatory prose; all `@example` blocks; all `@param` tags; then `@returns`,
