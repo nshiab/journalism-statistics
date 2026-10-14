@@ -1,31 +1,31 @@
-# Journalism Statistics v1.5.7
+# Journalism Statistics v1.5.8
 
 > Useful TypeScript functions for journalism projects. This library focuses on statistical calculations.
 
-- [README](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/README.md): Installation, examples and usage.
+- [README](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/README.md): Installation, examples and usage.
 
 ## API
-- [addClusters](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/addClusters.md): addClusters function
-- [addMahalanobisDistance](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/addMahalanobisDistance.md): addMahalanobisDistance function
-- [addZScore](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/addZScore.md): addZScore function
-- [euclidianDistance](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/euclidianDistance.md): euclidianDistance function
-- [generateCirPath](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/generateCirPath.md): generateCirPath function
-- [generateGbmPath](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/generateGbmPath.md): generateGbmPath function
-- [getCholeskyMatrix](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/getCholeskyMatrix.md): getCholeskyMatrix function
-- [getCirParameters](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/getCirParameters.md): getCirParameters function
-- [getCorrelatedShocks](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/getCorrelatedShocks.md): getCorrelatedShocks function
-- [getCorrelationMatrix](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/getCorrelationMatrix.md): getCorrelationMatrix function
-- [getCovarianceMatrix](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/getCovarianceMatrix.md): getCovarianceMatrix function
-- [getGbmParameters](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/getGbmParameters.md): getGbmParameters function
-- [getMahalanobisDistance](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/getMahalanobisDistance.md): getMahalanobisDistance function
-- [getSampleSizeMean](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/getSampleSizeMean.md): getSampleSizeMean function
-- [getSampleSizeProportion](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/getSampleSizeProportion.md): getSampleSizeProportion function
-- [invertMatrix](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/invertMatrix.md): invertMatrix function
-- [performChiSquaredGoodnessOfFitTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/performChiSquaredGoodnessOfFitTest.md): performChiSquaredGoodnessOfFitTest function
-- [performChiSquaredIndependenceTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/performChiSquaredIndependenceTest.md): performChiSquaredIndependenceTest function
-- [performPairedTTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/performPairedTTest.md): performPairedTTest function
-- [performTTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/performTTest.md): performTTest function
-- [performTwoSampleTTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/performTwoSampleTTest.md): performTwoSampleTTest function
-- [performZTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/performZTest.md): performZTest function
-- [stepCir](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/stepCir.md): stepCir function
-- [stepGbm](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.7/docs/functions/stepGbm.md): stepGbm function
+- [addClusters](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/addClusters.md): addClusters function
+- [addMahalanobisDistance](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/addMahalanobisDistance.md): addMahalanobisDistance function
+- [addZScore](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/addZScore.md): addZScore function
+- [euclidianDistance](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/euclidianDistance.md): euclidianDistance function
+- [generateCirPath](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/generateCirPath.md): generateCirPath function
+- [generateGbmPath](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/generateGbmPath.md): generateGbmPath function
+- [getCholeskyMatrix](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/getCholeskyMatrix.md): getCholeskyMatrix function
+- [getCirParameters](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/getCirParameters.md): getCirParameters function
+- [getCorrelatedShocks](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/getCorrelatedShocks.md): getCorrelatedShocks function
+- [getCorrelationMatrix](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/getCorrelationMatrix.md): getCorrelationMatrix function
+- [getCovarianceMatrix](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/getCovarianceMatrix.md): getCovarianceMatrix function
+- [getGbmParameters](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/getGbmParameters.md): getGbmParameters function
+- [getMahalanobisDistance](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/getMahalanobisDistance.md): getMahalanobisDistance function
+- [getSampleSizeMean](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/getSampleSizeMean.md): getSampleSizeMean function
+- [getSampleSizeProportion](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/getSampleSizeProportion.md): getSampleSizeProportion function
+- [invertMatrix](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/invertMatrix.md): invertMatrix function
+- [performChiSquaredGoodnessOfFitTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/performChiSquaredGoodnessOfFitTest.md): performChiSquaredGoodnessOfFitTest function
+- [performChiSquaredIndependenceTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/performChiSquaredIndependenceTest.md): performChiSquaredIndependenceTest function
+- [performPairedTTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/performPairedTTest.md): performPairedTTest function
+- [performTTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/performTTest.md): performTTest function
+- [performTwoSampleTTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/performTwoSampleTTest.md): performTwoSampleTTest function
+- [performZTest](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/performZTest.md): performZTest function
+- [stepCir](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/stepCir.md): stepCir function
+- [stepGbm](https://raw.githubusercontent.com/nshiab/journalism-statistics/v1.5.8/docs/functions/stepGbm.md): stepGbm function
