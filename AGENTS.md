@@ -10,9 +10,8 @@
 
 ## Phase 1: Exploration
 
-- Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, development commands, and
-  the generated-file policy. Read `package.json` for the current Node requirement,
-  scripts, dependencies, and package exports.
+- Read `package.json` for the current Node requirement, scripts, dependencies,
+  and package exports. Install locked dependencies with `npm ci`.
 - This library provides statistical functions. Compare related implementations
   and tests before changing public behavior, naming, or numerical algorithms.
 - Public functions live in `src/statistics/` and are exported through `src/index.ts`.
@@ -57,8 +56,9 @@
   handing off changes. Resolve formatting, lint, type, test, build, and
   documentation failures; report any check that could not run.
 - Update documentation through source JSDoc, `README.md`, or the documentation
-  configuration and generator. Include regenerated tracked documentation with
-  the change, following the generated-file policy in `CONTRIBUTING.md`.
+  configuration and generator, then run `npm run docs`. Do not edit generated
+  `docs/`, `site/`, `llm.md`, or `llms.txt` by hand. Commit regenerated `docs/`,
+  `llm.md`, and `llms.txt` with the change; keep `site/` ignored.
 - When changing package exports or build settings, verify the resulting package
   with both `import` and `require()` and check consumer TypeScript declarations.
 
