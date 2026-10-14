@@ -1,14 +1,12 @@
-import { assertEquals, assertThrows } from "jsr:@std/assert";
+import { expect, test } from "vite-plus/test";
+import captureError from "../helpers/captureError.ts";
 import performTwoSampleTTest from "../../src/statistics/performTwoSampleTTest.ts";
-import {
-  assertProbability,
-  type Tail,
-} from "../helpers/distributionCharacterization.ts";
+import { assertProbability, type Tail } from "../helpers/distributionCharacterization.ts";
 
 // Tested with
 // https://www.graphpad.com/quickcalcs/ttest2/
 
-Deno.test("performTwoSampleTTest - basic two-tailed test", () => {
+test("performTwoSampleTTest - basic two-tailed test", () => {
   const group1 = [
     { id: 1, value: 10 },
     { id: 2, value: 12 },
@@ -27,7 +25,7 @@ Deno.test("performTwoSampleTTest - basic two-tailed test", () => {
 
   const result = performTwoSampleTTest(group1, group2, "value");
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     group1SampleSize: 5,
     group2SampleSize: 5,
     group1Mean: 14,
@@ -43,31 +41,16 @@ Deno.test("performTwoSampleTTest - basic two-tailed test", () => {
   });
 });
 
-Deno.test("performTwoSampleTTest - right-tailed test", () => {
-  const group1 = [
-    { score: 85 },
-    { score: 90 },
-    { score: 95 },
-    { score: 88 },
-    { score: 92 },
-  ];
+test("performTwoSampleTTest - right-tailed test", () => {
+  const group1 = [{ score: 85 }, { score: 90 }, { score: 95 }, { score: 88 }, { score: 92 }];
 
-  const group2 = [
-    { score: 78 },
-    { score: 82 },
-    { score: 80 },
-    { score: 85 },
-    { score: 79 },
-  ];
+  const group2 = [{ score: 78 }, { score: 82 }, { score: 80 }, { score: 85 }, { score: 79 }];
 
-  const result = performTwoSampleTTest(
-    group1,
-    group2,
-    "score",
-    { tail: "right-tailed" },
-  );
+  const result = performTwoSampleTTest(group1, group2, "score", {
+    tail: "right-tailed",
+  });
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     group1SampleSize: 5,
     group2SampleSize: 5,
     group1Mean: 90,
@@ -83,30 +66,16 @@ Deno.test("performTwoSampleTTest - right-tailed test", () => {
   });
 });
 
-Deno.test("performTwoSampleTTest - left-tailed test", () => {
-  const group1 = [
-    { value: 15 },
-    { value: 18 },
-    { value: 20 },
-    { value: 17 },
-  ];
+test("performTwoSampleTTest - left-tailed test", () => {
+  const group1 = [{ value: 15 }, { value: 18 }, { value: 20 }, { value: 17 }];
 
-  const group2 = [
-    { value: 25 },
-    { value: 28 },
-    { value: 30 },
-    { value: 27 },
-    { value: 26 },
-  ];
+  const group2 = [{ value: 25 }, { value: 28 }, { value: 30 }, { value: 27 }, { value: 26 }];
 
-  const result = performTwoSampleTTest(
-    group1,
-    group2,
-    "value",
-    { tail: "left-tailed" },
-  );
+  const result = performTwoSampleTTest(group1, group2, "value", {
+    tail: "left-tailed",
+  });
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     group1SampleSize: 4,
     group2SampleSize: 5,
     group1Mean: 17.5,
@@ -122,7 +91,7 @@ Deno.test("performTwoSampleTTest - left-tailed test", () => {
   });
 });
 
-Deno.test("performTwoSampleTTest - Welch's test (unequal variances)", () => {
+test("performTwoSampleTTest - Welch's test (unequal variances)", () => {
   const group1 = [
     { measure: 100 },
     { measure: 102 },
@@ -140,13 +109,9 @@ Deno.test("performTwoSampleTTest - Welch's test (unequal variances)", () => {
     { measure: 108 },
   ];
 
-  const result = performTwoSampleTTest(
-    group1,
-    group2,
-    "measure",
-  );
+  const result = performTwoSampleTTest(group1, group2, "measure");
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     group1SampleSize: 5,
     group2SampleSize: 6,
     group1Mean: 101,
@@ -162,168 +127,102 @@ Deno.test("performTwoSampleTTest - Welch's test (unequal variances)", () => {
   });
 });
 
-Deno.test("performTwoSampleTTest - similar groups (no significant difference)", () => {
-  const group1 = [
-    { score: 5 },
-    { score: 7 },
-    { score: 6 },
-    { score: 8 },
-  ];
+test("performTwoSampleTTest - similar groups (no significant difference)", () => {
+  const group1 = [{ score: 5 }, { score: 7 }, { score: 6 }, { score: 8 }];
 
-  const group2 = [
-    { score: 6 },
-    { score: 8 },
-    { score: 7 },
-    { score: 9 },
-  ];
+  const group2 = [{ score: 6 }, { score: 8 }, { score: 7 }, { score: 9 }];
 
-  const result = performTwoSampleTTest(
-    group1,
-    group2,
-    "score",
-  );
+  const result = performTwoSampleTTest(group1, group2, "score");
 
-  assertEquals(result.group1SampleSize, 4);
-  assertEquals(result.group2SampleSize, 4);
+  expect(result.group1SampleSize).toStrictEqual(4);
+  expect(result.group2SampleSize).toStrictEqual(4);
 
   // Small difference, should not be significant
-  assertEquals(result.pValue > 0.05, true);
+  expect(result.pValue > 0.05).toStrictEqual(true);
 });
 
-Deno.test("performTwoSampleTTest - very similar values", () => {
-  const group1 = [
-    { val: 10.1 },
-    { val: 10.2 },
-    { val: 9.9 },
-    { val: 10.0 },
-    { val: 10.1 },
-  ];
+test("performTwoSampleTTest - very similar values", () => {
+  const group1 = [{ val: 10.1 }, { val: 10.2 }, { val: 9.9 }, { val: 10.0 }, { val: 10.1 }];
 
-  const group2 = [
-    { val: 10.0 },
-    { val: 10.1 },
-    { val: 9.9 },
-    { val: 10.2 },
-    { val: 10.0 },
-  ];
+  const group2 = [{ val: 10.0 }, { val: 10.1 }, { val: 9.9 }, { val: 10.2 }, { val: 10.0 }];
 
   const result = performTwoSampleTTest(group1, group2, "val");
 
   // The values are very close, should not be significantly different
-  assertEquals(result.pValue > 0.1, true);
+  expect(result.pValue > 0.1).toStrictEqual(true);
 });
 
-Deno.test("performTwoSampleTTest - zero variance edge cases", () => {
+test("performTwoSampleTTest - zero variance edge cases", () => {
   // Test case 1: Both groups have identical values AND same mean
-  const identicalGroup1 = [
-    { x: 10 },
-    { x: 10 },
-    { x: 10 },
-  ];
+  const identicalGroup1 = [{ x: 10 }, { x: 10 }, { x: 10 }];
 
-  const identicalGroup2 = [
-    { x: 10 },
-    { x: 10 },
-    { x: 10 },
-  ];
+  const identicalGroup2 = [{ x: 10 }, { x: 10 }, { x: 10 }];
 
-  const resultIdentical = performTwoSampleTTest(
-    identicalGroup1,
-    identicalGroup2,
-    "x",
-  );
+  const resultIdentical = performTwoSampleTTest(identicalGroup1, identicalGroup2, "x");
 
-  assertEquals(resultIdentical.group1Variance, 0);
-  assertEquals(resultIdentical.group2Variance, 0);
-  assertEquals(resultIdentical.group1Mean, 10);
-  assertEquals(resultIdentical.group2Mean, 10);
-  assertEquals(resultIdentical.meanDifference, 0);
-  assertEquals(resultIdentical.tStatistic, 0);
-  assertEquals(resultIdentical.pValue, 1);
+  expect(resultIdentical.group1Variance).toStrictEqual(0);
+  expect(resultIdentical.group2Variance).toStrictEqual(0);
+  expect(resultIdentical.group1Mean).toStrictEqual(10);
+  expect(resultIdentical.group2Mean).toStrictEqual(10);
+  expect(resultIdentical.meanDifference).toStrictEqual(0);
+  expect(resultIdentical.tStatistic).toStrictEqual(0);
+  expect(resultIdentical.pValue).toStrictEqual(1);
 
   // Test case 2: Both groups have zero variance but different means
-  const zeroVarGroup1 = [
-    { y: 5 },
-    { y: 5 },
-    { y: 5 },
-  ];
+  const zeroVarGroup1 = [{ y: 5 }, { y: 5 }, { y: 5 }];
 
-  const zeroVarGroup2 = [
-    { y: 8 },
-    { y: 8 },
-    { y: 8 },
-  ];
+  const zeroVarGroup2 = [{ y: 8 }, { y: 8 }, { y: 8 }];
 
-  assertThrows(
-    () => {
-      performTwoSampleTTest(zeroVarGroup1, zeroVarGroup2, "y");
-    },
-    Error,
+  const error = captureError(() => {
+    performTwoSampleTTest(zeroVarGroup1, zeroVarGroup2, "y");
+  });
+  expect(error).toBeInstanceOf(Error);
+  expect((error as Error).message).toContain(
     "Cannot perform t-test: both groups have zero variance",
   );
 });
 
-Deno.test("performTwoSampleTTest - error handling", () => {
+test("performTwoSampleTTest - error handling", () => {
   // Test with insufficient data in group 1
-  assertThrows(
-    () => {
-      performTwoSampleTTest([{ x: 1 }], [{ x: 1 }, { x: 2 }], "x");
-    },
-    Error,
-    "Group 1 must contain at least 2 observations",
-  );
+  const error1 = captureError(() => {
+    performTwoSampleTTest([{ x: 1 }], [{ x: 1 }, { x: 2 }], "x");
+  });
+  expect(error1).toBeInstanceOf(Error);
+  expect((error1 as Error).message).toContain("Group 1 must contain at least 2 observations");
 
   // Test with insufficient data in group 2
-  assertThrows(
-    () => {
-      performTwoSampleTTest([{ x: 1 }, { x: 2 }], [{ x: 1 }], "x");
-    },
-    Error,
-    "Group 2 must contain at least 2 observations",
-  );
+  const error2 = captureError(() => {
+    performTwoSampleTTest([{ x: 1 }, { x: 2 }], [{ x: 1 }], "x");
+  });
+  expect(error2).toBeInstanceOf(Error);
+  expect((error2 as Error).message).toContain("Group 2 must contain at least 2 observations");
 
   // Test with invalid data in group 1
-  assertThrows(
-    () => {
-      performTwoSampleTTest(
-        [{ x: 1 }, { x: "invalid" }],
-        [{ x: 1 }, { x: 2 }],
-        "x",
-      );
-    },
-    Error,
-    "Invalid data in group1",
-  );
+  const error3 = captureError(() => {
+    performTwoSampleTTest([{ x: 1 }, { x: "invalid" }], [{ x: 1 }, { x: 2 }], "x");
+  });
+  expect(error3).toBeInstanceOf(Error);
+  expect((error3 as Error).message).toContain("Invalid data in group1");
 
   // Test with invalid data in group 2
-  assertThrows(
-    () => {
-      performTwoSampleTTest(
-        [{ x: 1 }, { x: 2 }],
-        [{ x: 1 }, { x: null }],
-        "x",
-      );
-    },
-    Error,
-    "Invalid data in group2",
-  );
+  const error4 = captureError(() => {
+    performTwoSampleTTest([{ x: 1 }, { x: 2 }], [{ x: 1 }, { x: null }], "x");
+  });
+  expect(error4).toBeInstanceOf(Error);
+  expect((error4 as Error).message).toContain("Invalid data in group2");
 
   // Test with invalid tail option
-  assertThrows(
-    () => {
-      performTwoSampleTTest(
-        [{ x: 1 }, { x: 2 }],
-        [{ x: 3 }, { x: 4 }],
-        "x",
-        { tail: "invalid" as any },
-      );
-    },
-    Error,
-    "Invalid tail option",
-  );
+  const error5 = captureError(() => {
+    performTwoSampleTTest([{ x: 1 }, { x: 2 }], [{ x: 3 }, { x: 4 }], "x", {
+      // @ts-expect-error Exercise runtime validation of unsupported tail options.
+      tail: "invalid",
+    });
+  });
+  expect(error5).toBeInstanceOf(Error);
+  expect((error5 as Error).message).toContain("Invalid tail option");
 });
 
-Deno.test("performTwoSampleTTest - single key for both groups", () => {
+test("performTwoSampleTTest - single key for both groups", () => {
   const teachers = [
     { teacher_id: 1, salary: 45000 },
     { teacher_id: 2, salary: 48000 },
@@ -336,64 +235,48 @@ Deno.test("performTwoSampleTTest - single key for both groups", () => {
     { principal_id: 3, salary: 67000 },
   ];
 
-  const result = performTwoSampleTTest(
-    teachers,
-    principals,
-    "salary",
-  );
+  const result = performTwoSampleTTest(teachers, principals, "salary");
 
-  assertEquals(result.group1Mean, 46333.333333333336);
-  assertEquals(result.group2Mean, 66666.66666666667);
-  assertEquals(result.meanDifference < 0, true);
-  assertEquals(result.pValue < 0.05, true); // Should be significant difference
+  expect(result.group1Mean).toStrictEqual(46333.333333333336);
+  expect(result.group2Mean).toStrictEqual(66666.66666666667);
+  expect(result.meanDifference < 0).toStrictEqual(true);
+  expect(result.pValue < 0.05).toStrictEqual(true); // Should be significant difference
 });
 
-Deno.test("performTwoSampleTTest - statistical properties", () => {
-  const group1 = [
-    { value: 1 },
-    { value: 2 },
-    { value: 3 },
-    { value: 4 },
-    { value: 5 },
-  ];
+test("performTwoSampleTTest - statistical properties", () => {
+  const group1 = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
 
-  const group2 = [
-    { value: 6 },
-    { value: 7 },
-    { value: 8 },
-    { value: 9 },
-    { value: 10 },
-  ];
+  const group2 = [{ value: 6 }, { value: 7 }, { value: 8 }, { value: 9 }, { value: 10 }];
 
   const result = performTwoSampleTTest(group1, group2, "value");
 
   // Check that all statistical properties are computed
-  assertEquals(typeof result.group1Mean, "number");
-  assertEquals(typeof result.group2Mean, "number");
-  assertEquals(typeof result.group1StdDev, "number");
-  assertEquals(typeof result.group2StdDev, "number");
-  assertEquals(typeof result.group1Variance, "number");
-  assertEquals(typeof result.group2Variance, "number");
-  assertEquals(typeof result.degreesOfFreedom, "number");
-  assertEquals(typeof result.tStatistic, "number");
-  assertEquals(typeof result.pValue, "number");
+  expect(typeof result.group1Mean).toStrictEqual("number");
+  expect(typeof result.group2Mean).toStrictEqual("number");
+  expect(typeof result.group1StdDev).toStrictEqual("number");
+  expect(typeof result.group2StdDev).toStrictEqual("number");
+  expect(typeof result.group1Variance).toStrictEqual("number");
+  expect(typeof result.group2Variance).toStrictEqual("number");
+  expect(typeof result.degreesOfFreedom).toStrictEqual("number");
+  expect(typeof result.tStatistic).toStrictEqual("number");
+  expect(typeof result.pValue).toStrictEqual("number");
 
   // Standard deviations should be positive
-  assertEquals(result.group1StdDev > 0, true);
-  assertEquals(result.group2StdDev > 0, true);
+  expect(result.group1StdDev > 0).toStrictEqual(true);
+  expect(result.group2StdDev > 0).toStrictEqual(true);
 
   // P-value should be between 0 and 1
-  assertEquals(result.pValue >= 0, true);
-  assertEquals(result.pValue <= 1, true);
+  expect(result.pValue >= 0).toStrictEqual(true);
+  expect(result.pValue <= 1).toStrictEqual(true);
 
   // Degrees of freedom should be positive
-  assertEquals(result.degreesOfFreedom > 0, true);
+  expect(result.degreesOfFreedom > 0).toStrictEqual(true);
 });
 
 // These characterization fixtures were recorded before removing jStat.
 // Historical jStat values guard compatibility, while SciPy 1.16.3 supplies
 // independent references for equal-variance-equivalent and Welch cases.
-Deno.test("characterizes equal-variance and Welch cases", () => {
+test("characterizes equal-variance and Welch cases", () => {
   const fixtures: Array<{
     group1: number[];
     group2: number[];

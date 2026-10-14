@@ -53,9 +53,7 @@ export default function getCorrelationMatrix(
   const m = covMatrix.length;
 
   // Initialize correlation matrix
-  const corrMatrix: number[][] = Array(m)
-    .fill(null)
-    .map(() => Array(m).fill(0));
+  const corrMatrix: number[][] = Array.from({ length: m }, () => new Array<number>(m).fill(0));
 
   // Extract standard deviations from the diagonal of the covariance matrix
   const stdDevs = covMatrix.map((row, i) => Math.sqrt(row[i]));
@@ -66,9 +64,8 @@ export default function getCorrelationMatrix(
       if (i === j) {
         corrMatrix[i][j] = 1;
       } else if (i < j) {
-        const correlation = stdDevs[i] === 0 || stdDevs[j] === 0
-          ? 0
-          : covMatrix[i][j] / (stdDevs[i] * stdDevs[j]);
+        const correlation =
+          stdDevs[i] === 0 || stdDevs[j] === 0 ? 0 : covMatrix[i][j] / (stdDevs[i] * stdDevs[j]);
 
         // Clamp to [-1, 1] to handle floating point errors
         const clampedCorrelation = Math.max(-1, Math.min(1, correlation));

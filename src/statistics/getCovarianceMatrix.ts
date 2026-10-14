@@ -108,11 +108,9 @@ export default function getCovarianceMatrix(
   const m = data[0].length;
 
   // Initialize sums
-  const sums: number[] = Array(m).fill(0);
-  const squaredSums: number[] = Array(m).fill(0);
-  const productSums: number[][] = Array(m)
-    .fill(null)
-    .map(() => Array(m).fill(0));
+  const sums: number[] = new Array<number>(m).fill(0);
+  const squaredSums: number[] = new Array<number>(m).fill(0);
+  const productSums: number[][] = Array.from({ length: m }, () => new Array<number>(m).fill(0));
 
   // Calculate sums
   for (let i = 0; i < n; i++) {
@@ -132,9 +130,7 @@ export default function getCovarianceMatrix(
   const means: number[] = sums.map((sum) => sum / n);
 
   // Initialize covariance matrix
-  const covMatrix: number[][] = Array(m)
-    .fill(null)
-    .map(() => Array(m).fill(0));
+  const covMatrix: number[][] = Array.from({ length: m }, () => new Array<number>(m).fill(0));
 
   // Calculate covariances
   for (let v = 0; v < m; v++) {

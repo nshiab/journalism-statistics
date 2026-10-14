@@ -1,49 +1,31 @@
-import { assertEquals } from "jsr:@std/assert";
+import { expect, test } from "vite-plus/test";
 import addZScore from "../../src/statistics/addZScore.ts";
 
-Deno.test("should compute the zScore", () => {
-  const data = [
-    { grade: 1 },
-    { grade: 4 },
-    { grade: 7 },
-    { grade: 2 },
-    { grade: 6 },
-  ];
+test("should compute the zScore", () => {
+  const data = [{ grade: 1 }, { grade: 4 }, { grade: 7 }, { grade: 2 }, { grade: 6 }];
   const dataWithZScore = addZScore(data, "grade");
 
-  assertEquals(
-    dataWithZScore,
-    [
-      { grade: 1, zScore: -1.3155870289605438 },
-      { grade: 4, zScore: 0 },
-      { grade: 7, zScore: 1.3155870289605438 },
-      { grade: 2, zScore: -0.8770580193070292 },
-      { grade: 6, zScore: 0.8770580193070292 },
-    ],
-  );
+  expect(dataWithZScore).toStrictEqual([
+    { grade: 1, zScore: -1.3155870289605438 },
+    { grade: 4, zScore: 0 },
+    { grade: 7, zScore: 1.3155870289605438 },
+    { grade: 2, zScore: -0.8770580193070292 },
+    { grade: 6, zScore: 0.8770580193070292 },
+  ]);
 });
-Deno.test("should compute the zScore and add a specific key", () => {
-  const data = [
-    { grade: 1 },
-    { grade: 4 },
-    { grade: 7 },
-    { grade: 2 },
-    { grade: 6 },
-  ];
+test("should compute the zScore and add a specific key", () => {
+  const data = [{ grade: 1 }, { grade: 4 }, { grade: 7 }, { grade: 2 }, { grade: 6 }];
   const dataWithZScore = addZScore(data, "grade", { newKey: "zScoreGrade" });
 
-  assertEquals(
-    dataWithZScore,
-    [
-      { grade: 1, zScoreGrade: -1.3155870289605438 },
-      { grade: 4, zScoreGrade: 0 },
-      { grade: 7, zScoreGrade: 1.3155870289605438 },
-      { grade: 2, zScoreGrade: -0.8770580193070292 },
-      { grade: 6, zScoreGrade: 0.8770580193070292 },
-    ],
-  );
+  expect(dataWithZScore).toStrictEqual([
+    { grade: 1, zScoreGrade: -1.3155870289605438 },
+    { grade: 4, zScoreGrade: 0 },
+    { grade: 7, zScoreGrade: 1.3155870289605438 },
+    { grade: 2, zScoreGrade: -0.8770580193070292 },
+    { grade: 6, zScoreGrade: 0.8770580193070292 },
+  ]);
 });
-Deno.test("should compute the Z-Score and return the same values as SDA", () => {
+test("should compute the Z-Score and return the same values as SDA", () => {
   const data = [
     { name: "Chloe", age: 33 },
     { name: "Philip", age: 33 },
@@ -63,11 +45,9 @@ Deno.test("should compute the Z-Score and return the same values as SDA", () => 
     { name: "Jane", age: 32 },
   ];
   const dataWithScore = addZScore(data, "age");
-  dataWithScore.sort(
-    (a, b) => a.zScore - b.zScore,
-  );
+  dataWithScore.sort((a, b) => a.zScore - b.zScore);
 
-  assertEquals(dataWithScore, [
+  expect(dataWithScore).toStrictEqual([
     { name: "Evangeline", age: 21, zScore: -1.2869460097256922 },
     { name: "Amelia", age: 29, zScore: -0.7149700054031624 },
     { name: "Marie", age: 30, zScore: -0.6434730048628461 },

@@ -12,9 +12,9 @@ const extractNumericValues = <T extends Record<string, unknown>>(
     const value = item[variableKey];
     if (typeof value !== "number" || !isFinite(value)) {
       throw new Error(
-        `Invalid data in sample array at index ${index}. Expected a finite number for key "${
-          String(variableKey)
-        }", but received: ${JSON.stringify(value)}.`,
+        `Invalid data in sample array at index ${index}. Expected a finite number for key "${String(
+          variableKey,
+        )}", but received: ${JSON.stringify(value)}.`,
       );
     }
     return value;
@@ -25,9 +25,7 @@ const extractNumericValues = <T extends Record<string, unknown>>(
  * Calculates mean and variance in a single pass for optimal performance
  * Uses Welford's online algorithm for numerical stability
  */
-const calculateMeanAndVariance = (
-  data: number[],
-): { mean: number; variance: number } => {
+const calculateMeanAndVariance = (data: number[]): { mean: number; variance: number } => {
   if (data.length === 0) {
     throw new Error("Cannot calculate statistics for empty array");
   }
@@ -153,9 +151,9 @@ export default function performTTest<T extends Record<string, unknown>>(
   // --- 1. Validate hypothesized mean ---
   if (typeof hypothesizedMean !== "number" || !isFinite(hypothesizedMean)) {
     throw new Error(
-      `Invalid hypothesized mean. Expected a finite number, but received: ${
-        JSON.stringify(hypothesizedMean)
-      }.`,
+      `Invalid hypothesized mean. Expected a finite number, but received: ${JSON.stringify(
+        hypothesizedMean,
+      )}.`,
     );
   }
 
@@ -164,14 +162,11 @@ export default function performTTest<T extends Record<string, unknown>>(
   const sampleSize = sampleValues.length;
 
   if (sampleSize < 2) {
-    throw new Error(
-      "Sample must contain at least 2 data points.",
-    );
+    throw new Error("Sample must contain at least 2 data points.");
   }
 
   // --- 3. Calculate sample statistics using single-pass algorithm ---
-  const { mean: sampleMean, variance: sampleVariance } =
-    calculateMeanAndVariance(sampleValues);
+  const { mean: sampleMean, variance: sampleVariance } = calculateMeanAndVariance(sampleValues);
   const sampleStdDev = Math.sqrt(sampleVariance);
 
   // --- 4. Extract tail option with default ---
@@ -183,9 +178,8 @@ export default function performTTest<T extends Record<string, unknown>>(
     // If sample mean equals hypothesized mean, no difference (p = 1)
     // If they differ, perfect significance (p = 0)
     const pValue = sampleMean === hypothesizedMean ? 1 : 0;
-    const tStatistic = sampleMean === hypothesizedMean
-      ? 0
-      : (sampleMean > hypothesizedMean ? Infinity : -Infinity);
+    const tStatistic =
+      sampleMean === hypothesizedMean ? 0 : sampleMean > hypothesizedMean ? Infinity : -Infinity;
 
     return {
       sampleSize,
@@ -216,7 +210,7 @@ export default function performTTest<T extends Record<string, unknown>>(
     pValue = studentTCdf(tStatistic, degreesOfFreedom);
   } else {
     throw new Error(
-      `Invalid tail option: ${tail}. Use "two-tailed", "left-tailed", or "right-tailed".`,
+      `Invalid tail option: ${String(tail)}. Use "two-tailed", "left-tailed", or "right-tailed".`,
     );
   }
 

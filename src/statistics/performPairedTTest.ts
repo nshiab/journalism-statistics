@@ -111,16 +111,16 @@ export default function performPairedTTest<T extends Record<string, unknown>>(
 
       if (typeof value1 !== "number" || !isFinite(value1)) {
         throw new Error(
-          `Invalid data at index ${index}. Expected a finite number for key "${
-            String(key1)
-          }", but received: ${JSON.stringify(value1)}.`,
+          `Invalid data at index ${index}. Expected a finite number for key "${String(
+            key1,
+          )}", but received: ${JSON.stringify(value1)}.`,
         );
       }
       if (typeof value2 !== "number" || !isFinite(value2)) {
         throw new Error(
-          `Invalid data at index ${index}. Expected a finite number for key "${
-            String(key2)
-          }", but received: ${JSON.stringify(value2)}.`,
+          `Invalid data at index ${index}. Expected a finite number for key "${String(
+            key2,
+          )}", but received: ${JSON.stringify(value2)}.`,
         );
       }
 
@@ -140,9 +140,7 @@ export default function performPairedTTest<T extends Record<string, unknown>>(
   const sampleSize = first.length;
 
   if (sampleSize < 2) {
-    throw new Error(
-      "Paired data must contain at least 2 pairs.",
-    );
+    throw new Error("Paired data must contain at least 2 pairs.");
   }
 
   // --- 4. Calculate all statistics in a single pass for efficiency ---
@@ -169,8 +167,7 @@ export default function performPairedTTest<T extends Record<string, unknown>>(
   // Calculate variance using the computational formula: Var = E[X²] - (E[X])²
   // Sample variance (with Bessel's correction: n-1 denominator)
   const differenceVariance =
-    (differenceSumSquared - (differenceSum * differenceSum) / sampleSize) /
-    (sampleSize - 1);
+    (differenceSumSquared - (differenceSum * differenceSum) / sampleSize) / (sampleSize - 1);
   const differenceStdDev = Math.sqrt(differenceVariance);
 
   // --- 5. Handle zero standard deviation edge case ---
@@ -225,7 +222,7 @@ export default function performPairedTTest<T extends Record<string, unknown>>(
     pValue = studentTCdf(tStatistic, degreesOfFreedom);
   } else {
     throw new Error(
-      `Invalid tail option: ${tail}. Use "two-tailed", "left-tailed", or "right-tailed".`,
+      `Invalid tail option: ${String(tail)}. Use "two-tailed", "left-tailed", or "right-tailed".`,
     );
   }
 

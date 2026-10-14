@@ -1,9 +1,7 @@
-import { assertEquals, assertThrows } from "jsr:@std/assert";
+import { expect, test } from "vite-plus/test";
+import captureError from "../helpers/captureError.ts";
 import performChiSquaredIndependenceTest from "../../src/statistics/performChiSquaredIndependenceTest.ts";
-import {
-  assertProbability,
-  independenceData,
-} from "../helpers/distributionCharacterization.ts";
+import { assertProbability, independenceData } from "../helpers/distributionCharacterization.ts";
 
 // Tested with
 // https://www.socscistatistics.com/tests/chisquare2/default2.aspx
@@ -30,61 +28,49 @@ const educationData = [
   { education: "graduate", income: "high", count: 150 },
 ];
 
-Deno.test("should perform chi-squared independence test for votingData", () => {
-  const result = performChiSquaredIndependenceTest(
-    votingData,
-    "age_group",
-    "candidate",
-    "count",
-  );
-  assertEquals(result, {
+test("should perform chi-squared independence test for votingData", () => {
+  const result = performChiSquaredIndependenceTest(votingData, "age_group", "candidate", "count");
+  const { pValue, ...statistics } = result;
+  expect(statistics).toStrictEqual({
     chiSquared: 13.028571428571428,
     degreesOfFreedom: 2,
-    pValue: 0.0014821141744508063,
     warnings: [],
   });
+  // JavaScript runtimes can differ by one ULP for this tail probability.
+  const expectedPValue = 0.0014821141744508063;
+  expect(Math.abs(pValue - expectedPValue)).toBeLessThanOrEqual(Number.EPSILON * expectedPValue);
 });
-Deno.test("should perform chi-squared independence test for educationData", () => {
-  const result = performChiSquaredIndependenceTest(
-    educationData,
-    "education",
-    "income",
-    "count",
-  );
-  assertEquals(result, {
+test("should perform chi-squared independence test for educationData", () => {
+  const result = performChiSquaredIndependenceTest(educationData, "education", "income", "count");
+  expect(result).toStrictEqual({
     chiSquared: 145.59976422045386,
     degreesOfFreedom: 4,
     pValue: 1.7843029125544165e-30,
     warnings: [],
   });
 });
-Deno.test("should perform chi-squared independence test correctly", () => {
-  const result = performChiSquaredIndependenceTest(
-    votingData,
-    "age_group",
-    "candidate",
-    "count",
-  );
+test("should perform chi-squared independence test correctly", () => {
+  const result = performChiSquaredIndependenceTest(votingData, "age_group", "candidate", "count");
 
   // Check basic structure
-  assertEquals(typeof result.chiSquared, "number");
-  assertEquals(typeof result.degreesOfFreedom, "number");
-  assertEquals(typeof result.pValue, "number");
-  assertEquals(result.degreesOfFreedom, 2); // (3-1) * (2-1) = 2
+  expect(typeof result.chiSquared).toStrictEqual("number");
+  expect(typeof result.degreesOfFreedom).toStrictEqual("number");
+  expect(typeof result.pValue).toStrictEqual("number");
+  expect(result.degreesOfFreedom).toStrictEqual(2); // (3-1) * (2-1) = 2
 
   // Verify the chi-squared value (calculated manually)
   // Expected frequencies calculated from marginal totals
   // Row totals: [100, 100, 100], Col totals: [175, 125], Grand total: 300
   // Chi-squared = 13.029 (rounded to 3 decimal places)
-  assertEquals(Math.round(result.chiSquared * 1000) / 1000, 13.029);
+  expect(Math.round(result.chiSquared * 1000) / 1000).toStrictEqual(13.029);
 
   // P-value should be reasonable for this test
-  assertEquals(result.pValue >= 0 && result.pValue <= 1, true);
+  expect(result.pValue >= 0 && result.pValue <= 1).toStrictEqual(true);
   // For chi-squared = 13.03 with df = 2, p-value should be very small (< 0.05)
-  assertEquals(result.pValue < 0.05, true); // Significant at 5% level
+  expect(result.pValue < 0.05).toStrictEqual(true); // Significant at 5% level
 });
 
-Deno.test("should handle simple 2x2 contingency table", () => {
+test("should handle simple 2x2 contingency table", () => {
   const simpleData = [
     { gender: "male", preference: "yes", count: 20 },
     { gender: "male", preference: "no", count: 30 },
@@ -92,18 +78,13 @@ Deno.test("should handle simple 2x2 contingency table", () => {
     { gender: "female", preference: "no", count: 25 },
   ];
 
-  const result = performChiSquaredIndependenceTest(
-    simpleData,
-    "gender",
-    "preference",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(simpleData, "gender", "preference", "count");
 
-  assertEquals(result.degreesOfFreedom, 1); // (2-1) * (2-1) = 1
-  assertEquals(result.pValue > 0 && result.pValue < 1, true);
+  expect(result.degreesOfFreedom).toStrictEqual(1); // (2-1) * (2-1) = 1
+  expect(result.pValue > 0 && result.pValue < 1).toStrictEqual(true);
 });
 
-Deno.test("should handle string and number category values", () => {
+test("should handle string and number category values", () => {
   const mixedData = [
     { category: 1, candidate: "A", count: 25 },
     { category: 1, candidate: "B", count: 35 },
@@ -111,63 +92,39 @@ Deno.test("should handle string and number category values", () => {
     { category: "2", candidate: "B", count: 30 },
   ];
 
-  const result = performChiSquaredIndependenceTest(
-    mixedData,
-    "category",
-    "candidate",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(mixedData, "category", "candidate", "count");
 
-  assertEquals(result.degreesOfFreedom, 1);
+  expect(result.degreesOfFreedom).toStrictEqual(1);
 });
 
-Deno.test("should throw error for empty data", () => {
-  assertThrows(
-    () => {
-      performChiSquaredIndependenceTest(
-        [],
-        "category",
-        "preference",
-        "count",
-      );
-    },
-    Error,
-    "Data must be a non-empty array",
-  );
+test("should throw error for empty data", () => {
+  const error = captureError(() => {
+    performChiSquaredIndependenceTest([], "category", "preference", "count");
+  });
+  expect(error).toBeInstanceOf(Error);
+  expect((error as Error).message).toContain("Data must be a non-empty array");
 });
 
-Deno.test("should throw error for invalid count values", () => {
+test("should throw error for invalid count values", () => {
   const invalidData = [
     { category: "A", preference: "yes", count: -5 },
     { category: "B", preference: "no", count: 15 },
   ];
 
-  assertThrows(
-    () => {
-      performChiSquaredIndependenceTest(
-        invalidData,
-        "category",
-        "preference",
-        "count",
-      );
-    },
-    Error,
-    "Expected a non-negative finite number",
-  );
+  const error = captureError(() => {
+    performChiSquaredIndependenceTest(invalidData, "category", "preference", "count");
+  });
+  expect(error).toBeInstanceOf(Error);
+  expect((error as Error).message).toContain("Expected a non-negative finite number");
 });
 
-Deno.test("should handle large contingency table", () => {
-  const result = performChiSquaredIndependenceTest(
-    educationData,
-    "education",
-    "income",
-    "count",
-  );
+test("should handle large contingency table", () => {
+  const result = performChiSquaredIndependenceTest(educationData, "education", "income", "count");
 
-  assertEquals(result.degreesOfFreedom, 4); // (3-1) * (3-1) = 4
+  expect(result.degreesOfFreedom).toStrictEqual(4); // (3-1) * (3-1) = 4
 });
 
-Deno.test("should generate warnings for low expected frequencies", () => {
+test("should generate warnings for low expected frequencies", () => {
   // Test data with low expected frequencies
   const lowFrequencyData = [
     { group: "A", outcome: "X", count: 2 },
@@ -176,26 +133,19 @@ Deno.test("should generate warnings for low expected frequencies", () => {
     { group: "B", outcome: "Y", count: 4 },
   ];
 
-  const result = performChiSquaredIndependenceTest(
-    lowFrequencyData,
-    "group",
-    "outcome",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(lowFrequencyData, "group", "outcome", "count");
 
   // Should have warnings about low frequencies
-  assertEquals(result.warnings.length > 0, true);
+  expect(result.warnings.length > 0).toStrictEqual(true);
 
   // Should warn about frequencies below 5 for 2x2 table
   const hasBelow5Warning = result.warnings.some((warning) =>
-    warning.includes(
-      "For 2x2 contingency tables, all expected frequencies should be ≥ 5",
-    )
+    warning.includes("For 2x2 contingency tables, all expected frequencies should be ≥ 5"),
   );
-  assertEquals(hasBelow5Warning, true);
+  expect(hasBelow5Warning).toStrictEqual(true);
 });
 
-Deno.test("should not generate warnings for adequate expected frequencies", () => {
+test("should not generate warnings for adequate expected frequencies", () => {
   // Test data with adequate expected frequencies
   const goodFrequencyData = [
     { group: "A", outcome: "X", count: 25 },
@@ -204,21 +154,16 @@ Deno.test("should not generate warnings for adequate expected frequencies", () =
     { group: "B", outcome: "Y", count: 25 },
   ];
 
-  const result = performChiSquaredIndependenceTest(
-    goodFrequencyData,
-    "group",
-    "outcome",
-    "count",
-  );
+  const result = performChiSquaredIndependenceTest(goodFrequencyData, "group", "outcome", "count");
 
   // Should have no warnings
-  assertEquals(result.warnings.length, 0);
+  expect(result.warnings.length).toStrictEqual(0);
 });
 
 // These characterization fixtures were recorded before removing jStat.
 // Historical jStat values guard compatibility; SciPy 1.16.3 independently
 // verifies central and upper-tail chi-square probabilities.
-Deno.test("matches chi-square references across centers and tails", () => {
+test("matches chi-square references across centers and tails", () => {
   const fixtures = [
     {
       degreesOfFreedom: 1,

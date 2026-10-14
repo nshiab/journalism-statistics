@@ -21,6 +21,8 @@
  * console.log(`Annualized Drift (mu): ${mu.toFixed(4)}`);
  * console.log(`Annualized Volatility (sigma): ${sigma.toFixed(4)}`);
  * ```
+ *
+ * @category Statistics
  */
 export default function getGbmParameters(
   values: number[],
@@ -46,14 +48,13 @@ export default function getGbmParameters(
 
   // 3. Calculate the Variance of log returns
   const variance =
-    logReturns.reduce((acc, val) => acc + (val - meanReturn) ** 2, 0) /
-    (logReturns.length - 1);
+    logReturns.reduce((acc, val) => acc + (val - meanReturn) ** 2, 0) / (logReturns.length - 1);
 
   // 4. Calculate Annualized Volatility (sigma)
   const sigma = Math.sqrt(variance) * Math.sqrt(periodsPerYear);
 
   // 5. Calculate Annualized Drift (mu)
-  const mu = (meanReturn * periodsPerYear) + (sigma ** 2 / 2);
+  const mu = meanReturn * periodsPerYear + sigma ** 2 / 2;
 
   return { mu, sigma };
 }

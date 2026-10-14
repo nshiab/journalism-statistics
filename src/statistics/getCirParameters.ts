@@ -20,6 +20,8 @@
  *
  * const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
  * ```
+ *
+ * @category Statistics
  */
 export default function getCirParameters(
   values: number[],
@@ -36,9 +38,11 @@ export default function getCirParameters(
 
   const dt = 1 / periodsPerYear;
 
-  let sumY = 0, sumX1 = 0, sumX2 = 0;
-  let sumX1Sq = 0, sumX2Sq = 0, sumX1X2 = 0;
-  let sumX1Y = 0, sumX2Y = 0;
+  let sumX1Sq = 0,
+    sumX2Sq = 0,
+    sumX1X2 = 0;
+  let sumX1Y = 0,
+    sumX2Y = 0;
 
   for (let i = 0; i < n - 1; i++) {
     const r_t = values[i];
@@ -49,9 +53,6 @@ export default function getCirParameters(
     const x1 = dt / sqrtR;
     const x2 = sqrtR * dt;
 
-    sumY += y;
-    sumX1 += x1;
-    sumX2 += x2;
     sumX1Sq += x1 * x1;
     sumX2Sq += x2 * x2;
     sumX1X2 += x1 * x2;

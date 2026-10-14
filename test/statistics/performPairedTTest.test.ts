@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert";
+import { expect, test } from "vite-plus/test";
 import performPairedTTest from "../../src/statistics/performPairedTTest.ts";
 import {
   assertProbability,
@@ -20,14 +20,10 @@ const parkingFineData = [
   { district_id: 6, fines_before: 134, fines_after: 149 },
 ];
 
-Deno.test("should perform paired t-test with parking fines data (two-tailed, default)", () => {
-  const result = performPairedTTest(
-    parkingFineData,
-    "fines_before",
-    "fines_after",
-  );
+test("should perform paired t-test with parking fines data (two-tailed, default)", () => {
+  const result = performPairedTTest(parkingFineData, "fines_before", "fines_after");
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 6,
     firstMean: 133.83333333333334,
     secondMean: 149.5,
@@ -40,17 +36,12 @@ Deno.test("should perform paired t-test with parking fines data (two-tailed, def
   });
 });
 
-Deno.test("should perform paired t-test with parking fines data (right-tailed)", () => {
-  const result = performPairedTTest(
-    parkingFineData,
-    "fines_before",
-    "fines_after",
-    {
-      tail: "right-tailed",
-    },
-  );
+test("should perform paired t-test with parking fines data (right-tailed)", () => {
+  const result = performPairedTTest(parkingFineData, "fines_before", "fines_after", {
+    tail: "right-tailed",
+  });
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 6,
     firstMean: 133.83333333333334,
     secondMean: 149.5,
@@ -63,17 +54,12 @@ Deno.test("should perform paired t-test with parking fines data (right-tailed)",
   });
 });
 
-Deno.test("should perform paired t-test with parking fines data (left-tailed)", () => {
-  const result = performPairedTTest(
-    parkingFineData,
-    "fines_before",
-    "fines_after",
-    {
-      tail: "left-tailed",
-    },
-  );
+test("should perform paired t-test with parking fines data (left-tailed)", () => {
+  const result = performPairedTTest(parkingFineData, "fines_before", "fines_after", {
+    tail: "left-tailed",
+  });
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 6,
     firstMean: 133.83333333333334,
     secondMean: 149.5,
@@ -95,10 +81,10 @@ const campaignData = [
   { district_id: 5, before_ads: 36.8, after_ads: 40.3 },
 ];
 
-Deno.test("should perform paired t-test with campaign data (two-tailed)", () => {
+test("should perform paired t-test with campaign data (two-tailed)", () => {
   const result = performPairedTTest(campaignData, "before_ads", "after_ads");
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 5,
     firstMean: 33.019999999999996,
     secondMean: 37.64,
@@ -111,12 +97,12 @@ Deno.test("should perform paired t-test with campaign data (two-tailed)", () => 
   });
 });
 
-Deno.test("should perform paired t-test with campaign data (right-tailed)", () => {
+test("should perform paired t-test with campaign data (right-tailed)", () => {
   const result = performPairedTTest(campaignData, "before_ads", "after_ads", {
     tail: "right-tailed",
   });
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 5,
     firstMean: 33.019999999999996,
     secondMean: 37.64,
@@ -138,14 +124,10 @@ const weightLossData = [
   { participant: 5, weight_before: 185, weight_after: 181 },
 ];
 
-Deno.test("should perform paired t-test with weight loss data (positive differences)", () => {
-  const result = performPairedTTest(
-    weightLossData,
-    "weight_before",
-    "weight_after",
-  );
+test("should perform paired t-test with weight loss data (positive differences)", () => {
+  const result = performPairedTTest(weightLossData, "weight_before", "weight_after");
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 5,
     firstMean: 179,
     secondMean: 174.8,
@@ -159,7 +141,7 @@ Deno.test("should perform paired t-test with weight loss data (positive differen
 });
 
 // Test edge case: zero differences (identical measurements)
-Deno.test("should handle zero differences when measurements are identical", () => {
+test("should handle zero differences when measurements are identical", () => {
   const identicalData = [
     { id: 1, before: 10, after: 10 },
     { id: 2, before: 15, after: 15 },
@@ -169,7 +151,7 @@ Deno.test("should handle zero differences when measurements are identical", () =
 
   const result = performPairedTTest(identicalData, "before", "after");
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 4,
     firstMean: 14.25,
     secondMean: 14.25,
@@ -183,7 +165,7 @@ Deno.test("should handle zero differences when measurements are identical", () =
 });
 
 // Test edge case: constant positive difference (perfect effect)
-Deno.test("should handle constant positive difference", () => {
+test("should handle constant positive difference", () => {
   const constantDifferenceData = [
     { id: 1, before: 10, after: 15 },
     { id: 2, before: 20, after: 25 },
@@ -193,7 +175,7 @@ Deno.test("should handle constant positive difference", () => {
 
   const result = performPairedTTest(constantDifferenceData, "before", "after");
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 4,
     firstMean: 25,
     secondMean: 30,
@@ -207,7 +189,7 @@ Deno.test("should handle constant positive difference", () => {
 });
 
 // Test edge case: constant negative difference (perfect negative effect)
-Deno.test("should handle constant negative difference", () => {
+test("should handle constant negative difference", () => {
   const constantNegativeDifferenceData = [
     { id: 1, before: 15, after: 10 },
     { id: 2, before: 25, after: 20 },
@@ -215,13 +197,9 @@ Deno.test("should handle constant negative difference", () => {
     { id: 4, before: 45, after: 40 },
   ];
 
-  const result = performPairedTTest(
-    constantNegativeDifferenceData,
-    "before",
-    "after",
-  );
+  const result = performPairedTTest(constantNegativeDifferenceData, "before", "after");
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 4,
     firstMean: 30,
     secondMean: 25,
@@ -235,7 +213,7 @@ Deno.test("should handle constant negative difference", () => {
 });
 
 // Test with small sample size (minimum = 2)
-Deno.test("should handle minimum sample size of 2", () => {
+test("should handle minimum sample size of 2", () => {
   const minimalData = [
     { id: 1, x: 10, y: 12 },
     { id: 2, x: 8, y: 11 },
@@ -243,7 +221,7 @@ Deno.test("should handle minimum sample size of 2", () => {
 
   const result = performPairedTTest(minimalData, "x", "y");
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 2,
     firstMean: 9,
     secondMean: 11.5,
@@ -257,22 +235,19 @@ Deno.test("should handle minimum sample size of 2", () => {
 });
 
 // Test error handling: insufficient sample size
-Deno.test("should throw error for insufficient sample size", () => {
+test("should throw error for insufficient sample size", () => {
   const insufficientData = [{ id: 1, x: 10, y: 12 }];
 
   try {
     performPairedTTest(insufficientData, "x", "y");
     throw new Error("Expected error was not thrown");
   } catch (error) {
-    assertEquals(
-      (error as Error).message,
-      "Paired data must contain at least 2 pairs.",
-    );
+    expect((error as Error).message).toStrictEqual("Paired data must contain at least 2 pairs.");
   }
 });
 
 // Test error handling: invalid first variable data
-Deno.test("should throw error for invalid first variable data", () => {
+test("should throw error for invalid first variable data", () => {
   const invalidData = [
     { id: 1, x: "invalid", y: 12 },
     { id: 2, x: 8, y: 11 },
@@ -282,15 +257,14 @@ Deno.test("should throw error for invalid first variable data", () => {
     performPairedTTest(invalidData, "x", "y");
     throw new Error("Expected error was not thrown");
   } catch (error) {
-    assertEquals(
-      (error as Error).message,
+    expect((error as Error).message).toStrictEqual(
       'Invalid data at index 0. Expected a finite number for key "x", but received: "invalid".',
     );
   }
 });
 
 // Test error handling: invalid second variable data
-Deno.test("should throw error for invalid second variable data", () => {
+test("should throw error for invalid second variable data", () => {
   const invalidData = [
     { id: 1, x: 10, y: null },
     { id: 2, x: 8, y: 11 },
@@ -300,15 +274,14 @@ Deno.test("should throw error for invalid second variable data", () => {
     performPairedTTest(invalidData, "x", "y");
     throw new Error("Expected error was not thrown");
   } catch (error) {
-    assertEquals(
-      (error as Error).message,
+    expect((error as Error).message).toStrictEqual(
       'Invalid data at index 0. Expected a finite number for key "y", but received: null.',
     );
   }
 });
 
 // Test error handling: infinite values
-Deno.test("should throw error for infinite values", () => {
+test("should throw error for infinite values", () => {
   const infiniteData = [
     { id: 1, x: 10, y: Infinity },
     { id: 2, x: 8, y: 11 },
@@ -318,26 +291,25 @@ Deno.test("should throw error for infinite values", () => {
     performPairedTTest(infiniteData, "x", "y");
     throw new Error("Expected error was not thrown");
   } catch (error) {
-    assertEquals(
-      (error as Error).message,
+    expect((error as Error).message).toStrictEqual(
       'Invalid data at index 0. Expected a finite number for key "y", but received: null.',
     );
   }
 });
 
 // Test error handling: invalid tail option
-Deno.test("should throw error for invalid tail option", () => {
+test("should throw error for invalid tail option", () => {
   const validData = [
     { id: 1, x: 10, y: 12 },
     { id: 2, x: 8, y: 11 },
   ];
 
   try {
-    performPairedTTest(validData, "x", "y", { tail: "invalid" as any });
+    // @ts-expect-error Exercise runtime validation of unsupported tail options.
+    performPairedTTest(validData, "x", "y", { tail: "invalid" });
     throw new Error("Expected error was not thrown");
   } catch (error) {
-    assertEquals(
-      (error as Error).message,
+    expect((error as Error).message).toStrictEqual(
       'Invalid tail option: invalid. Use "two-tailed", "left-tailed", or "right-tailed".',
     );
   }
@@ -346,7 +318,7 @@ Deno.test("should throw error for invalid tail option", () => {
 // These characterization fixtures were recorded before removing jStat.
 // Historical jStat values guard compatibility, while SciPy 1.16.3 supplies
 // independent references across small, medium, and large degrees of freedom.
-Deno.test("matches Student's t references across degrees of freedom", () => {
+test("matches Student's t references across degrees of freedom", () => {
   const fixtures: Array<{
     degreesOfFreedom: number;
     tStatistic: number;
@@ -378,16 +350,12 @@ Deno.test("matches Student's t references across degrees of freedom", () => {
   ];
 
   for (const fixture of fixtures) {
-    const pairedData = sampleWithTStatistic(
-      fixture.degreesOfFreedom,
-      fixture.tStatistic,
-    ).map(({ value }) => ({ first: value, second: 0 }));
-    const result = performPairedTTest(
-      pairedData,
-      "first",
-      "second",
-      { tail: fixture.tail },
+    const pairedData = sampleWithTStatistic(fixture.degreesOfFreedom, fixture.tStatistic).map(
+      ({ value }) => ({ first: value, second: 0 }),
     );
+    const result = performPairedTTest(pairedData, "first", "second", {
+      tail: fixture.tail,
+    });
 
     assertProbability(result.pValue, fixture.scipyPValue);
     assertProbability(result.pValue, fixture.jstatPValue, {

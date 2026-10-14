@@ -62,9 +62,7 @@ import getMahalanobisDistance from "./getMahalanobisDistance.ts";
  */
 
 // Function overload: when similarity is true, return type includes similarity
-export default function addMahalanobisDistance<
-  T extends Record<string, unknown>,
->(
+export default function addMahalanobisDistance<T extends Record<string, unknown>>(
   origin: Record<string, number>,
   data: T[],
   options: { similarity: true; matrix?: number[][] },
@@ -81,9 +79,7 @@ export default function addMahalanobisDistance<
  * @param options - Optional parameters (similarity defaults to false).
  * @returns The input data array with mahaDist properties added to each object.
  */
-export default function addMahalanobisDistance<
-  T extends Record<string, unknown>,
->(
+export default function addMahalanobisDistance<T extends Record<string, unknown>>(
   origin: Record<string, number>,
   data: T[],
   options?: { similarity?: false; matrix?: number[][] },
@@ -92,15 +88,11 @@ export default function addMahalanobisDistance<
 })[];
 
 // Implementation
-export default function addMahalanobisDistance<
-  T extends Record<string, unknown>,
->(
+export default function addMahalanobisDistance<T extends Record<string, unknown>>(
   origin: Record<string, number>,
   data: T[],
   options: { similarity?: boolean; matrix?: number[][] } = {},
-):
-  | (T & { mahaDist: number })[]
-  | (T & { mahaDist: number; similarity: number })[] {
+): (T & { mahaDist: number })[] | (T & { mahaDist: number; similarity: number })[] {
   const variables = Object.keys(origin);
   const originArray = variables.map((v) => origin[v]);
   const dataArray = data.map((d) => variables.map((v) => d[v]));
@@ -108,35 +100,29 @@ export default function addMahalanobisDistance<
   const invertedCovarianceMatrix = Array.isArray(options.matrix)
     ? options.matrix
     : getCovarianceMatrix(
-      dataArray as number[][], // getCovarianceMatrix will check the types
-      {
-        invert: true,
-      },
-    );
+        dataArray as number[][], // getCovarianceMatrix will check the types
+        {
+          invert: true,
+        },
+      );
 
   data.forEach(
-    (
-      d,
-    ) => ((d as T & { mahaDist: number }).mahaDist = getMahalanobisDistance(
-      originArray,
-      variables.map((v) => d[v] as number), // types checked in getCovarianceMatrix
-      invertedCovarianceMatrix,
-    )),
+    (d) =>
+      ((d as T & { mahaDist: number }).mahaDist = getMahalanobisDistance(
+        originArray,
+        variables.map((v) => d[v] as number), // types checked in getCovarianceMatrix
+        invertedCovarianceMatrix,
+      )),
   );
 
   if (options.similarity) {
-    const maxDist = Math.max(
-      ...data.map((d) => (d as T & { mahaDist: number }).mahaDist),
-    );
+    const maxDist = Math.max(...data.map((d) => (d as T & { mahaDist: number }).mahaDist));
     data.forEach(
-      (
-        d,
-      ) => ((d as T & { mahaDist: number; similarity: number }).similarity = 1 -
-        (d as T & { mahaDist: number }).mahaDist / maxDist),
+      (d) =>
+        ((d as T & { mahaDist: number; similarity: number }).similarity =
+          1 - (d as T & { mahaDist: number }).mahaDist / maxDist),
     );
   }
 
-  return data as
-    | (T & { mahaDist: number })[]
-    | (T & { mahaDist: number; similarity: number })[];
+  return data as (T & { mahaDist: number })[] | (T & { mahaDist: number; similarity: number })[];
 }

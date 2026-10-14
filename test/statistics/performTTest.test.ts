@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert";
+import { expect, test } from "vite-plus/test";
 import performTTest from "../../src/statistics/performTTest.ts";
 import {
   assertProbability,
@@ -20,10 +20,10 @@ const basketballPlayers = [
   { player_id: 6, name: "Anna", points_per_game: 13 },
 ];
 
-Deno.test("should perform one-sample t-test with basketball data (two-tailed, default)", () => {
+test("should perform one-sample t-test with basketball data (two-tailed, default)", () => {
   const result = performTTest(basketballPlayers, "points_per_game", 10);
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 6,
     sampleMean: 14.666666666666666,
     sampleStdDev: 2.1602468994692865,
@@ -35,12 +35,12 @@ Deno.test("should perform one-sample t-test with basketball data (two-tailed, de
   });
 });
 
-Deno.test("should perform one-sample t-test with basketball data (right-tailed)", () => {
+test("should perform one-sample t-test with basketball data (right-tailed)", () => {
   const result = performTTest(basketballPlayers, "points_per_game", 10, {
     tail: "right-tailed",
   });
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 6,
     sampleMean: 14.666666666666666,
     sampleStdDev: 2.1602468994692865,
@@ -52,12 +52,12 @@ Deno.test("should perform one-sample t-test with basketball data (right-tailed)"
   });
 });
 
-Deno.test("should perform one-sample t-test with basketball data (left-tailed)", () => {
+test("should perform one-sample t-test with basketball data (left-tailed)", () => {
   const result = performTTest(basketballPlayers, "points_per_game", 10, {
     tail: "left-tailed",
   });
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 6,
     sampleMean: 14.666666666666666,
     sampleStdDev: 2.1602468994692865,
@@ -70,17 +70,12 @@ Deno.test("should perform one-sample t-test with basketball data (left-tailed)",
 });
 
 // Test edge case: zero standard deviation (all values identical)
-Deno.test("should handle zero standard deviation when sample mean equals hypothesized mean", () => {
-  const identicalData = [
-    { value: 10 },
-    { value: 10 },
-    { value: 10 },
-    { value: 10 },
-  ];
+test("should handle zero standard deviation when sample mean equals hypothesized mean", () => {
+  const identicalData = [{ value: 10 }, { value: 10 }, { value: 10 }, { value: 10 }];
 
   const result = performTTest(identicalData, "value", 10);
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 4,
     sampleMean: 10,
     sampleStdDev: 0,
@@ -92,17 +87,12 @@ Deno.test("should handle zero standard deviation when sample mean equals hypothe
   });
 });
 
-Deno.test("should handle zero standard deviation when sample mean differs from hypothesized mean", () => {
-  const identicalData = [
-    { value: 15 },
-    { value: 15 },
-    { value: 15 },
-    { value: 15 },
-  ];
+test("should handle zero standard deviation when sample mean differs from hypothesized mean", () => {
+  const identicalData = [{ value: 15 }, { value: 15 }, { value: 15 }, { value: 15 }];
 
   const result = performTTest(identicalData, "value", 10);
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 4,
     sampleMean: 15,
     sampleStdDev: 0,
@@ -114,17 +104,12 @@ Deno.test("should handle zero standard deviation when sample mean differs from h
   });
 });
 
-Deno.test("should handle zero standard deviation when sample mean is less than hypothesized mean", () => {
-  const identicalData = [
-    { value: 5 },
-    { value: 5 },
-    { value: 5 },
-    { value: 5 },
-  ];
+test("should handle zero standard deviation when sample mean is less than hypothesized mean", () => {
+  const identicalData = [{ value: 5 }, { value: 5 }, { value: 5 }, { value: 5 }];
 
   const result = performTTest(identicalData, "value", 10);
 
-  assertEquals(result, {
+  expect(result).toStrictEqual({
     sampleSize: 4,
     sampleMean: 5,
     sampleStdDev: 0,
@@ -139,7 +124,7 @@ Deno.test("should handle zero standard deviation when sample mean is less than h
 // These characterization fixtures were recorded before removing jStat.
 // Historical jStat values guard compatibility; SciPy 1.16.3 provides an
 // independent reference and identifies intentional precision improvements.
-Deno.test("matches Student's t references across centers and tails", () => {
+test("matches Student's t references across centers and tails", () => {
   const fixtures: Array<{
     degreesOfFreedom: number;
     tStatistic: number;

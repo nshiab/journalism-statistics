@@ -1,22 +1,18 @@
 /**
- * @module
+ * Statistical calculations for journalism projects.
  *
- * The Journalism library (statistics functions)
+ * Install with `npm install @nshiab/journalism-statistics`.
+ * Requires Node.js 24.21.0 or later and ES modules.
  *
- * To install the library with Deno, use:
- * ```bash
- * deno add jsr:@nshiab/journalism-statistics
- * ```
- *
- * To install the library with Node.js, use:
- * ```bash
- * npx jsr add @nshiab/journalism-statistics
- * ```
- *
- * To import a function, use:
+ * @example
  * ```ts
- * import { functionName } from "@nshiab/journalism-statistics";
+ * import { getSampleSizeProportion } from "@nshiab/journalism-statistics";
+ *
+ * const sampleSize = getSampleSizeProportion(1000, 95, 5);
+ * console.log(sampleSize); // 278
  * ```
+ *
+ * @module
  */
 
 import getCovarianceMatrix from "./statistics/getCovarianceMatrix.ts";
