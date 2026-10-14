@@ -32,7 +32,7 @@
         "cleanOutputDir": false,
         "out": "site",
         "llmsTxtHeader": {
-          "features": ["[README](index.md): Installation and usage."]
+          "features": ["[README](index.md): Installation, examples and usage."]
         }
       }
     }

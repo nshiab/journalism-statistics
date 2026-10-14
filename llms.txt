@@ -2,7 +2,7 @@
 
 > Useful TypeScript functions for journalism projects. This library focuses on statistical calculations.
 
-- [README](https://nshiab.github.io/journalism-statistics/index.md): Installation and usage.
+- [README](https://nshiab.github.io/journalism-statistics/index.md): Installation, examples and usage.
 
 ## API
 - [addClusters](https://nshiab.github.io/journalism-statistics/functions/addClusters.md): addClusters function
