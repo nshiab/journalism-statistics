@@ -30,7 +30,10 @@
       "options": {
         "entryFileName": "index.md",
         "cleanOutputDir": false,
-        "out": "site"
+        "out": "site",
+        "llmsTxtHeader": {
+          "features": ["[README](index.md): Installation and usage."]
+        }
       }
     }
   ],
