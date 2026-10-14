@@ -51,8 +51,6 @@
   configuration and generator, then run `npm run docs`. Do not edit generated
   `docs/`, `site/`, `llm.md`, or `llms.txt` by hand. Commit regenerated `docs/`,
   `llm.md`, and `llms.txt` with the change; keep `site/` ignored.
-- When changing package exports or build settings, verify the resulting package
-  with both `import` and `require()` and check consumer TypeScript declarations.
 
 ## Releases
 
