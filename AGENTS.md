@@ -24,7 +24,7 @@
 - **Public API Organization:** Give each new public function a matching
   `src/statistics/<functionName>.ts` implementation and
   `test/statistics/<functionName>.test.ts` test. Export it through `src/index.ts`.
-  Match the surrounding import and export conventions, including `.ts` extensions.
+  Match the surrounding import and export conventions.
 - **Public Parameters:** For new public functions, place required inputs first
   as positional parameters, followed by a single optional `options` object
   defaulting to `{}` when configuration is needed. Match the argument order of
