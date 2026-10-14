@@ -44,9 +44,10 @@
 
 ## Phase 3: Validation
 
-- Run the relevant tests while developing, then `npm run all-tests` before
-  handing off changes. Resolve formatting, lint, type, test, build, and
-  documentation failures; report any check that could not run.
+- Run the relevant tests while developing. Use `npm run fix` to fix formatting
+  and automatically fixable lint issues, then resolve remaining errors before
+  running `npm run all-tests`. Run all checks before handing off changes and
+  report any check that could not run.
 - Update documentation through source JSDoc, `README.md`, or the documentation
   configuration and generator, then run `npm run docs`. Do not edit generated
   `docs/`, `site/`, `llm.md`, or `llms.txt` by hand. Commit regenerated `docs/`,
