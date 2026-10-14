@@ -30,7 +30,7 @@
     "fix": "vp check --fix",
     "docs": "typedoc && node scripts/docs.ts",
     "all-tests": "vp check && vp test && vp pack && npm run docs",
-    "preversion": "npm run all-tests",
+    "preversion": "node scripts/check-release-branch.ts && npm run all-tests",
     "version": "npm run docs && git add docs llm.md llms.txt",
     "postversion": "git push --atomic origin HEAD \"v$npm_package_version\"",
     "patch": "npm version patch",
