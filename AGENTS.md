@@ -18,9 +18,6 @@
   Put new shared helper functions in `src/statistics/helpers/`, creating the
   directory when needed. Keep helpers out of the public entry point. Existing
   internal modules, such as `distributions.ts`, can stay where they are.
-- Development uses Node and Vite+. The published package is one ESM bundle;
-  `import` and `require()` load that same bundle on supported Node versions.
-  Keep that compatibility when changing packaging or adding top-level code.
 
 ## Phase 2: Implementation
 
