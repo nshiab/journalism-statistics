@@ -7,7 +7,7 @@ export default defineConfig({
     rules: { "unicorn/no-new-array": "off" },
   },
   fmt: {
-    ignorePatterns: ["llm.md", "llms.txt", "test/data/**"],
+    ignorePatterns: ["docs/**", "llm.md", "llms.txt", "test/data/**"],
   },
   pack: {
     entry: ["src/index.ts"],

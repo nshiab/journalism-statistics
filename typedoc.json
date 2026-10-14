@@ -26,13 +26,12 @@
     },
     {
       "name": "markdown",
-      "path": "site",
+      "path": "docs",
       "options": {
         "entryFileName": "index.md",
-        "cleanOutputDir": false,
-        "out": "site",
+        "out": "docs",
         "llmsTxtHeader": {
-          "features": ["[README](index.md): Installation, examples and usage."]
+          "features": ["[README](../README.md): Installation, examples and usage."]
         }
       }
     }

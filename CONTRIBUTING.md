@@ -20,8 +20,8 @@ imports; Vite+ bundles the source into the published JavaScript.
 | `vp test watch test/statistics/getSampleSizeProportion.test.ts` | Run one test file and watch for changes during development                       |
 | `npm run all-tests`                                             | Check formatting, lint and types; run tests; build the package and documentation |
 
-The documentation website in `site/`, along with `llm.md` and `llms.txt`, is
-generated automatically. Do not edit these files by hand.
+The documentation website in `site/`, Markdown pages in `docs/`, and root
+`llm.md` and `llms.txt` files are generated automatically. Do not edit them by hand.
 
 If `vp` is not installed globally, use `npx vp` to run the project's local version.
 
