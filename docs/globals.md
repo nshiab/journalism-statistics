@@ -1,8 +1,8 @@
-[**Journalism Statistics v1.5.8**](index.md)
+[**Journalism Statistics v1.5.9**](index.md)
 
 ***
 
-# Journalism Statistics v1.5.8
+# Journalism Statistics v1.5.9
 
 Statistical calculations for journalism projects.
 
