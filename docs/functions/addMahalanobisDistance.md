@@ -8,7 +8,7 @@
 
 ## Call Signature
 
-> **addMahalanobisDistance**\<`T`\>(`origin`, `data`, `options`): `T` & `object`[]
+> **addMahalanobisDistance**\<`T`\>(`origin`, `data`, `options`): (`T` & `object`)[]
 
 Calculates the Mahalanobis distance for each object in an array relative to a specified origin point.
 
@@ -54,7 +54,7 @@ If `true`, a `similarity` property will be added to each object in the `data` ar
 
 ### Returns
 
-`T` & `object`[]
+(`T` & `object`)[]
 
 The input `data` array, with `mahaDist` (and optionally `similarity`) properties added to each object.
 
@@ -108,7 +108,7 @@ console.log(wines);
 
 ## Call Signature
 
-> **addMahalanobisDistance**\<`T`\>(`origin`, `data`, `options?`): `T` & `object`[]
+> **addMahalanobisDistance**\<`T`\>(`origin`, `data`, `options?`): (`T` & `object`)[]
 
 Calculates the Mahalanobis distance for each object in an array relative to a specified origin point (without similarity scores).
 
@@ -146,6 +146,6 @@ Optional parameters (similarity defaults to false).
 
 ### Returns
 
-`T` & `object`[]
+(`T` & `object`)[]
 
 The input data array with mahaDist properties added to each object.
