@@ -8,7 +8,7 @@
 
 ## Call Signature
 
-> **addZScore**\<`T`, `K`\>(`data`, `variable`, `options`): `T` & `{ [P in string]: number }`[]
+> **addZScore**\<`T`, `K`\>(`data`, `variable`, `options`): (`T` & `{ [P in string]: number }`)[]
 
 Calculates the Z-score for a specific numeric variable within an array of objects and adds it as a new property to each object. The Z-score is a statistical measure that indicates how many standard deviations a data point is from the mean of the dataset.
 
@@ -50,7 +50,7 @@ The name of the new key to be added to each object, representing the Z-score. If
 
 ### Returns
 
-`T` & `{ [P in string]: number }`[]
+(`T` & `{ [P in string]: number }`)[]
 
 The input `data` array, with the Z-score added to each object under the specified key.
 
@@ -101,7 +101,7 @@ console.log(studentData);
 
 ## Call Signature
 
-> **addZScore**\<`T`\>(`data`, `variable`, `options?`): `T` & `object`[]
+> **addZScore**\<`T`\>(`data`, `variable`, `options?`): (`T` & `object`)[]
 
 Calculates the Z-score for a specific numeric variable within an array of objects using the default 'zScore' key name.
 
@@ -135,6 +135,6 @@ Optional settings (newKey defaults to undefined, using 'zScore').
 
 ### Returns
 
-`T` & `object`[]
+(`T` & `object`)[]
 
 The input data array with zScore properties added to each object.
