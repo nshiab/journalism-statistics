@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.10**](../index.md)
+[**Journalism Statistics v1.5.11**](../index.md)
 
 ***
 
