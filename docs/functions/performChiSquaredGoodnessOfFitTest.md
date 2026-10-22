@@ -8,6 +8,8 @@
 
 > **performChiSquaredGoodnessOfFitTest**\<`T`\>(`data`, `categoryKey`, `observedKey`, `expectedKey`): `object`
 
+Defined in: [performChiSquaredGoodnessOfFitTest.ts:103](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performChiSquaredGoodnessOfFitTest.ts#L103)
+
 Performs a Chi-Squared goodness of fit test to determine if observed frequencies match expected frequencies.
 
 The Chi-Squared goodness of fit test examines whether observed frequencies in categorical data differ significantly from expected frequencies. This test helps determine if a sample follows a particular theoretical distribution or pattern.

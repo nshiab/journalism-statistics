@@ -72,6 +72,8 @@ console.log(sampleSize); // 278
 
 > **addClusters**\<`T`\>(`data`, `minDistance`, `minNeighbours`, `distance`, `options?`): asserts data is (T & \{ clusterId: string \| null; clusterType: "core" \| "border" \| "noise" \})\[\]
 
+Defined in: [addClusters.ts:65](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/addClusters.ts#L65)
+
 Groups data points into clusters using the DBSCAN (Density-Based Spatial Clustering of Applications with Noise) algorithm. This method is particularly effective at identifying clusters of arbitrary shapes and handling noise in the data.
 
 The function operates based on two key parameters: `minDistance` (also known as epsilon or ε) and `minNeighbours`. It classifies each data point into one of three categories:
@@ -181,6 +183,8 @@ console.log(data);
 
 > **addMahalanobisDistance**\<`T`\>(`origin`, `data`, `options`): (`T` & `object`)[]
 
+Defined in: [addMahalanobisDistance.ts:65](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/addMahalanobisDistance.ts#L65)
+
 Calculates the Mahalanobis distance for each object in an array relative to a specified origin point.
 
 The function enriches the input `data` array by adding a `mahaDist` property to each object, representing its Mahalanobis distance from the `origin`. The dimensions for the calculation are determined by the keys in the `origin` object.
@@ -281,6 +285,8 @@ console.log(wines);
 
 > **addMahalanobisDistance**\<`T`\>(`origin`, `data`, `options?`): (`T` & `object`)[]
 
+Defined in: [addMahalanobisDistance.ts:82](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/addMahalanobisDistance.ts#L82)
+
 Calculates the Mahalanobis distance for each object in an array relative to a specified origin point (without similarity scores).
 
 ##### Type Parameters
@@ -328,6 +334,8 @@ The input data array with mahaDist properties added to each object.
 #### Call Signature
 
 > **addZScore**\<`T`, `K`\>(`data`, `variable`, `options`): (`T` & `{ [P in string]: number }`)[]
+
+Defined in: [addZScore.ts:56](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/addZScore.ts#L56)
 
 Calculates the Z-score for a specific numeric variable within an array of objects and adds it as a new property to each object. The Z-score is a statistical measure that indicates how many standard deviations a data point is from the mean of the dataset.
 
@@ -422,6 +430,8 @@ console.log(studentData);
 
 > **addZScore**\<`T`\>(`data`, `variable`, `options?`): (`T` & `object`)[]
 
+Defined in: [addZScore.ts:72](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/addZScore.ts#L72)
+
 Calculates the Z-score for a specific numeric variable within an array of objects using the default 'zScore' key name.
 
 ##### Type Parameters
@@ -463,6 +473,8 @@ The input data array with zScore properties added to each object.
 ### euclidianDistance()
 
 > **euclidianDistance**(`x1`, `y1`, `x2`, `y2`): `number`
+
+Defined in: [euclidianDistance.ts:33](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/euclidianDistance.ts#L33)
 
 Calculates the Euclidean distance between two points in a 2D Cartesian coordinate system. The Euclidean distance is the shortest straight-line distance between two points, often referred to as the "as the crow flies" distance.
 
@@ -525,6 +537,8 @@ console.log(dist3); // 0
 ### generateCirPath()
 
 > **generateCirPath**(`startValue`, `a`, `b`, `sigma`, `years`, `periodsPerYear`): `number`[]
+
+Defined in: [generateCirPath.ts:35](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/generateCirPath.ts#L35)
 
 Generates a path of values following the Cox-Ingersoll-Ross (CIR) model.
 
@@ -603,6 +617,8 @@ const path = generateCirPath(initialRate, a, b, sigma, 1, 12);
 
 > **generateGbmPath**(`startValue`, `mu`, `sigma`, `years`, `periodsPerYear`): `number`[]
 
+Defined in: [generateGbmPath.ts:38](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/generateGbmPath.ts#L38)
+
 Generates a simulated path for an asset using the Geometric Brownian Motion (GBM) model.
 
 Geometric Brownian Motion is a continuous-time stochastic process in which the logarithm of the randomly varying quantity follows a Brownian motion with drift. It is widely used in mathematical finance to model stock prices, as it ensures that values remain positive and accounts for compounded returns.
@@ -675,6 +691,8 @@ console.log(`Simulated path: ${path.map(v => v.toFixed(2)).join(', ')}`);
 
 > **getCholeskyMatrix**(`matrix`, `jitter?`): `number`[][]
 
+Defined in: [getCholeskyMatrix.ts:9](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getCholeskyMatrix.ts#L9)
+
 Performs Cholesky Decomposition on a symmetric, positive-definite covariance matrix.
 
 #### Parameters
@@ -702,6 +720,8 @@ A lower triangular matrix L.
 ### getCirParameters()
 
 > **getCirParameters**(`values`, `periodsPerYear`): `object`
+
+Defined in: [getCirParameters.ts:26](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getCirParameters.ts#L26)
 
 Estimates the parameters of the Cox-Ingersoll-Ross (CIR) model based on historical values using ordinary least squares on the discretized process.
 
@@ -763,6 +783,8 @@ const { a, b, sigma } = getCirParameters(rates, periodsPerYear);
 
 > **getCorrelatedShocks**(`L`, `Z`): `number`[]
 
+Defined in: [getCorrelatedShocks.ts:9](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getCorrelatedShocks.ts#L9)
+
 Multiplies a lower triangular Cholesky matrix (L) by a vector of independent standard normal random variables (Z).
 
 #### Parameters
@@ -790,6 +812,8 @@ An array of correlated random variables.
 ### getCorrelationMatrix()
 
 > **getCorrelationMatrix**(`data`, `options?`): `number`[][]
+
+Defined in: [getCorrelationMatrix.ts:48](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getCorrelationMatrix.ts#L48)
 
 Computes the correlation matrix for a given dataset. The correlation matrix is a square matrix that describes the correlation between each pair of variables in a dataset.
 
@@ -859,6 +883,8 @@ console.log(invertedMatrix2x2);
 ### getCovarianceMatrix()
 
 > **getCovarianceMatrix**(`data`, `options?`): `number`[][]
+
+Defined in: [getCovarianceMatrix.ts:103](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getCovarianceMatrix.ts#L103)
 
 Computes the covariance matrix for a given dataset. The covariance matrix is a square matrix that describes the covariance between each pair of variables in a dataset.
 
@@ -990,6 +1016,8 @@ console.log(invertedMatrix4x4);
 
 > **getGbmParameters**(`values`, `periodsPerYear`): `object`
 
+Defined in: [getGbmParameters.ts:27](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getGbmParameters.ts#L27)
+
 Calculates the parameters (drift `mu` and volatility `sigma`) for a Geometric Brownian Motion (GBM) model based on historical data.
 
 Geometric Brownian Motion is a continuous-time stochastic process often used to model stock prices and other financial assets. This function estimates the drift and volatility from a series of observed values, assuming the returns follow a log-normal distribution.
@@ -1043,6 +1071,8 @@ console.log(`Annualized Volatility (sigma): ${sigma.toFixed(4)}`);
 ### getMahalanobisDistance()
 
 > **getMahalanobisDistance**(`x1`, `x2`, `invCovMatrix`): `number`
+
+Defined in: [getMahalanobisDistance.ts:59](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getMahalanobisDistance.ts#L59)
 
 Computes the Mahalanobis distance between two data points (`x1` and `x2`) given the inverted covariance matrix of the dataset. The Mahalanobis distance is a measure of the distance between a point and a distribution. It is a unitless measure. This function can handle data points of any dimension (i.e., with more than 2 coordinates).
 
@@ -1126,6 +1156,8 @@ console.log(`Mahalanobis Distance between point1 and point2: ${mahalanobisDist}`
 ### getSampleSizeMean()
 
 > **getSampleSizeMean**\<`T`\>(`data`, `key`, `confidenceLevel`, `marginOfError`, `options?`): `number`
+
+Defined in: [getSampleSizeMean.ts:74](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getSampleSizeMean.ts#L74)
 
 Calculates the required sample size for estimating a population mean with a specified confidence level and margin of error.
 
@@ -1242,6 +1274,8 @@ console.log(`For 99% confidence with a 5-point margin of error, sample ${require
 
 > **getSampleSizeProportion**(`populationSize`, `confidenceLevel`, `marginOfError`): `number`
 
+Defined in: [getSampleSizeProportion.ts:39](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getSampleSizeProportion.ts#L39)
+
 Calculates the required sample size for estimating a population proportion with a specified confidence level and margin of error.
 
 The function uses the finite population correction formula when the population size is known, which provides more accurate sample size calculations for smaller populations. It assumes a worst-case scenario proportion of 0.5 (50%) to ensure the calculated sample size is sufficient regardless of the actual population proportion.
@@ -1303,6 +1337,8 @@ console.log(`For a city survey with 95% confidence and 4% margin of error, you n
 ### invertMatrix()
 
 > **invertMatrix**(`matrix`): `number`[][]
+
+Defined in: [invertMatrix.ts:47](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/invertMatrix.ts#L47)
 
 Computes the inverse of a square matrix.
 
@@ -1368,6 +1404,8 @@ try {
 ### performChiSquaredGoodnessOfFitTest()
 
 > **performChiSquaredGoodnessOfFitTest**\<`T`\>(`data`, `categoryKey`, `observedKey`, `expectedKey`): `object`
+
+Defined in: [performChiSquaredGoodnessOfFitTest.ts:103](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performChiSquaredGoodnessOfFitTest.ts#L103)
 
 Performs a Chi-Squared goodness of fit test to determine if observed frequencies match expected frequencies.
 
@@ -1519,6 +1557,8 @@ try {
 
 > **performChiSquaredIndependenceTest**\<`T`\>(`data`, `firstVariableKey`, `secondVariableKey`, `countKey`): `object`
 
+Defined in: [performChiSquaredIndependenceTest.ts:81](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performChiSquaredIndependenceTest.ts#L81)
+
 Performs a Chi-Squared independence test to determine if two categorical variables are statistically independent or associated.
 
 The Chi-Squared independence test examines whether there is a statistically significant association between two categorical variables by comparing observed frequencies against expected frequencies calculated under the assumption of independence.
@@ -1647,6 +1687,8 @@ if (result.pValue < 0.01) {
 ### performPairedTTest()
 
 > **performPairedTTest**\<`T`\>(`pairedData`, `firstVariableKey`, `secondVariableKey`, `options?`): `object`
+
+Defined in: [performPairedTTest.ts:81](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performPairedTTest.ts#L81)
 
 Performs a paired t-test for dependent means to determine if there is a significant difference between two related samples.
 
@@ -1800,6 +1842,8 @@ if (testResult.pValue < 0.05) {
 
 > **performTTest**\<`T`\>(`sampleData`, `variableKey`, `hypothesizedMean`, `options?`): `object`
 
+Defined in: [performTTest.ts:136](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performTTest.ts#L136)
+
 Performs a one-sample t-test for independent means to determine if a sample mean is significantly different from a hypothesized population mean.
 
 The function compares the mean of a sample against a hypothesized population mean when the population standard deviation is unknown. This is the most common scenario in real-world statistical analysis where we only have sample data and need to estimate the population parameters. This is a test for **independent means** (sample vs population), not related/paired samples.
@@ -1951,6 +1995,8 @@ if (testResult.pValue < 0.05) {
 ### performTwoSampleTTest()
 
 > **performTwoSampleTTest**\<`T1`, `T2`, `K`\>(`group1Data`, `group2Data`, `variableKey`, `options?`): `object`
+
+Defined in: [performTwoSampleTTest.ts:101](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performTwoSampleTTest.ts#L101)
 
 Performs a two-sample t-test for independent means to determine if there is a significant difference between two independent groups.
 
@@ -2144,6 +2190,8 @@ if (testResult.pValue < 0.05) {
 
 > **performZTest**\<`T`\>(`populationData`, `sampleData`, `variableKey`, `options?`): `object`
 
+Defined in: [performZTest.ts:82](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performZTest.ts#L82)
+
 Performs a one-sample Z-test to determine if a sample mean is significantly different from a population mean.
 
 The function compares the mean of a sample against the mean of a known population to test the null hypothesis. It automatically applies the finite population correction (FPC) when the sample size exceeds 5% of the population size, which provides more accurate results for smaller populations. This is a **one-sample Z-test** comparing a sample against a known population, not a comparison between two independent samples.
@@ -2299,6 +2347,8 @@ if (testResult.pValue < 0.05) {
 
 > **stepCir**(`currentValue`, `a`, `b`, `sigma`, `dt`, `shock`): `number`
 
+Defined in: [stepCir.ts:13](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/stepCir.ts#L13)
+
 Calculates the next value in a Cox-Ingersoll-Ross (CIR) process.
 
 #### Parameters
@@ -2350,6 +2400,8 @@ The next value in the process.
 ### stepGbm()
 
 > **stepGbm**(`currentValue`, `mu`, `sigma`, `dt`, `shock`): `number`
+
+Defined in: [stepGbm.ts:12](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/stepGbm.ts#L12)
 
 Calculates the next value in a Geometric Brownian Motion (GBM) process.
 

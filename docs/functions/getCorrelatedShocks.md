@@ -8,6 +8,8 @@
 
 > **getCorrelatedShocks**(`L`, `Z`): `number`[]
 
+Defined in: [getCorrelatedShocks.ts:9](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getCorrelatedShocks.ts#L9)
+
 Multiplies a lower triangular Cholesky matrix (L) by a vector of independent standard normal random variables (Z).
 
 ## Parameters

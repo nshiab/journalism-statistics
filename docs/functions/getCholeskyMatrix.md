@@ -8,6 +8,8 @@
 
 > **getCholeskyMatrix**(`matrix`, `jitter?`): `number`[][]
 
+Defined in: [getCholeskyMatrix.ts:9](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getCholeskyMatrix.ts#L9)
+
 Performs Cholesky Decomposition on a symmetric, positive-definite covariance matrix.
 
 ## Parameters
