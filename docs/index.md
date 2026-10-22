@@ -1,4 +1,4 @@
-**Journalism Statistics v1.5.11**
+**Journalism Statistics v1.5.12**
 
 ***
 

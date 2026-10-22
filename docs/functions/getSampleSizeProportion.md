@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getSampleSizeProportion**(`populationSize`, `confidenceLevel`, `marginOfError`): `number`
 
-Defined in: [getSampleSizeProportion.ts:39](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getSampleSizeProportion.ts#L39)
+Defined in: [getSampleSizeProportion.ts:39](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/getSampleSizeProportion.ts#L39)
 
 Calculates the required sample size for estimating a population proportion with a specified confidence level and margin of error.
 

@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getCirParameters**(`values`, `periodsPerYear`): `object`
 
-Defined in: [getCirParameters.ts:26](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getCirParameters.ts#L26)
+Defined in: [getCirParameters.ts:26](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/getCirParameters.ts#L26)
 
 Estimates the parameters of the Cox-Ingersoll-Ross (CIR) model based on historical values using ordinary least squares on the discretized process.
 

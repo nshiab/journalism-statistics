@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **stepGbm**(`currentValue`, `mu`, `sigma`, `dt`, `shock`): `number`
 
-Defined in: [stepGbm.ts:12](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/stepGbm.ts#L12)
+Defined in: [stepGbm.ts:12](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/stepGbm.ts#L12)
 
 Calculates the next value in a Geometric Brownian Motion (GBM) process.
 

@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -10,7 +10,7 @@
 
 > **addMahalanobisDistance**\<`T`\>(`origin`, `data`, `options`): (`T` & `object`)[]
 
-Defined in: [addMahalanobisDistance.ts:65](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/addMahalanobisDistance.ts#L65)
+Defined in: [addMahalanobisDistance.ts:65](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/addMahalanobisDistance.ts#L65)
 
 Calculates the Mahalanobis distance for each object in an array relative to a specified origin point.
 
@@ -112,7 +112,7 @@ console.log(wines);
 
 > **addMahalanobisDistance**\<`T`\>(`origin`, `data`, `options?`): (`T` & `object`)[]
 
-Defined in: [addMahalanobisDistance.ts:82](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/addMahalanobisDistance.ts#L82)
+Defined in: [addMahalanobisDistance.ts:82](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/addMahalanobisDistance.ts#L82)
 
 Calculates the Mahalanobis distance for each object in an array relative to a specified origin point (without similarity scores).
 

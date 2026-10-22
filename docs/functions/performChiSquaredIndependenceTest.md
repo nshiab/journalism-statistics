@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **performChiSquaredIndependenceTest**\<`T`\>(`data`, `firstVariableKey`, `secondVariableKey`, `countKey`): `object`
 
-Defined in: [performChiSquaredIndependenceTest.ts:81](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performChiSquaredIndependenceTest.ts#L81)
+Defined in: [performChiSquaredIndependenceTest.ts:81](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/performChiSquaredIndependenceTest.ts#L81)
 
 Performs a Chi-Squared independence test to determine if two categorical variables are statistically independent or associated.
 

@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getCorrelationMatrix**(`data`, `options?`): `number`[][]
 
-Defined in: [getCorrelationMatrix.ts:48](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getCorrelationMatrix.ts#L48)
+Defined in: [getCorrelationMatrix.ts:48](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/getCorrelationMatrix.ts#L48)
 
 Computes the correlation matrix for a given dataset. The correlation matrix is a square matrix that describes the correlation between each pair of variables in a dataset.
 

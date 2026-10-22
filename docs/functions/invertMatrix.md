@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **invertMatrix**(`matrix`): `number`[][]
 
-Defined in: [invertMatrix.ts:47](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/invertMatrix.ts#L47)
+Defined in: [invertMatrix.ts:47](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/invertMatrix.ts#L47)
 
 Computes the inverse of a square matrix.
 

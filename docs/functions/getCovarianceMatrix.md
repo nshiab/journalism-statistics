@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getCovarianceMatrix**(`data`, `options?`): `number`[][]
 
-Defined in: [getCovarianceMatrix.ts:103](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getCovarianceMatrix.ts#L103)
+Defined in: [getCovarianceMatrix.ts:103](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/getCovarianceMatrix.ts#L103)
 
 Computes the covariance matrix for a given dataset. The covariance matrix is a square matrix that describes the covariance between each pair of variables in a dataset.
 

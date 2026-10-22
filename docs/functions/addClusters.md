@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **addClusters**\<`T`\>(`data`, `minDistance`, `minNeighbours`, `distance`, `options?`): asserts data is (T & \{ clusterId: string \| null; clusterType: "core" \| "border" \| "noise" \})\[\]
 
-Defined in: [addClusters.ts:65](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/addClusters.ts#L65)
+Defined in: [addClusters.ts:65](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/addClusters.ts#L65)
 
 Groups data points into clusters using the DBSCAN (Density-Based Spatial Clustering of Applications with Noise) algorithm. This method is particularly effective at identifying clusters of arbitrary shapes and handling noise in the data.
 

@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **performTwoSampleTTest**\<`T1`, `T2`, `K`\>(`group1Data`, `group2Data`, `variableKey`, `options?`): `object`
 
-Defined in: [performTwoSampleTTest.ts:101](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performTwoSampleTTest.ts#L101)
+Defined in: [performTwoSampleTTest.ts:101](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/performTwoSampleTTest.ts#L101)
 
 Performs a two-sample t-test for independent means to determine if there is a significant difference between two independent groups.
 

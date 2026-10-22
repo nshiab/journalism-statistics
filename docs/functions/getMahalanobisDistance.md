@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getMahalanobisDistance**(`x1`, `x2`, `invCovMatrix`): `number`
 
-Defined in: [getMahalanobisDistance.ts:59](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getMahalanobisDistance.ts#L59)
+Defined in: [getMahalanobisDistance.ts:59](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/getMahalanobisDistance.ts#L59)
 
 Computes the Mahalanobis distance between two data points (`x1` and `x2`) given the inverted covariance matrix of the dataset. The Mahalanobis distance is a measure of the distance between a point and a distribution. It is a unitless measure. This function can handle data points of any dimension (i.e., with more than 2 coordinates).
 

@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **performPairedTTest**\<`T`\>(`pairedData`, `firstVariableKey`, `secondVariableKey`, `options?`): `object`
 
-Defined in: [performPairedTTest.ts:81](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performPairedTTest.ts#L81)
+Defined in: [performPairedTTest.ts:81](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/performPairedTTest.ts#L81)
 
 Performs a paired t-test for dependent means to determine if there is a significant difference between two related samples.
 

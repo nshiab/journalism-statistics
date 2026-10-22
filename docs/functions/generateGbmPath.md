@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **generateGbmPath**(`startValue`, `mu`, `sigma`, `years`, `periodsPerYear`): `number`[]
 
-Defined in: [generateGbmPath.ts:38](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/generateGbmPath.ts#L38)
+Defined in: [generateGbmPath.ts:38](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/generateGbmPath.ts#L38)
 
 Generates a simulated path for an asset using the Geometric Brownian Motion (GBM) model.
 

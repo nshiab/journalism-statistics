@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getGbmParameters**(`values`, `periodsPerYear`): `object`
 
-Defined in: [getGbmParameters.ts:27](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/getGbmParameters.ts#L27)
+Defined in: [getGbmParameters.ts:27](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/getGbmParameters.ts#L27)
 
 Calculates the parameters (drift `mu` and volatility `sigma`) for a Geometric Brownian Motion (GBM) model based on historical data.
 

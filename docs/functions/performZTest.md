@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **performZTest**\<`T`\>(`populationData`, `sampleData`, `variableKey`, `options?`): `object`
 
-Defined in: [performZTest.ts:82](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performZTest.ts#L82)
+Defined in: [performZTest.ts:82](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/performZTest.ts#L82)
 
 Performs a one-sample Z-test to determine if a sample mean is significantly different from a population mean.
 

@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **performTTest**\<`T`\>(`sampleData`, `variableKey`, `hypothesizedMean`, `options?`): `object`
 
-Defined in: [performTTest.ts:136](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performTTest.ts#L136)
+Defined in: [performTTest.ts:136](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/performTTest.ts#L136)
 
 Performs a one-sample t-test for independent means to determine if a sample mean is significantly different from a hypothesized population mean.
 

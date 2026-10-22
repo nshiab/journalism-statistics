@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **performChiSquaredGoodnessOfFitTest**\<`T`\>(`data`, `categoryKey`, `observedKey`, `expectedKey`): `object`
 
-Defined in: [performChiSquaredGoodnessOfFitTest.ts:103](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/performChiSquaredGoodnessOfFitTest.ts#L103)
+Defined in: [performChiSquaredGoodnessOfFitTest.ts:103](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/performChiSquaredGoodnessOfFitTest.ts#L103)
 
 Performs a Chi-Squared goodness of fit test to determine if observed frequencies match expected frequencies.
 

@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **euclidianDistance**(`x1`, `y1`, `x2`, `y2`): `number`
 
-Defined in: [euclidianDistance.ts:33](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/euclidianDistance.ts#L33)
+Defined in: [euclidianDistance.ts:33](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/euclidianDistance.ts#L33)
 
 Calculates the Euclidean distance between two points in a 2D Cartesian coordinate system. The Euclidean distance is the shortest straight-line distance between two points, often referred to as the "as the crow flies" distance.
 

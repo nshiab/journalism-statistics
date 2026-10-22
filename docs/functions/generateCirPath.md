@@ -1,4 +1,4 @@
-[**Journalism Statistics v1.5.11**](../index.md)
+[**Journalism Statistics v1.5.12**](../index.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **generateCirPath**(`startValue`, `a`, `b`, `sigma`, `years`, `periodsPerYear`): `number`[]
 
-Defined in: [generateCirPath.ts:35](https://github.com/nshiab/journalism-statistics/blob/v1.5.11/src/statistics/generateCirPath.ts#L35)
+Defined in: [generateCirPath.ts:35](https://github.com/nshiab/journalism-statistics/blob/v1.5.12/src/statistics/generateCirPath.ts#L35)
 
 Generates a path of values following the Cox-Ingersoll-Ross (CIR) model.
 
